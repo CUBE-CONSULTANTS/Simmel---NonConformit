@@ -1,33 +1,41 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.uxap" controllerName="flexcollay.controller.Detail"
-	 xmlns:l="sap.ui.layout"
+	xmlns="sap.uxap"
+	controllerName="flexcollay.controller.Detail"
+	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
-    xmlns:c="sap.ui.core"
-    xmlns:form="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
 	xmlns:commons="sap.suite.ui.commons"
-    xmlns:unified="sap.ui.unified"
+	xmlns:unified="sap.ui.unified"
 	xmlns:m="sap.m"
 	height="100%">
-	<ObjectPageLayout showFooter="{=${modelloRuolo>/settore} !== 'Qualità' ? true : false}" id="ObjectPageLayout" showAnchorBarPopover="false"  upperCaseAnchorBar="false">
+	<ObjectPageLayout showFooter="{=${modelloRuolo>/settore} !== 'Qualità' ? true : false}"
+		id="ObjectPageLayout"
+		showAnchorBarPopover="false"
+		upperCaseAnchorBar="false">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 				<heading>
-				<m:HBox  alignItems="Center" alignContent="Center">
-					<m:Button icon="sap-icon://nav-back"  type="Transparent" press="handleNavigateToTable"/>
+					<m:HBox alignItems="Center"
+						alignContent="Center">
+						<m:Button icon="sap-icon://nav-back"
+							type="Transparent"
+							press="handleNavigateToTable"/>
 						<m:Title text="Modello non conformità numero {modelloAppoggio>/elemento_selezionato/id}"/>
-				</m:HBox>
+					</m:HBox>
 				</heading>
 				<actions>
-					 <m:Image src="../public/logo.jpg"
-                        height="22.00000000px"
-                        width="100px"
-                        visible="true" />
+					<m:Image src="../public/logo.jpg"
+						height="22.00000000px"
+						width="100px"
+						visible="true" />
 
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
 		<sections>
-			<ObjectPageSection titleUppercase="false" title="Info">
+			<ObjectPageSection titleUppercase="false"
+				title="Info">
 				<subSections>
 					<ObjectPageSubSection >
 						<blocks>
@@ -47,18 +55,18 @@
 								columnsXL="2"
 								columnsL="2"
 								columnsM="2"
-								singleContainerFullSize="false" >
+								singleContainerFullSize="false">
 								<f:content>
-								<c:Title text=" " />
+									<c:Title text=" " />
 									<m:Label text="Titolo" />
-									<m:Text  text="{modelloAppoggio>/elemento_selezionato/titolo}" />
+									<m:Text text="{modelloAppoggio>/elemento_selezionato/titolo}" />
 									<m:Label text="Data" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/data_rilevamento}" />
 									<m:Label text="Autore" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/creatore}" />
 									<m:Label text="Revisione numero" />
-									<m:Text  text="{modelloAppoggio>/elemento_selezionato/id_revisione}" />
-								<c:Title text=" " />
+									<m:Text text="{modelloAppoggio>/elemento_selezionato/id_revisione}" />
+									<c:Title text=" " />
 									<m:Label text="Stato" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/stato}">
 										<m:customData>
@@ -71,81 +79,96 @@
 							</f:SimpleForm>
 						</blocks>
 					</ObjectPageSubSection>
-					
+
 				</subSections>
 			</ObjectPageSection>
 
-			<ObjectPageSection  titleUppercase="false" title="Modello non conformità">
+			<ObjectPageSection titleUppercase="false"
+				title="Modello non conformità">
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks>
-							 <m:PDFViewer source="../PDF/StopFive (7).pdf"
-								isTrustedSource="true"
-								title="Permesso_numero_2.pdf "
-								height="100vh">
-								<m:layoutData>
-									<m:FlexItemData growFactor="1" />
-								</m:layoutData>
-							</m:PDFViewer>
+							<m:Button text="Visualizza pdf"
+								width="100%"
+								type="Emphasized"
+								icon="sap-icon://pdf-reader"
+								press="openDialogShowPDF"/>
+
 						</blocks>
 					</ObjectPageSubSection>
-					
+
 				</subSections>
 			</ObjectPageSection>
 
-			<ObjectPageSection visible="{=${modelloRuolo>/settore} === 'Qualità' ? true : false}"  titleUppercase="false" title="Note">
+			<ObjectPageSection visible="{=${modelloRuolo>/settore} === 'Qualità' ? true : false}"
+				titleUppercase="false"
+				title="Note">
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks >
-								<commons:Timeline showSearch="false" enableScroll="false" showTimeFilter="false"
-									id="idTimeline" height="100%"
-									enableDoubleSided="true"
-									content="{modelloDettaglio>/}"
-									filterList="{modelloDettaglio>data}">
-									<commons:content>
-										<commons:TimelineItem
-											id="idTemplateItem"
-											userNameClicked="onUserNameClick"
-											select="onPressItems"
-											dateTime="{modelloDettaglio>data}"
-											title="{Title}"
-											text="{modelloDettaglio>descrizione}"
-											userName="{modelloDettaglio>nome}"
-											filterValue="{modelloDettaglio>nome}">
-										</commons:TimelineItem>
-									</commons:content>
-									<commons:filterList>
-										<commons:TimelineFilterListItem
-											id="idTimelineFilterListItem"
-											key="{FirstName}"
-											text="{FirstName} {LastName}">
-										</commons:TimelineFilterListItem>
-									</commons:filterList>
-								</commons:Timeline>
+							<commons:Timeline showSearch="false"
+								enableScroll="false"
+								showTimeFilter="false"
+								id="idTimeline"
+								height="100%"
+								enableDoubleSided="true"
+								content="{modelloDettaglio>/}"
+								filterList="{modelloDettaglio>data}">
+								<commons:content>
+									<commons:TimelineItem id="idTemplateItem"
+										userNameClicked="onUserNameClick"
+										select="onPressItems"
+										dateTime="{modelloDettaglio>data}"
+										title="{Title}"
+										text="{modelloDettaglio>descrizione}"
+										userName="{modelloDettaglio>nome}"
+										filterValue="{modelloDettaglio>nome}">
+									</commons:TimelineItem>
+								</commons:content>
+								<commons:filterList>
+									<commons:TimelineFilterListItem id="idTimelineFilterListItem"
+										key="{FirstName}"
+										text="{FirstName} {LastName}">
+									</commons:TimelineFilterListItem>
+								</commons:filterList>
+							</commons:Timeline>
 						</blocks>
 					</ObjectPageSubSection>
-					
+
 				</subSections>
 			</ObjectPageSection>
 		</sections>
-	<footer>
-	 <m:OverflowToolbar>
-                <m:Button type="Reject"
-                    icon="sap-icon://decline" press="AlertDialog"
-                    text="Rifiuta">
+		<footer>
+			<m:OverflowToolbar>
+				<m:Button type="Reject"
+					icon="sap-icon://decline"
+					visible="{=${modelloRuolo>/settore} !== 'Qualità' ? true : false}"
+					press="AlertDialog"
+					text="Rifiuta">
 					<m:customData>
 						<c:CustomData key="Reject"/>
 					</m:customData>
-					</m:Button >
-	                <m:ToolbarSpacer/>
-					<m:Button type="Accept"  press="AlertDialog"
-                    icon="sap-icon://accept"
-                    text="Accettta">
+				</m:Button >
+				<m:ToolbarSpacer/>
+				<m:Button type="Accept"
+					press="AlertDialog"
+					visible="{=${modelloRuolo>/settore} !== 'Qualità' ? true : false}"
+					icon="sap-icon://accept"
+					text="Accetta">
 					<m:customData>
 						<c:CustomData key="Accept"/>
 					</m:customData>
-					</m:Button >
-            </m:OverflowToolbar>
-	</footer>
+				</m:Button >
+				<m:Button type="Success"
+					visible="{=${modelloRuolo>/settore} === 'Responsabile'  ? true : false}"
+					press="AlertDialog"
+					icon="sap-icon://accounting-document-verification"
+					text="Chiusura">
+					<m:customData>
+						<c:CustomData key="Chiusura"/>
+					</m:customData>
+				</m:Button >
+			</m:OverflowToolbar>
+		</footer>
 	</ObjectPageLayout>
 </mvc:View>

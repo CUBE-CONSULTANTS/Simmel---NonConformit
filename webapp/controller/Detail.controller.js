@@ -1,17 +1,17 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller",
+    'sap/m/MessageToast'
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller) {
+    function (Controller, MessageToast) {
         "use strict";
 
         return Controller.extend("flexcollay.controller.FlexibleColumnLayout", {
             onInit: function () {
                 this.bus = this.getOwnerComponent().getEventBus();
                 this.initialModel()
-
             },
             initialModel: async function () {
                 let call = await fetch("../model/modelloDatiMock.json")
@@ -39,8 +39,8 @@ sap.ui.define([
                                     new sap.m.Text({
                                         text: "Sei sicuro di voler Rifiutare?"
                                     }),
-                                    new sap.m.VBox({ 
-                                        with:"220px",
+                                    new sap.m.VBox({
+                                        with: "220px",
                                         alignItems: sap.m.FlexAlignItems.Baseline,
                                         items: [
                                             new sap.m.Label({
@@ -62,7 +62,7 @@ sap.ui.define([
                             press: function () {
                                 this.saveData()
                                 this.oDefaultMessageDialog.close();
-                                new sap.m.MessageToast().show("Salvataggio avvenuto con successo")
+                                MessageToast.show("Salvataggio avvenuto con successo")
                             }.bind(this)
                         }),
                         endButton: new sap.m.Button({
@@ -82,8 +82,8 @@ sap.ui.define([
                 this.oDefaultMessageDialog.open();
             },
             dialogConferma: function (self, descrizione) {
-                if (!this.oDefaultMessageDialog) {
-                    this.oDefaultMessageDialog = new sap.m.Dialog({
+                if (!this.oMessageDialogConfirm) {
+                    this.oMessageDialogConfirm = new sap.m.Dialog({
                         type: sap.m.DialogType.Message,
                         title: "Conferma",
                         content:
@@ -96,15 +96,15 @@ sap.ui.define([
                             text: "Si",
                             press: function () {
                                 this.saveData()
-                                this.oDefaultMessageDialog.close();
-                                new sap.m.MessageToast().show("Salvataggio avvenuto con successo")
+                                this.oMessageDialogConfirm.close();
+                                MessageToast.show("Salvataggio avvenuto con successo")
                             }.bind(this)
                         }),
                         endButton: new sap.m.Button({
                             type: sap.m.ButtonType.Emphasized,
                             text: "No",
                             press: function () {
-                                this.oDefaultMessageDialog.close();
+                                this.oMessageDialogConfirm.close();
                             }.bind(this)
                         })
                     })
@@ -118,6 +118,26 @@ sap.ui.define([
             },
             saveData: function () { //funzione per il salvataggio dei dati
 
-            }
+            },
+            openDialogShowPDF: function (oEvent) {
+                let self = this
+                if (!this._dialog) {
+                    this._dialog = new sap.ui.core.Fragment.load({
+                        id: this.getView().getId(),
+                        name: "flexcollay.view.Fragments.PdfFragment",
+                        controller: this
+                    }).then(function (oDialog) {
+                        debugger
+                        return oDialog;
+                    });
+                }
+                self._dialog.then(async function (oDialog) {
+                    oDialog.open();
+
+                }.bind(this));
+            },
+            closeDialog: function (oEvent) {
+                oEvent.getSource().getParent().getParent().close()
+            },
         });
     });

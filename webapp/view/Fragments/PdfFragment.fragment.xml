@@ -1,0 +1,28 @@
+<c:FragmentDefinition xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:unified="sap.ui.unified">
+    <Dialog resizable="true" draggable="true"
+        contentWidth="80%"
+        contentHeight="70%"
+        titleAlignment="Center">
+        <customHeader>
+            <Toolbar>
+                <Title text="Creazione modello non conformità" />
+                <ToolbarSpacer />
+                <Button icon="sap-icon://decline"
+                    type="Emphasized"
+                    press="closeDialog" />
+            </Toolbar>
+        </customHeader>
+        <PDFViewer source="../PDF/StopFive (7).pdf" 
+            isTrustedSource="true"
+            title="Permesso_numero_2.pdf " displayType="Auto"
+            height="100vh">
+            <layoutData>
+                <FlexItemData growFactor="1" />
+            </layoutData>
+        </PDFViewer>
+    </Dialog>
+</c:FragmentDefinition>

@@ -1,248 +1,248 @@
 {
-    "non_conformita": [
-        {
-            "id": 1,
-            "id_revisione": 1,
-            "titolo": "Titolo non conformità se1",
-            "responsabile": "Mario Rossi",
-            "creatore": "Paolo Rossi",
-            "data_rilevamento": "08-05-2024",
-            "stato": "Aperto",
-            "azione_correttiva": "Aggiornamento della documentazione entro il 15 maggio 2024"
-        },
-        {
-            "id": 4,
-            "id_revisione": 1,
-            "titolo": "Titolo non conformità se1",
-            "responsabile": "Mario Rossi",
-            "creatore": "Paolo Rossi",
-            "data_rilevamento": "08-05-2024",
-            "stato": "Bloccato",
-            "azione_correttiva": "Aggiornamento della documentazione entro il 15 maggio 2024"
-        },
-        {
-            "id": 2,
-            "id_revisione": 2,
-            "titolo": "Titolo non conformità se2",
-            "responsabile": "Giovanni Verdi",
-            "creatore": "Marco Verdi",
-            "data_rilevamento": "07-05-2024",
-            "stato": "In corso",
-            "azione_correttiva": "Analisi approfondita del guasto e implementazione di misure correttive"
-        },
-        {
-            "id": 3,
-            "id_revisione": 3,
-            "titolo": "Modello non conformità se4",
-            "responsabile": "Luca Bianchi",
-            "creatore": "Simona Bianchi",
-            "data_rilevamento": "06-05-2024",
-            "stato": "Chiuso",
-            "azione_correttiva": "Ricalibrazione della linea di produzione e monitoraggio continuo"
-        }
-    ],
-    "utenti": [
-        {
-            "nome": "Mario",
-            "email": "mario@example.com",
-            "settore_lavorativo": "Produzione"
-        },
-        {
-            "nome": "Luca",
-            "email": "luca@example.com",
-            "settore_lavorativo": "Logistica"
-        },
-        {
-            "nome": "Anna",
-            "email": "anna@example.com",
-            "settore_lavorativo": "Ingegneria"
-        },
-        {
-            "nome": "Giulia",
-            "email": "giulia@example.com",
-            "settore_lavorativo": "Controllo Qualità"
-        },
-        {
-            "nome": "Marco",
-            "email": "marco@example.com",
-            "settore_lavorativo": "Manutenzione"
-        },
-        {
-            "nome": "Francesca",
-            "email": "francesca@example.com",
-            "settore_lavorativo": "Ricerca e Sviluppo"
-        },
-        {
-            "nome": "Paolo",
-            "email": "paolo@example.com",
-            "settore_lavorativo": "Produzione"
-        },
-        {
-            "nome": "Laura",
-            "email": "laura@example.com",
-            "settore_lavorativo": "Logistica"
-        },
-        {
-            "nome": "Giovanni",
-            "email": "giovanni@example.com",
-            "settore_lavorativo": "Ingegneria"
-        },
-        {
-            "nome": "Sara",
-            "email": "sara@example.com",
-            "settore_lavorativo": "Controllo Qualità"
-        },
-        {
-            "nome": "Alessio",
-            "email": "alessio@example.com",
-            "settore_lavorativo": "Manutenzione"
-        },
-        {
-            "nome": "Elena",
-            "email": "elena@example.com",
-            "settore_lavorativo": "Ricerca e Sviluppo"
-        },
-        {
-            "nome": "Roberto",
-            "email": "roberto@example.com",
-            "settore_lavorativo": "Produzione"
-        },
-        {
-            "nome": "Martina",
-            "email": "martina@example.com",
-            "settore_lavorativo": "Logistica"
-        },
-        {
-            "nome": "Andrea",
-            "email": "andrea@example.com",
-            "settore_lavorativo": "Ingegneria"
-        },
-        {
-            "nome": "Valentina",
-            "email": "valentina@example.com",
-            "settore_lavorativo": "Controllo Qualità"
-        },
-        {
-            "nome": "Davide",
-            "email": "davide@example.com",
-            "settore_lavorativo": "Manutenzione"
-        },
-        {
-            "nome": "Chiara",
-            "email": "chiara@example.com",
-            "settore_lavorativo": "Ricerca e Sviluppo"
-        },
-        {
-            "nome": "Simone",
-            "email": "simone@example.com",
-            "settore_lavorativo": "Produzione"
-        },
-        {
-            "nome": "Eleonora",
-            "email": "eleonora@example.com",
-            "settore_lavorativo": "Logistica"
-        }
-    ],
-    "noteReject": [
-        {
-            "nome": "Marco Rossi",
-            "data": "09-05-2024",
-            "descrizione": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula velit quis lectus gravida, nec commodo enim varius."
-        },
-        {
-            "nome": "Anna Bianchi",
-            "data": "08-05-2024",
-            "descrizione": "Fusce rutrum augue vel ligula suscipit, eu ultrices sem feugiat. Nam vitae eros vitae leo posuere pellentesque."
-        },
-        {
-            "nome": "Luca Verdi",
-            "data": "07-05-2024",
-            "descrizione": "Duis vitae metus id tortor lacinia vestibulum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
-        },
-        {
-            "nome": "Giulia Esposito",
-            "data": "06-05-2024",
-            "descrizione": "Integer nec velit ut urna eleifend venenatis a non lectus. Vestibulum efficitur, nisi sed viverra tincidunt, eros libero interdum nisi, nec cursus turpis ligula quis libero."
-        },
-        {
-            "nome": "Davide Russo",
-            "data": "05-05-2024",
-            "descrizione": "Nullam efficitur enim vitae arcu tincidunt, sit amet consequat ex ultricies. Maecenas ac lorem lacinia, feugiat urna id, tempus ligula."
-        },
-        {
-            "nome": "Chiara Ferrari",
-            "data": "04-05-2024",
-            "descrizione": "Vivamus in purus convallis, sodales ligula sed, suscipit ex. Nam nec justo quis dolor dignissim sagittis."
-        },
-        {
-            "nome": "Simone Romano",
-            "data": "03-05-2024",
-            "descrizione": "Morbi dignissim risus et est tincidunt, sed sollicitudin quam fringilla. Nunc ut aliquam libero."
-        },
-        {
-            "nome": "Alessia Marini",
-            "data": "02-05-2024",
-            "descrizione": "Suspendisse potenti. Duis ullamcorper consequat enim, eu tincidunt libero tempus in."
-        },
-        {
-            "nome": "Federico Costa",
-            "data": "01-05-2024",
-            "descrizione": "Vestibulum sodales fermentum risus sit amet convallis. Nulla facilisi."
-        },
-        {
-            "nome": "Valentina Giallo",
-            "data": "30-04-2024",
-            "descrizione": "Quisque vestibulum convallis nulla sit amet eleifend. Maecenas lobortis justo eget felis pharetra, sit amet fermentum lorem tempus."
-        },
-        {
-            "nome": "Giovanni Neri",
-            "data": "29-04-2024",
-            "descrizione": "Aliquam fringilla metus in elit vehicula, et tincidunt odio placerat. Nunc interdum, lorem non gravida elementum, ligula ex auctor eros, a pellentesque ipsum elit ut eros."
-        },
-        {
-            "nome": "Elisa Moro",
-            "data": "28-04-2024",
-            "descrizione": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent eget lorem non mauris ultricies varius."
-        },
-        {
-            "nome": "Paolo Rosso",
-            "data": "27-04-2024",
-            "descrizione": "Sed at felis luctus, fermentum elit nec, bibendum ex. Sed id nisi nec purus consequat varius."
-        },
-        {
-            "nome": "Sara Blu",
-            "data": "26-04-2024",
-            "descrizione": "Maecenas non odio varius, convallis mauris ac, vulputate libero. Etiam non nibh sit amet tellus efficitur vehicula sit amet eget mi."
-        },
-        {
-            "nome": "Matteo Verde",
-            "data": "25-04-2024",
-            "descrizione": "Curabitur sollicitudin erat non metus pharetra, et consequat velit suscipit. Nam nec ullamcorper tortor."
-        },
-        {
-            "nome": "Cristina Gialli",
-            "data": "24-04-2024",
-            "descrizione": "Nam tincidunt nisl nec nisi volutpat, vel vestibulum urna placerat. Ut dapibus tellus id eros suscipit, id molestie purus vehicula."
-        },
-        {
-            "nome": "Enrico Neri",
-            "data": "23-04-2024",
-            "descrizione": "Vestibulum consectetur massa sed felis hendrerit, sit amet fermentum lacus auctor. Vivamus ac ultricies tortor."
-        },
-        {
-            "nome": "Roberta Rossa",
-            "data": "22-04-2024",
-            "descrizione": "Donec fringilla magna vel quam cursus, at molestie orci varius. Cras ultrices, mi non mollis congue, dui est malesuada velit, ut vestibulum metus orci et nunc."
-        },
-        {
-            "nome": "Antonio Giallo",
-            "data": "21-04-2024",
-            "descrizione": "Vivamus euismod felis at neque pharetra, nec interdum neque scelerisque. Integer tincidunt velit et magna feugiat, at fermentum libero volutpat."
-        },
-        {
-            "nome": "Laura Verdi",
-            "data": "20-04-2024",
-            "descrizione": "Quisque auctor velit in dolor convallis, quis elementum lorem volutpat. Sed ac justo ac ante tincidunt posuere."
-        }
-    ]
+  "non_conformita": [
+    {
+      "id": 1,
+      "id_revisione": 1,
+      "titolo": "Titolo non conformità se1",
+      "responsabile": "Mario Rossi",
+      "creatore": "Paolo Rossi",
+      "data_rilevamento": "08-05-2024",
+      "stato": "Aperto",
+      "azione_correttiva": "Aggiornamento della documentazione entro il 15 maggio 2024"
+    },
+    {
+      "id": 4,
+      "id_revisione": 1,
+      "titolo": "Titolo non conformità se1",
+      "responsabile": "Mario Rossi",
+      "creatore": "Paolo Rossi",
+      "data_rilevamento": "08-05-2024",
+      "stato": "Bloccato",
+      "azione_correttiva": "Aggiornamento della documentazione entro il 15 maggio 2024"
+    },
+    {
+      "id": 2,
+      "id_revisione": 2,
+      "titolo": "Titolo non conformità se2",
+      "responsabile": "Giovanni Verdi",
+      "creatore": "Marco Verdi",
+      "data_rilevamento": "07-05-2024",
+      "stato": "In corso",
+      "azione_correttiva": "Analisi approfondita del guasto e implementazione di misure correttive"
+    },
+    {
+      "id": 3,
+      "id_revisione": 3,
+      "titolo": "Modello non conformità se4",
+      "responsabile": "Luca Bianchi",
+      "creatore": "Simona Bianchi",
+      "data_rilevamento": "06-05-2024",
+      "stato": "Chiuso",
+      "azione_correttiva": "Ricalibrazione della linea di produzione e monitoraggio continuo"
+    }
+  ],
+  "utenti": [
+    {
+      "nome": "Mario",
+      "email": "mario@example.com",
+      "settore_lavorativo": "Produzione"
+    },
+    {
+      "nome": "Luca",
+      "email": "luca@example.com",
+      "settore_lavorativo": "Logistica"
+    },
+    {
+      "nome": "Anna",
+      "email": "anna@example.com",
+      "settore_lavorativo": "Ingegneria"
+    },
+    {
+      "nome": "Giulia",
+      "email": "giulia@example.com",
+      "settore_lavorativo": "Controllo Qualità"
+    },
+    {
+      "nome": "Marco",
+      "email": "marco@example.com",
+      "settore_lavorativo": "Manutenzione"
+    },
+    {
+      "nome": "Francesca",
+      "email": "francesca@example.com",
+      "settore_lavorativo": "Ricerca e Sviluppo"
+    },
+    {
+      "nome": "Paolo",
+      "email": "paolo@example.com",
+      "settore_lavorativo": "Produzione"
+    },
+    {
+      "nome": "Laura",
+      "email": "laura@example.com",
+      "settore_lavorativo": "Logistica"
+    },
+    {
+      "nome": "Giovanni",
+      "email": "giovanni@example.com",
+      "settore_lavorativo": "Ingegneria"
+    },
+    {
+      "nome": "Sara",
+      "email": "sara@example.com",
+      "settore_lavorativo": "Controllo Qualità"
+    },
+    {
+      "nome": "Alessio",
+      "email": "alessio@example.com",
+      "settore_lavorativo": "Manutenzione"
+    },
+    {
+      "nome": "Elena",
+      "email": "elena@example.com",
+      "settore_lavorativo": "Ricerca e Sviluppo"
+    },
+    {
+      "nome": "Roberto",
+      "email": "roberto@example.com",
+      "settore_lavorativo": "Produzione"
+    },
+    {
+      "nome": "Martina",
+      "email": "martina@example.com",
+      "settore_lavorativo": "Logistica"
+    },
+    {
+      "nome": "Andrea",
+      "email": "andrea@example.com",
+      "settore_lavorativo": "Ingegneria"
+    },
+    {
+      "nome": "Valentina",
+      "email": "valentina@example.com",
+      "settore_lavorativo": "Controllo Qualità"
+    },
+    {
+      "nome": "Davide",
+      "email": "davide@example.com",
+      "settore_lavorativo": "Manutenzione"
+    },
+    {
+      "nome": "Chiara",
+      "email": "chiara@example.com",
+      "settore_lavorativo": "Ricerca e Sviluppo"
+    },
+    {
+      "nome": "Simone",
+      "email": "simone@example.com",
+      "settore_lavorativo": "Produzione"
+    },
+    {
+      "nome": "Eleonora",
+      "email": "eleonora@example.com",
+      "settore_lavorativo": "Logistica"
+    }
+  ],
+  "noteReject": [
+    {
+      "nome": "Marco Rossi",
+      "data": "09-05-2024",
+      "descrizione": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula velit quis lectus gravida, nec commodo enim varius."
+    },
+    {
+      "nome": "Anna Bianchi",
+      "data": "08-05-2024",
+      "descrizione": "Fusce rutrum augue vel ligula suscipit, eu ultrices sem feugiat. Nam vitae eros vitae leo posuere pellentesque."
+    },
+    {
+      "nome": "Luca Verdi",
+      "data": "07-05-2024",
+      "descrizione": "Duis vitae metus id tortor lacinia vestibulum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
+    },
+    {
+      "nome": "Giulia Esposito",
+      "data": "06-05-2024",
+      "descrizione": "Integer nec velit ut urna eleifend venenatis a non lectus. Vestibulum efficitur, nisi sed viverra tincidunt, eros libero interdum nisi, nec cursus turpis ligula quis libero."
+    },
+    {
+      "nome": "Davide Russo",
+      "data": "05-05-2024",
+      "descrizione": "Nullam efficitur enim vitae arcu tincidunt, sit amet consequat ex ultricies. Maecenas ac lorem lacinia, feugiat urna id, tempus ligula."
+    },
+    {
+      "nome": "Chiara Ferrari",
+      "data": "04-05-2024",
+      "descrizione": "Vivamus in purus convallis, sodales ligula sed, suscipit ex. Nam nec justo quis dolor dignissim sagittis."
+    },
+    {
+      "nome": "Simone Romano",
+      "data": "03-05-2024",
+      "descrizione": "Morbi dignissim risus et est tincidunt, sed sollicitudin quam fringilla. Nunc ut aliquam libero."
+    },
+    {
+      "nome": "Alessia Marini",
+      "data": "02-05-2024",
+      "descrizione": "Suspendisse potenti. Duis ullamcorper consequat enim, eu tincidunt libero tempus in."
+    },
+    {
+      "nome": "Federico Costa",
+      "data": "01-05-2024",
+      "descrizione": "Vestibulum sodales fermentum risus sit amet convallis. Nulla facilisi."
+    },
+    {
+      "nome": "Valentina Giallo",
+      "data": "30-04-2024",
+      "descrizione": "Quisque vestibulum convallis nulla sit amet eleifend. Maecenas lobortis justo eget felis pharetra, sit amet fermentum lorem tempus."
+    },
+    {
+      "nome": "Giovanni Neri",
+      "data": "29-04-2024",
+      "descrizione": "Aliquam fringilla metus in elit vehicula, et tincidunt odio placerat. Nunc interdum, lorem non gravida elementum, ligula ex auctor eros, a pellentesque ipsum elit ut eros."
+    },
+    {
+      "nome": "Elisa Moro",
+      "data": "28-04-2024",
+      "descrizione": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent eget lorem non mauris ultricies varius."
+    },
+    {
+      "nome": "Paolo Rosso",
+      "data": "27-04-2024",
+      "descrizione": "Sed at felis luctus, fermentum elit nec, bibendum ex. Sed id nisi nec purus consequat varius."
+    },
+    {
+      "nome": "Sara Blu",
+      "data": "26-04-2024",
+      "descrizione": "Maecenas non odio varius, convallis mauris ac, vulputate libero. Etiam non nibh sit amet tellus efficitur vehicula sit amet eget mi."
+    },
+    {
+      "nome": "Matteo Verde",
+      "data": "25-04-2024",
+      "descrizione": "Curabitur sollicitudin erat non metus pharetra, et consequat velit suscipit. Nam nec ullamcorper tortor."
+    },
+    {
+      "nome": "Cristina Gialli",
+      "data": "24-04-2024",
+      "descrizione": "Nam tincidunt nisl nec nisi volutpat, vel vestibulum urna placerat. Ut dapibus tellus id eros suscipit, id molestie purus vehicula."
+    },
+    {
+      "nome": "Enrico Neri",
+      "data": "23-04-2024",
+      "descrizione": "Vestibulum consectetur massa sed felis hendrerit, sit amet fermentum lacus auctor. Vivamus ac ultricies tortor."
+    },
+    {
+      "nome": "Roberta Rossa",
+      "data": "22-04-2024",
+      "descrizione": "Donec fringilla magna vel quam cursus, at molestie orci varius. Cras ultrices, mi non mollis congue, dui est malesuada velit, ut vestibulum metus orci et nunc."
+    },
+    {
+      "nome": "Antonio Giallo",
+      "data": "21-04-2024",
+      "descrizione": "Vivamus euismod felis at neque pharetra, nec interdum neque scelerisque. Integer tincidunt velit et magna feugiat, at fermentum libero volutpat."
+    },
+    {
+      "nome": "Laura Verdi",
+      "data": "20-04-2024",
+      "descrizione": "Quisque auctor velit in dolor convallis, quis elementum lorem volutpat. Sed ac justo ac ante tincidunt posuere."
+    }
+  ]
 }

@@ -9,9 +9,9 @@
     xmlns:fb="sap.ui.comp.filterbar"
     height="100%"
     xmlns="sap.m">
-    <Page  title="Non conformità"
+    <Page title="Non conformità"
         showHeader="true"
-        showFooter="true" >
+        showFooter="true">
         <headerContent >
             <Image src="../public/logo.jpg"
                 height="22.00000000px"
@@ -20,34 +20,15 @@
                 tooltip="Share" />
         </headerContent>
 
-          
-		
-        <!-- <f:header >
-            <f:DynamicPageHeader>
-                <f:content>
-                    <layout:VerticalLayout width="100%">
-                        <FlexBox justifyContent="End">
-                            <Button text="Crea documento "
-                                icon="sap-icon://add"
-                                class="sapUiSmallMarginBottom"
-                                press="openDialogCreaModello"
-                                type="Emphasized"
-                                visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
-                        </FlexBox>
-                    </layout:VerticalLayout>
-                </f:content>
-            </f:DynamicPageHeader>
-        </f:header> -->
-
         <content>
-             <FlexBox >
+            <FlexBox justifyContent="End">
                 <ToolbarSpacer />
                 <Button text="Crea documento "
-                            icon="sap-icon://add"
-                            class="sapUiSmallMarginBottom"
-                            press="openDialogCreaModello"
-                            type="Emphasized"
-                            visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+                    icon="sap-icon://add"
+                    class="sapUiSmallMarginBottom"
+                    press="openDialogCreaModello"
+                    type="Emphasized"
+                    visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
             </FlexBox>
             <Table items="{
                 path: 'modello>/non_conformita',
@@ -98,7 +79,8 @@
                     </Column>
 
                 </columns>
-                <ColumnListItem vAlign="Middle" press="handleNavigateToMidColumnPress"
+                <ColumnListItem vAlign="Middle"
+                    press="handleNavigateToMidColumnPress"
                     type="Navigation">
                     <cells>
                         <Text text="{modello>titolo}" />
