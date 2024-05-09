@@ -1,0 +1,123 @@
+<mvc:View controllerName="flexcollay.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:t="sap.ui.table"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    xmlns:fb="sap.ui.comp.filterbar"
+    height="100%"
+    xmlns="sap.m">
+    <Page  title="Non conformità"
+        showHeader="true"
+        showFooter="true" >
+        <headerContent >
+            <Image src="../public/logo.jpg"
+                height="22.00000000px"
+                width="100px"
+                visible="true"
+                tooltip="Share" />
+        </headerContent>
+
+          
+		
+        <!-- <f:header >
+            <f:DynamicPageHeader>
+                <f:content>
+                    <layout:VerticalLayout width="100%">
+                        <FlexBox justifyContent="End">
+                            <Button text="Crea documento "
+                                icon="sap-icon://add"
+                                class="sapUiSmallMarginBottom"
+                                press="openDialogCreaModello"
+                                type="Emphasized"
+                                visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+                        </FlexBox>
+                    </layout:VerticalLayout>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header> -->
+
+        <content>
+             <FlexBox >
+                <ToolbarSpacer />
+                <Button text="Crea documento "
+                            icon="sap-icon://add"
+                            class="sapUiSmallMarginBottom"
+                            press="openDialogCreaModello"
+                            type="Emphasized"
+                            visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+            </FlexBox>
+            <Table items="{
+                path: 'modello>/non_conformita',
+                grouped: true,
+                sorter: {
+                    path: 'modello>id_revisione',
+                   descending: true,
+                    group: '.getGroup'
+                },
+                groupHeaderFactory: '.getGroupHeader'
+            }"
+                class="tableProcessate"
+                id="tableRichieste">
+                <columns>
+
+                    <Column hAlign="Center"
+                        mergeDuplicates="true"
+                        width="25%">
+                        <header>
+                            <Text text="Titolo Permesso" />
+                        </header>
+                    </Column>
+
+                    <Column hAlign="Center"
+                        width="25%">
+                        <header>
+                            <Text text="Data Permesso" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center"
+                        width="25%">
+                        <header>
+                            <Text text="Creatore Permesso" />
+                        </header>
+                    </Column>
+
+                    <Column hAlign="Center"
+                        width="25%">
+                        <header>
+                            <Text text="Allegato" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center"
+                        width="25%">
+                        <header>
+                            <Text text="Stato Permesso" />
+                        </header>
+                    </Column>
+
+                </columns>
+                <ColumnListItem vAlign="Middle" press="handleNavigateToMidColumnPress"
+                    type="Navigation">
+                    <cells>
+                        <Text text="{modello>titolo}" />
+                        <Text text="{ 
+                            path:'modello>data_rilevamento'
+                         }" />
+                        <Text text="{modello>creatore}" />
+                        <Button icon="sap-icon://pdf-attachment"
+                            type="Emphasized"/>
+                        <Text text="{modello>stato}">
+                            <customData>
+                                <core:CustomData writeToDom="true"
+                                    key="prova"
+                                    value="{modello>stato}" />
+                            </customData>
+                        </Text>
+                    </cells>
+                </ColumnListItem>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

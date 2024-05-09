@@ -1,0 +1,43 @@
+/* Enter your custom styles here */
+/* Enter your custom styles here */
+.typeLink {
+  color: #0064d9 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: normal;
+  font-family: "72", "72full", Arial, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.colorText {
+  color: green;
+  font-weight: bold;
+}
+
+.colorText2 {
+  color: red;
+  font-weight: bold;
+}
+
+span[data-prova="Aperto"] {
+  color: green;
+  font-weight: bold;
+}
+
+span[data-prova="Chiuso"] {
+  color: red;
+  font-weight: bold;
+}
+
+span[data-prova="In corso"] {
+  color: rgb(255, 166, 0);
+  font-weight: bold;
+}
+
+span[data-prova="Bloccato"] {
+  color: rgb(161, 6, 6);
+  font-weight: bold;
+}
