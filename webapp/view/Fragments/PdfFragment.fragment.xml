@@ -18,7 +18,7 @@
         </customHeader>
         <PDFViewer source="../PDF/StopFive (7).pdf" 
             isTrustedSource="true"
-            title="Permesso_numero_2.pdf " displayType="Auto"
+            title="Permesso_numero_2.pdf " 
             height="100vh">
             <layoutData>
                 <FlexItemData growFactor="1" />
