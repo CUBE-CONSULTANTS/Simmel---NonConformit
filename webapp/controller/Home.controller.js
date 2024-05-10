@@ -1,13 +1,13 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller", "./BaseController"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller) {
+    function (Controller, BaseController) {
         "use strict";
 
-        return Controller.extend("flexcollay.controller.Home", {
+        return BaseController.extend("flexcollay.controller.Home", {
             getGroup: function (oContext) {
                 return oContext.getProperty(oContext.sPath).id_revisione;
             },
@@ -36,7 +36,7 @@ sap.ui.define([
             },
             handleNavigateToMidColumnPress: function (oEvent) {
                 debugger
-                
+
                 let obj = oEvent.getSource().getBindingContext("modello").getObject()
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
                 this.bus.publish("flexible", "setDetailPage");
@@ -122,7 +122,7 @@ sap.ui.define([
                     entiSelezionati = modello.getProperty("/entiSelezionati"),
                     listaUtenti = modello.getProperty("/listaUtenti").filter(x => entiSelezionati.includes(x.settore_lavorativo))
                 modello.setProperty("/utentiSelect", listaUtenti)
-                entiSelezionati.length === 0 ?  modello.setProperty("/entiSelezionati", null) : null
+                entiSelezionati.length === 0 ? modello.setProperty("/entiSelezionati", null) : null
 
                 modello.updateBindings()
             },

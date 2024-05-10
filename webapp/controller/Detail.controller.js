@@ -1,14 +1,14 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    'sap/m/MessageToast'
+    'sap/m/MessageToast', "./BaseController"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, MessageToast) {
+    function (Controller, MessageToast, BaseController) {
         "use strict";
 
-        return Controller.extend("flexcollay.controller.FlexibleColumnLayout", {
+        return BaseController.extend("flexcollay.controller.FlexibleColumnLayout", {
             onInit: function () {
                 this.bus = this.getOwnerComponent().getEventBus();
                 this.initialModel()
@@ -119,25 +119,6 @@ sap.ui.define([
             saveData: function () { //funzione per il salvataggio dei dati
 
             },
-            openDialogShowPDF: function (oEvent) {
-                let self = this
-                if (!this._dialog) {
-                    this._dialog = new sap.ui.core.Fragment.load({
-                        id: this.getView().getId(),
-                        name: "flexcollay.view.Fragments.PdfFragment",
-                        controller: this
-                    }).then(function (oDialog) {
-                        debugger
-                        return oDialog;
-                    });
-                }
-                self._dialog.then(async function (oDialog) {
-                    oDialog.open();
-
-                }.bind(this));
-            },
-            closeDialog: function (oEvent) {
-                oEvent.getSource().getParent().getParent().close()
-            },
+           
         });
     });

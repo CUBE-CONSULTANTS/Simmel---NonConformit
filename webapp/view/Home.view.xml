@@ -64,7 +64,12 @@
                             <Text text="Creatore Permesso" />
                         </header>
                     </Column>
-
+                    <Column hAlign="Center"
+                        width="25%">
+                        <header>
+                            <Text text="Revisione" />
+                        </header>
+                    </Column>
                     <Column hAlign="Center"
                         width="25%">
                         <header>
@@ -88,7 +93,9 @@
                             path:'modello>data_rilevamento'
                          }" />
                         <Text text="{modello>creatore}" />
+                        <Text text="{modello>revisione}" />
                         <Button icon="sap-icon://pdf-attachment"
+                            press="openDialogShowPDF"
                             type="Emphasized"/>
                         <Text text="{modello>stato}">
                             <customData>

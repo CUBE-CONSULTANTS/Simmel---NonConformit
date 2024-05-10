@@ -3,6 +3,7 @@
     {
       "id": 1,
       "id_revisione": 1,
+      "revisione": 1,
       "titolo": "Titolo non conformità se1",
       "responsabile": "Mario Rossi",
       "creatore": "Paolo Rossi",
@@ -13,6 +14,7 @@
     {
       "id": 4,
       "id_revisione": 1,
+      "revisione": 0,
       "titolo": "Titolo non conformità se1",
       "responsabile": "Mario Rossi",
       "creatore": "Paolo Rossi",
@@ -23,6 +25,7 @@
     {
       "id": 2,
       "id_revisione": 2,
+      "revisione": 0,
       "titolo": "Titolo non conformità se2",
       "responsabile": "Giovanni Verdi",
       "creatore": "Marco Verdi",
@@ -33,6 +36,7 @@
     {
       "id": 3,
       "id_revisione": 3,
+      "revisione": 0,
       "titolo": "Modello non conformità se4",
       "responsabile": "Luca Bianchi",
       "creatore": "Simona Bianchi",
