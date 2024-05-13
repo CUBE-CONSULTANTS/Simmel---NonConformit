@@ -1,0 +1,20 @@
+<c:FragmentDefinition xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:unified="sap.ui.unified">
+
+    <OverflowToolbar>
+        <ToolbarSpacer />
+        <Button type="Success"
+            visible="{=${modelloRuolo>/settore} === 'Responsabile'  ? true : false}"
+            press="AlertDialog"
+            icon="sap-icon://accounting-document-verification"
+            text="Chiusura">
+            <customData>
+                <c:CustomData key="Chiusura"/>
+            </customData>
+        </Button >
+    </OverflowToolbar>
+
+</c:FragmentDefinition>

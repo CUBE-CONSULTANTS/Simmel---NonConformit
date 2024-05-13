@@ -4,10 +4,10 @@
     controllerName="flexcollay.controller.FlexibleColumnLayout"
     height="100%">
     <FlexibleColumnLayout id="fcl">
-        <landmarkInfo>
+        <!-- <landmarkInfo>
             <FlexibleColumnLayoutAccessibleLandmarkInfo firstColumnLabel="Custom Label For First Column"
                 lastColumnLabel="Test Label for Last Column" />
-        </landmarkInfo>
+        </landmarkInfo> -->
         <beginColumnPages>
             <mvc:XMLView id="beginView"
                 async="true"

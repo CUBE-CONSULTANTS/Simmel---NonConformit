@@ -1,0 +1,20 @@
+<c:FragmentDefinition xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:unified="sap.ui.unified">
+
+    <OverflowToolbar visible="{=${modelloAppoggio>/elemento_selezionato/stato} === 'Bloccato'  ? true : false}">
+        <ToolbarSpacer />
+        <Button type="Success"
+            visible="true"
+            icon="sap-icon://write-new-document"
+            text="Crea Revisione"
+            press="onNewRev">
+            <customData>
+                <c:CustomData key="Revis"/>
+            </customData>
+        </Button >
+    </OverflowToolbar>
+
+</c:FragmentDefinition>

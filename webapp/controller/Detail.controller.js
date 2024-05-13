@@ -1,17 +1,46 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    'sap/m/MessageToast', "./BaseController"
+    'sap/m/MessageToast', "./BaseController",
+    "sap/ui/core/Fragment"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, MessageToast, BaseController) {
+    function (Controller, MessageToast, BaseController, Fragment) {
         "use strict";
 
         return BaseController.extend("flexcollay.controller.FlexibleColumnLayout", {
             onInit: function () {
                 this.bus = this.getOwnerComponent().getEventBus();
+
                 this.initialModel()
+                this.addFooter()
+            },
+            addFooter: async function () {
+                debugger
+                let userSet = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
+                let page = this.getView().byId("ObjectPageLayout")
+                let nameFragment
+                switch (userSet) {
+                    case "Qualità":
+                        nameFragment = 'flexcollay.view.Fragments.FooterQualit'
+                        break;
+                    case "Responsabile":
+                        nameFragment = 'flexcollay.view.Fragments.FooterResp'
+                        break;
+                    default:
+                        nameFragment = 'flexcollay.view.Fragments.FooterOther'
+                        break;
+                }
+                let footer = await Fragment.load({
+                    id: this.getView().getId(),
+                    name: nameFragment,
+                    controller: this
+                })
+                page.setFooter(footer)
+
+                debugger
+
             },
             initialModel: async function () {
                 let call = await fetch("../model/modelloDatiMock.json")
@@ -119,6 +148,11 @@ sap.ui.define([
             saveData: function () { //funzione per il salvataggio dei dati
 
             },
-           
+            onNewRev: function (oEvent) {
+                debugger
+                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                this.openDialogCreaModello(oEvent,elemento_selezionato)
+            }
+
         });
     });

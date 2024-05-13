@@ -1,0 +1,28 @@
+<c:FragmentDefinition xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:unified="sap.ui.unified">
+
+    <OverflowToolbar>
+        <Button type="Reject"
+            icon="sap-icon://decline"
+            press="AlertDialog"
+            text="Rifiuta">
+            <customData>
+                <c:CustomData key="Reject"/>
+            </customData>
+        </Button >
+        <ToolbarSpacer/>
+        <Button type="Accept"
+            press="AlertDialog"
+            icon="sap-icon://accept"
+            text="Accetta">
+            <customData>
+                <c:CustomData key="Accept"/>
+            </customData>
+        </Button >
+
+    </OverflowToolbar>
+
+</c:FragmentDefinition>

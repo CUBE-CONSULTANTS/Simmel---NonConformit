@@ -9,7 +9,7 @@
 	xmlns:unified="sap.ui.unified"
 	xmlns:m="sap.m"
 	height="100%">
-	<ObjectPageLayout showFooter="{=${modelloRuolo>/settore} !== 'Qualità' ? true : false}"
+	<ObjectPageLayout showFooter="true"
 		id="ObjectPageLayout"
 		showAnchorBarPopover="false"
 		upperCaseAnchorBar="false">
@@ -24,6 +24,7 @@
 						<m:Title text="Modello non conformità numero {modelloAppoggio>/elemento_selezionato/id}"/>
 					</m:HBox>
 				</heading>
+				
 				<actions>
 					<m:Image src="../public/logo.jpg"
 						height="22.00000000px"
@@ -139,36 +140,7 @@
 			</ObjectPageSection>
 		</sections>
 		<footer>
-			<m:OverflowToolbar>
-				<m:Button type="Reject"
-					icon="sap-icon://decline"
-					visible="{=${modelloRuolo>/settore} !== 'Qualità' ? true : false}"
-					press="AlertDialog"
-					text="Rifiuta">
-					<m:customData>
-						<c:CustomData key="Reject"/>
-					</m:customData>
-				</m:Button >
-				<m:ToolbarSpacer/>
-				<m:Button type="Accept"
-					press="AlertDialog"
-					visible="{=${modelloRuolo>/settore} !== 'Qualità' ? true : false}"
-					icon="sap-icon://accept"
-					text="Accetta">
-					<m:customData>
-						<c:CustomData key="Accept"/>
-					</m:customData>
-				</m:Button >
-				<m:Button type="Success"
-					visible="{=${modelloRuolo>/settore} === 'Responsabile'  ? true : false}"
-					press="AlertDialog"
-					icon="sap-icon://accounting-document-verification"
-					text="Chiusura">
-					<m:customData>
-						<c:CustomData key="Chiusura"/>
-					</m:customData>
-				</m:Button >
-			</m:OverflowToolbar>
+
 		</footer>
 	</ObjectPageLayout>
 </mvc:View>

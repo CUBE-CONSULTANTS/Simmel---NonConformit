@@ -41,50 +41,50 @@ sap.ui.define([
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
                 this.bus.publish("flexible", "setDetailPage");
             },
-            openDialogCreaModello: async function (oEvent) {
-                let self = this
-                if (!this._dialog) {
-                    this._dialog = new sap.ui.core.Fragment.load({
-                        id: this.getView().getId(),
-                        name: "flexcollay.view.Fragments.creaModello",
-                        controller: this
-                    }).then(function (oDialog) {
-                        debugger
-                        let obj = {
-                            titolo: null,
-                            data: self.formatData(new Date()),
-                            firmatari: null,
-                            filename: null,
-                            enti: ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"],
-                            entiSelezionati: null,
-                            listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),
-                            utentiSelect: self.getView().getModel("modello").getProperty("/utenti")
-                        }
-                        oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
-                        return oDialog;
-                    });
-                }
-                self._dialog.then(async function (oDialog) {
-                    oDialog.open();
+            // openDialogCreaModello: async function (oEvent) {
+            //     let self = this
+            //     if (!this._dialog) {
+            //         this._dialog = new sap.ui.core.Fragment.load({
+            //             id: this.getView().getId(),
+            //             name: "flexcollay.view.Fragments.creaModello",
+            //             controller: this
+            //         }).then(function (oDialog) {
+            //             debugger
+            //             let obj = {
+            //                 titolo: null,
+            //                 data: self.formatData(new Date()),
+            //                 firmatari: null,
+            //                 filename: null,
+            //                 enti: ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"],
+            //                 entiSelezionati: null,
+            //                 listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),
+            //                 utentiSelect: self.getView().getModel("modello").getProperty("/utenti")
+            //             }
+            //             oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
+            //             return oDialog;
+            //         });
+            //     }
+            //     self._dialog.then(async function (oDialog) {
+            //         oDialog.open();
 
-                }.bind(this));
-            },
-            closeDialog: function (oEvent) {
-                // oEvent.getSource().getParent().getParent().destroy()
-                oEvent.getSource().getParent().getParent().close()
-            },
-            formatData: function (model) {
-                if (model) {
-                    let datinizi = new Date(model);
-                    let datainizioformat =
-                        datinizi.getDate().toString().padStart(2, "0") +
-                        "/" +
-                        [datinizi.getMonth() + 1].toString().padStart(2, "0") +
-                        "/" +
-                        datinizi.getFullYear();
-                    return datainizioformat;
-                } else return
-            },
+            //     }.bind(this));
+            // },
+            // closeDialog: function (oEvent) {
+            //     // oEvent.getSource().getParent().getParent().destroy()
+            //     oEvent.getSource().getParent().getParent().close()
+            // },
+            // formatData: function (model) {
+            //     if (model) {
+            //         let datinizi = new Date(model);
+            //         let datainizioformat =
+            //             datinizi.getDate().toString().padStart(2, "0") +
+            //             "/" +
+            //             [datinizi.getMonth() + 1].toString().padStart(2, "0") +
+            //             "/" +
+            //             datinizi.getFullYear();
+            //         return datainizioformat;
+            //     } else return
+            // },
 
 
             getGroupHeaderMultiCombobox: function (oGroup) {
@@ -112,7 +112,10 @@ sap.ui.define([
                 });
             },
             createModelloNonConf: function (oEvent) {
-                this.handleUploadPress(oEvent)
+                // this.handleUploadPress(oEvent)
+                sap.m.MessageToast.show("Creazione avvenuta con successo")
+                debugger
+                oEvent.getSource().getParent().close()
                 ///funzione di salvataggio
 
             },
