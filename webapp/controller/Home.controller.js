@@ -1,10 +1,10 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", "./BaseController"
+    "sap/ui/core/mvc/Controller", "./BaseController", "../model/ModelNonConf",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, BaseController) {
+    function (Controller, BaseController, ModelNonConf) {
         "use strict";
 
         return BaseController.extend("flexcollay.controller.Home", {
@@ -28,6 +28,10 @@ sap.ui.define([
             },
 
             createModel: async function () {
+                let data = await ModelNonConf.getAll()
+                debugger
+                this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
+                this.getView().getModel("modelloDatiNode").setProperty("/", data)
                 let call = await fetch("../model/modelloDatiMock.json")
                 let obj = await call.json()
                 console.log(obj)
@@ -37,55 +41,11 @@ sap.ui.define([
             handleNavigateToMidColumnPress: function (oEvent) {
                 debugger
 
-                let obj = oEvent.getSource().getBindingContext("modello").getObject()
+                let obj = oEvent.getSource().getBindingContext("modelloDatiNode").getObject()
+
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
                 this.bus.publish("flexible", "setDetailPage");
             },
-            // openDialogCreaModello: async function (oEvent) {
-            //     let self = this
-            //     if (!this._dialog) {
-            //         this._dialog = new sap.ui.core.Fragment.load({
-            //             id: this.getView().getId(),
-            //             name: "flexcollay.view.Fragments.creaModello",
-            //             controller: this
-            //         }).then(function (oDialog) {
-            //             debugger
-            //             let obj = {
-            //                 titolo: null,
-            //                 data: self.formatData(new Date()),
-            //                 firmatari: null,
-            //                 filename: null,
-            //                 enti: ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"],
-            //                 entiSelezionati: null,
-            //                 listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),
-            //                 utentiSelect: self.getView().getModel("modello").getProperty("/utenti")
-            //             }
-            //             oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
-            //             return oDialog;
-            //         });
-            //     }
-            //     self._dialog.then(async function (oDialog) {
-            //         oDialog.open();
-
-            //     }.bind(this));
-            // },
-            // closeDialog: function (oEvent) {
-            //     // oEvent.getSource().getParent().getParent().destroy()
-            //     oEvent.getSource().getParent().getParent().close()
-            // },
-            // formatData: function (model) {
-            //     if (model) {
-            //         let datinizi = new Date(model);
-            //         let datainizioformat =
-            //             datinizi.getDate().toString().padStart(2, "0") +
-            //             "/" +
-            //             [datinizi.getMonth() + 1].toString().padStart(2, "0") +
-            //             "/" +
-            //             datinizi.getFullYear();
-            //         return datainizioformat;
-            //     } else return
-            // },
-
 
             getGroupHeaderMultiCombobox: function (oGroup) {
                 debugger
@@ -111,11 +71,27 @@ sap.ui.define([
 
                 });
             },
-            createModelloNonConf: function (oEvent) {
+            createModelloNonConf: async function (oEvent) {
                 // this.handleUploadPress(oEvent)
                 sap.m.MessageToast.show("Creazione avvenuta con successo")
                 debugger
+                let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
+                let data = {
+                    TITOLO: obj.titolo,
+                    CONTENT: {
+                        creatore: "memedesimo@gmial.com",
+                        data: obj.data,
+                        enti: obj.entiSelezionati,
+                        firmatari: obj.utentiSelect,
+                        filename: obj.filename,
+                        revisione: null,
+                        stato: 'Aperto'
+                    }
+                }
+                debugger
+                await ModelNonConf.createOne({ data })
                 oEvent.getSource().getParent().close()
+                this.createModel()
                 ///funzione di salvataggio
 
             },

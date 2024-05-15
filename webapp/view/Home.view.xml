@@ -31,15 +31,7 @@
                     visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
             </FlexBox>
             <Table items="{
-                path: 'modello>/non_conformita',
-                grouped: true,
-                sorter: {
-                    path: 'modello>id_revisione',
-                   descending: true,
-                    group: '.getGroup'
-                },
-                groupHeaderFactory: '.getGroupHeader'
-            }"
+                path: 'modelloDatiNode>/'}"
                 class="tableProcessate"
                 id="tableRichieste">
                 <columns>
@@ -88,25 +80,88 @@
                     press="handleNavigateToMidColumnPress"
                     type="Navigation">
                     <cells>
-                        <Text text="{modello>titolo}" />
+                        <Text text="{modelloDatiNode>titolo}" />
                         <Text text="{ 
-                            path:'modello>data_rilevamento'
-                         }" />
-                        <Text text="{modello>creatore}" />
-                        <Text text="{modello>revisione}" />
+                        path:'modelloDatiNode>data_rilevamento'
+                     }" />
+                        <Text text="{modelloDatiNode>creatore}" />
+                        <Text text="{modelloDatiNode>revisione}" />
                         <Button icon="sap-icon://pdf-attachment"
                             press="openDialogShowPDF"
                             type="Emphasized"/>
-                        <Text text="{modello>stato}">
+                        <Text text="{modelloDatiNode>stato}">
                             <customData>
                                 <core:CustomData writeToDom="true"
                                     key="prova"
-                                    value="{modello>stato}" />
+                                    value="{modelloDatiNode>stato}" />
                             </customData>
                         </Text>
                     </cells>
                 </ColumnListItem>
             </Table>
+
+            <!-- <Table items="{
+                path: 'model>/',
+                grouped: true,
+                sorter: {
+                    path: 'model>id_revisione',
+                   descending: true,
+                    group: '.getGroup'
+                },
+                groupHeaderFactory: '.getGroupHeader'
+            }" class="tableProcessate" id="tableRichieste">
+                <columns>
+
+                    <Column hAlign="Center" mergeDuplicates="true" width="25%">
+                        <header>
+                            <Text text="Titolo Permesso" />
+                        </header>
+                    </Column>
+
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Data Permesso" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Creatore Permesso" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Revisione" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Allegato" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Stato Permesso" />
+                        </header>
+                    </Column>
+
+                </columns>
+                <ColumnListItem vAlign="Middle" press="handleNavigateToMidColumnPress" type="Navigation">
+                    <cells>
+                        <Text text="{model>titolo}" />
+                        <Text text="{ 
+                            path:'model>data_rilevamento'
+                         }" />
+                        <Text text="{model>creatore}" />
+                        <Text text="{model>revisione}" />
+                        <Button icon="sap-icon://pdf-attachment" press="openDialogShowPDF" type="Emphasized"/>
+                        <Text text="{model>stato}">
+                            <customData>
+                                <core:CustomData writeToDom="true" key="prova" value="{model>stato}" />
+                            </customData>
+                        </Text>
+                    </cells>
+                </ColumnListItem>
+            </Table> -->
         </content>
     </Page>
 </mvc:View>

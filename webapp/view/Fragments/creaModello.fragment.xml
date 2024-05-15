@@ -81,7 +81,7 @@
                     required="true" />
                 <unified:FileUploader name="myFileUpload"
                     id="myFileUpload"
-                    width="100%"
+                    width="100%" value="{modelloNewModel>filename}"
                     uploadUrl='http://localhost:3404/upload/NonConformit/1'
                     tooltip="Upload your file to the local server"
                     uploadComplete="handleUploadComplete"

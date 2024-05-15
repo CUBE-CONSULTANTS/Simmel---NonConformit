@@ -56,12 +56,13 @@ sap.ui.define([
                         controller: this
                     }).then(function (oDialog) {
                         debugger
-
-                        oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
                         return oDialog;
                     });
                 }
                 self._dialog.then(async function (oDialog) {
+
+                    oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
+
                     oDialog.open();
 
                 }.bind(this));
