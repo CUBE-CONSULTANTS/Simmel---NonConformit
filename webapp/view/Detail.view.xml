@@ -112,7 +112,7 @@
 								showTimeFilter="false"
 								id="idTimeline"
 								height="100%"
-								enableDoubleSided="true"
+								enableDoubleSided="true" 
 								content="{modelloDettaglio>/}"
 								filterList="{modelloDettaglio>data}">
 								<commons:content>
