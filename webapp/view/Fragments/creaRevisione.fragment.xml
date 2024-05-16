@@ -16,8 +16,7 @@
             </Toolbar>
         </customHeader>
         <!-- <HBox alignItems="Stretch"></HBox> -->
-        <f:SimpleForm editable="false"
-            layout="ResponsiveGridLayout"
+        <f:SimpleForm layout="ResponsiveGridLayout"
             title=""
             labelSpanXL="2"
             labelSpanL="2"
@@ -36,50 +35,40 @@
                 <c:Title text=" " />
                 <Label text="Titolo"
                     required="true" />
-                <Input value="{modelloNewModel>/titolo}" />
+                <Text text="{modelloNewModel>/titolo}" />
                 <Label text="Data"
                     required="true" />
-                <DatePicker value="{ 
-                    path:'modelloNewModel>/data',
-                    formatter: '.format.formatData'
-                 }"
+                <DatePicker value="{modelloNewModel>/data}"
+                    editable="false"
                     displayFormat="dd/MM/yyyy"/>
                 <Label text="Enti"
                     required="true" />
-                <MultiComboBox selectionFinish="filterData"
-                    showSelectAll="true"
+                <MultiInput editable="false"
                     width="500px"
-                    items="{
-                            path: 'modelloNewModel>/enti',
-                            sorter: {
-                                path: 'modelloNewModel>settore_lavorativo',
-                                descending: false,
-                                group: true
-                            },
-                            groupHeaderFactory: '.getGroupHeaderMultiCombobox'
-                            }"
-                    selectedKeys="{modelloNewModel>/entiSelezionati}">
-                    <c:Item key="{modelloNewModel>}"
-                        text="{modelloNewModel>}" />
-                </MultiComboBox>
+                    showValueHelp="false"
+                    showSuggestion="false"
+                    tokens="{
+                                path: 'modelloNewModel>/enti'
+                            }">
+                    <tokens>
+                        <Token key="{modelloNewModel>}"
+                            text="{modelloNewModel>}" />
+                    </tokens>
+                </MultiInput>
+
                 <Label required="true"
                     text="Firmatari"
                     visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"/>
-                <MultiComboBox width="500px"
-                    visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"
-                    items="{
-                            path: 'modelloNewModel>/utentiSelect',
-                            sorter: {
-                                path: 'modelloNewModel>settore_lavorativo',
-                                descending: false,
-                                group: true
-                            },
-                            groupHeaderFactory: '.getGroupHeaderMultiCombobox'
-                        }"
-                    selectedKeys="{modelloNewModel>/firmatari}">
-                    <c:Item key="{modelloNewModel>nome}"
-                        text="{modelloNewModel>nome}" />
-                </MultiComboBox>
+                <MultiInput editable="false"
+                    width="500px"
+                    showValueHelp="false"
+                    showSuggestion="false"
+                    tokens="{path: 'modelloNewModel>/firmatari'}">
+                    <tokens>
+                        <Token key="{modelloNewModel>}"
+                            text="{modelloNewModel>}" />
+                    </tokens>
+                </MultiInput>
                 <Label text="Caricamento file"
                     required="true" />
                 <unified:FileUploader name="myFileUpload"
@@ -94,14 +83,13 @@
                     fileType="pdf"
                     placeholder="Carica File..."/>
 
-                <!-- <Button text="Carica file" press="handleUploadPress" width="50%"/> -->
             </f:content>
         </f:SimpleForm>
         <buttons>
             <Button text="Crea"
                 icon="sap-icon://create-form"
                 type="Emphasized"
-                press="createModelloNonConf"/>
+                press="creaRevisione"/>
         </buttons>
     </Dialog>
 </c:FragmentDefinition>

@@ -24,7 +24,7 @@
 						<m:Title text="Modello non conformità numero {modelloAppoggio>/elemento_selezionato/id}"/>
 					</m:HBox>
 				</heading>
-				
+
 				<actions>
 					<m:Image src="../public/logo.jpg"
 						height="22.00000000px"
@@ -62,7 +62,11 @@
 									<m:Label text="Titolo" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/titolo}" />
 									<m:Label text="Data" />
-									<m:Text text="{modelloAppoggio>/elemento_selezionato/data_rilevamento}" />
+									<m:Text text="{ 
+										path:'modelloAppoggio>/elemento_selezionato/data_ora',
+										formatter: '.format.formatData'
+									 }" />
+									<!-- <m:Text text="{modelloAppoggio>/elemento_selezionato/data_ora}" /> -->
 									<m:Label text="Autore" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/creatore}" />
 									<m:Label text="Revisione numero" />
@@ -76,6 +80,32 @@
 												value="{modelloAppoggio>/elemento_selezionato/stato}" />
 										</m:customData>
 									</m:Text>
+									<m:Label text="Enti" />
+									<m:MultiInput editable="false"
+										showValueHelp="false"
+										showSuggestion="false"
+										tokens="{
+									path: 'modelloAppoggio>/elemento_selezionato/enti'
+								}">
+										<m:tokens>
+											<m:Token key="{modelloAppoggio>}"
+												text="{modelloAppoggio>}" />
+										</m:tokens>
+									</m:MultiInput>
+									<m:Label text="Firmatari" />
+									<m:MultiInput editable="false"
+										showValueHelp="false"
+										showSuggestion="false"
+										tokens="{
+										path: 'modelloAppoggio>/elemento_selezionato/firmatari'
+									}">
+										<m:tokens>
+											<m:Token key="{modelloAppoggio>}"
+												text="{modelloAppoggio>}" />
+										</m:tokens>
+									</m:MultiInput>
+
+
 								</f:content>
 							</f:SimpleForm>
 						</blocks>
@@ -93,7 +123,11 @@
 								width="100%"
 								type="Emphasized"
 								icon="sap-icon://pdf-reader"
-								press="openDialogShowPDF"/>
+								press="openDialogShowPDF">
+								<m:customData>
+									<c:CustomData key="detail"/>
+								</m:customData>
+							</m:Button>
 
 						</blocks>
 					</ObjectPageSubSection>
@@ -101,7 +135,7 @@
 				</subSections>
 			</ObjectPageSection>
 
-			<ObjectPageSection visible="{=${modelloRuolo>/settore} === 'Qualità' ? true : false}"
+			<ObjectPageSection visible="{=${modelloRuolo>/settore} === 'Qualità' &amp;&amp; ${modelloAppoggio>/elemento_selezionato/stato}==='Bloccato'  ? true : false}"
 				titleUppercase="false"
 				title="Note">
 				<subSections>

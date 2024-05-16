@@ -30,9 +30,17 @@
                     type="Emphasized"
                     visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
             </FlexBox>
-            <Table items="{
-                path: 'modelloDatiNode>/'}"
-                class="tableProcessate"
+            <Table class="tableProcessate"
+                items="{
+                    path: 'modelloDatiNode>/',
+                    grouped: true,
+                    sorter: {
+                        path: 'modelloDatiNode>id_nonconf',
+                       descending: true,
+                        group: '.getGroup'
+                    },
+                    groupHeaderFactory: '.getGroupHeader'
+                }"
                 id="tableRichieste">
                 <columns>
 
@@ -82,13 +90,18 @@
                     <cells>
                         <Text text="{modelloDatiNode>titolo}" />
                         <Text text="{ 
-                        path:'modelloDatiNode>data_rilevamento'
+                        path:'modelloDatiNode>data_ora',
+                        formatter: '.format.formatData'
                      }" />
                         <Text text="{modelloDatiNode>creatore}" />
                         <Text text="{modelloDatiNode>revisione}" />
                         <Button icon="sap-icon://pdf-attachment"
                             press="openDialogShowPDF"
-                            type="Emphasized"/>
+                            type="Emphasized">
+                            <customData>
+                                <core:CustomData key="TabellaHome"/>
+                            </customData>
+                            </Button>
                         <Text text="{modelloDatiNode>stato}">
                             <customData>
                                 <core:CustomData writeToDom="true"

@@ -16,8 +16,8 @@
                     press="closeDialog" />
             </Toolbar>
         </customHeader>
-        <PDFViewer source="../PDF/StopFive (7).pdf" 
-            isTrustedSource="true"
+        <PDFViewer 
+            isTrustedSource="true" id="PDF"
             title="Permesso_numero_2.pdf " 
             height="100vh">
             <layoutData>

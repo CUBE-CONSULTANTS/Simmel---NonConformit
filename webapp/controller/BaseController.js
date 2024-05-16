@@ -9,6 +9,7 @@ sap.ui.define([
         return Controller.extend("project1.controller.BaseController", {
             openDialogShowPDF: function (oEvent) {
                 let self = this
+                //differenziare con il custom data
                 if (!this._dialgPDF) {
                     this._dialgPDF = new sap.ui.core.Fragment.load({
                         id: this.getView().getId(),
@@ -19,7 +20,11 @@ sap.ui.define([
                         return oDialog;
                     });
                 }
+
                 self._dialgPDF.then(async function (oDialog) {
+                    
+                    let file = this.getView().getModel("modelloAppoggio").getProperty("/elemento_selezionato/pdfname")
+                    this.byId("PDF").setSource(`http://localhost:3404/NonCoformit/1/${file}.pdf`)
                     oDialog.open();
 
                 }.bind(this));
@@ -32,16 +37,11 @@ sap.ui.define([
                 let self = this, obj
                 elemento_selezionato !== undefined ? obj = {
                     titolo: elemento_selezionato.titolo,
-                    data: self.formatData(new Date()),
-                    // firmatari: null,
-                    // filename: null,
-                    // enti: ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"],
-                    // entiSelezionati: null,
-                    // listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),
-                    // utentiSelect: self.getView().getModel("modello").getProperty("/utenti")
+                    data: new Date(),
+
                 } : obj = {
                     titolo: null,
-                    data: self.formatData(new Date()),
+                    data: new Date(),
                     firmatari: null,
                     filename: null,
                     enti: ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"],
@@ -71,17 +71,29 @@ sap.ui.define([
                 // oEvent.getSource().getParent().getParent().destroy()
                 oEvent.getSource().getParent().getParent().close()
             },
-            formatData: function (model) {
-                if (model) {
-                    let datinizi = new Date(model);
-                    let datainizioformat =
-                        datinizi.getDate().toString().padStart(2, "0") +
-                        "/" +
-                        [datinizi.getMonth() + 1].toString().padStart(2, "0") +
-                        "/" +
-                        datinizi.getFullYear();
-                    return datainizioformat;
-                } else return
+            format: {
+                formatData: function (model) {
+                    if (model) {
+                        let datinizi = new Date(model)
+                        let datainizioformat =
+                            datinizi.getDate().toString().padStart(2, "0") +
+                            "/" +
+                            [datinizi.getMonth() + 1].toString().padStart(2, "0") +
+                            "/" +
+                            datinizi.getFullYear();
+                        debugger
+                        return datainizioformat;
+                    } else return
+                },
+
+            },
+            getFileName: function () {
+                let FileUpload = this.byId("myFileUpload"),
+                    filename = FileUpload.getValue().split(".")[0]
+                return filename
+            },
+            handleNavigateToTable: function () {
+                this.bus.publish("flexible", "setListPage");
             },
         })
     })

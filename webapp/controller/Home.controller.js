@@ -1,15 +1,15 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", "./BaseController", "../model/ModelNonConf",
+    "sap/ui/core/mvc/Controller", "./BaseController", "../model/Revisioni", "../model/ModelNonConf",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, BaseController, ModelNonConf) {
+    function (Controller, BaseController, Revisioni, ModelNonConf) {
         "use strict";
 
         return BaseController.extend("flexcollay.controller.Home", {
             getGroup: function (oContext) {
-                return oContext.getProperty(oContext.sPath).id_revisione;
+                return oContext.getProperty(oContext.sPath).id_nonconf;
             },
             getGroupHeader: function (oGroup) {
                 return new sap.m.GroupHeaderListItem({
@@ -28,8 +28,7 @@ sap.ui.define([
             },
 
             createModel: async function () {
-                let data = await ModelNonConf.getAll()
-                debugger
+                let data = await Revisioni.getAll()
                 this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
                 this.getView().getModel("modelloDatiNode").setProperty("/", data)
                 let call = await fetch("../model/modelloDatiMock.json")
@@ -53,12 +52,11 @@ sap.ui.define([
                     text: oGroup.key
                 });
             },
-            handleUploadPress: function (oEvent) {
-                let oFileUploader = this.byId("myFileUpload").getValue()
-                let filename = oFileUploader.getValue().split(".")[0],
-                    filetype = oFileUploader.getValue().split(".")[1],
-                    self = this
-                debugger
+
+            createModelloNonConf: async function (oEvent) {
+                // this.handleUploadPress(oEvent)
+                let filename=this.getFileName()
+                let oFileUploader = this.byId("myFileUpload")
                 oFileUploader.checkFileReadable().then(function () {
                     oFileUploader.upload();
                 }, function (error) {
@@ -70,26 +68,21 @@ sap.ui.define([
                     self.getView().getModel("modelloPDF").setProperty("/descrizione", null)
 
                 });
-            },
-            createModelloNonConf: async function (oEvent) {
-                // this.handleUploadPress(oEvent)
                 sap.m.MessageToast.show("Creazione avvenuta con successo")
                 debugger
                 let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
                 let data = {
                     TITOLO: obj.titolo,
-                    CONTENT: {
-                        creatore: "memedesimo@gmial.com",
-                        data: obj.data,
-                        enti: obj.entiSelezionati,
-                        firmatari: obj.utentiSelect,
-                        filename: obj.filename,
-                        revisione: null,
-                        stato: 'Aperto'
-                    }
+                    DATA_ORA: new Date(obj.data),
+                    ENTI: obj.entiSelezionati,
+                    FIRMATARI: obj.firmatari,
+                    PDFNAME: filename,
+                    STATO: 'Aperto'
+
                 }
                 debugger
-                await ModelNonConf.createOne({ data })
+                await ModelNonConf.createFirstModel({ data })
+                oEvent.getSource().getParent().getModel("modelloNewModel").setData()
                 oEvent.getSource().getParent().close()
                 this.createModel()
                 ///funzione di salvataggio

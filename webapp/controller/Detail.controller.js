@@ -1,12 +1,12 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     'sap/m/MessageToast', "./BaseController",
-    "sap/ui/core/Fragment"
+    "sap/ui/core/Fragment", "../model/Revisioni"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, MessageToast, BaseController, Fragment) {
+    function (Controller, MessageToast, BaseController, Fragment, Revisioni) {
         "use strict";
 
         return BaseController.extend("flexcollay.controller.FlexibleColumnLayout", {
@@ -47,9 +47,7 @@ sap.ui.define([
                 let obj = await call.json()
                 this.getView().setModel(new sap.ui.model.json.JSONModel(obj.noteReject), "modelloDettaglio")
             },
-            handleNavigateToTable: function () {
-                this.bus.publish("flexible", "setListPage");
-            },
+           
             AlertDialog: function (oEvent) {
                 debugger
                 let key = oEvent.getSource().getCustomData()[0].getKey(),
@@ -88,10 +86,14 @@ sap.ui.define([
                         beginButton: new sap.m.Button({
                             type: sap.m.ButtonType.Emphasized,
                             text: "Si",
-                            press: function () {
-                                this.saveData()
+                            press: async function () {
+                                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                                debugger
+                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Bloccato" })
+                                // this.saveData()
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
+                                this.handleNavigateToTable()
                             }.bind(this)
                         }),
                         endButton: new sap.m.Button({
@@ -123,10 +125,14 @@ sap.ui.define([
                         beginButton: new sap.m.Button({
                             type: sap.m.ButtonType.Emphasized,
                             text: "Si",
-                            press: function () {
-                                this.saveData()
+                            press: async function () {
+                                // this.saveData()
+                                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                                debugger
+                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Chiuso" })
                                 this.oMessageDialogConfirm.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
+                                this.handleNavigateToTable()
                             }.bind(this)
                         }),
                         endButton: new sap.m.Button({
@@ -138,12 +144,12 @@ sap.ui.define([
                         })
                     })
                 }
-                debugger
-                this.oDefaultMessageDialog.setModel(new sap.ui.model.json.JSONModel({
+
+                this.oMessageDialogConfirm.setModel(new sap.ui.model.json.JSONModel({
                     self: self,
                     data: descrizione
                 }), "modelloDialog")
-                this.oDefaultMessageDialog.open();
+                this.oMessageDialogConfirm.open();
             },
             saveData: function () { //funzione per il salvataggio dei dati
 
@@ -151,7 +157,44 @@ sap.ui.define([
             onNewRev: function (oEvent) {
                 debugger
                 let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
-                this.openDialogCreaModello(oEvent,elemento_selezionato)
+                this.openDialogCreaRevisione(oEvent, elemento_selezionato)
+            },
+            openDialogCreaRevisione: function (oEvent, elemento_selezionato) {
+                debugger
+                let self = this, obj
+                obj = {
+                    titolo: elemento_selezionato.titolo,
+                    data: new Date(),
+                    firmatari: elemento_selezionato.firmatari,
+                    filename: null,
+                    entiSelezionati: elemento_selezionato.enti
+                }
+                if (!this._dialog) {
+                    this._dialog = new sap.ui.core.Fragment.load({
+                        id: this.getView().getId(),
+                        name: "flexcollay.view.Fragments.creaRevisione",
+                        controller: this
+                    }).then(function (oDialog) {
+                        debugger
+                        return oDialog;
+                    });
+                }
+                self._dialog.then(async function (oDialog) {
+                    oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
+                    oDialog.open();
+
+                }.bind(this));
+            },
+            creaRevisione: async function (oEvent) {
+                let filename = this.getFileName()
+                let oggettoSelezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                let copyObj = {
+                    id_nonconf: oggettoSelezionato.id_nonconf,
+                    data_ora: new Date(),
+                    pdfname: filename,
+                    stato: 'Aperto'
+                }
+                await Revisioni.createOne({ data: copyObj })
             }
 
         });
