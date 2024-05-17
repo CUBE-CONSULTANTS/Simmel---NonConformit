@@ -1,10 +1,10 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller", "../model/Revisioni"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller) {
+    function (Controller, Revisioni) {
         "use strict";
         return Controller.extend("project1.controller.BaseController", {
             openDialogShowPDF: function (oEvent) {
@@ -24,10 +24,10 @@ sap.ui.define([
 
                 self._dialgPDF.then(async function (oDialog) {
                     let file
-                    oEvent.getSource().getCustomData()[0].getKey() === 'TabellaHome' 
-                        ? file = oEvent.getSource().getBindingContext("modelloDatiNode").getObject("pdfname") 
+                    oEvent.getSource().getCustomData()[0].getKey() === 'TabellaHome'
+                        ? file = oEvent.getSource().getBindingContext("modelloDatiNode").getObject("pdfname")
                         : file = this.getView().getModel("modelloAppoggio").getProperty("/elemento_selezionato/pdfname")
-                    this.byId("PDF").setSource(`http://localhost:3404/NonCoformit/1/${file}.pdf`)
+                    this.byId("PDF").setSource(`http://localhost:3404/NonConformit/1/${file}.pdf`)
                     oDialog.open();
 
                 }.bind(this));
@@ -97,6 +97,73 @@ sap.ui.define([
             },
             handleNavigateToTable: function () {
                 this.bus.publish("flexible", "setListPage");
+            },
+            onNewRev: function (oEvent, state) {
+                debugger
+                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                this.openDialogCreaRevisione(oEvent, elemento_selezionato, state)
+            },
+
+
+            openDialogCreaRevisione: function (oEvent, elemento_selezionato, state) {
+                debugger
+                let self = this, obj
+                obj = {
+                    titleDialog: state === 'Review' ? 'Invio a firma non conformità' : "Creazione revisione non conformità",
+                    titolo: elemento_selezionato.titolo,
+                    data: new Date(),
+                    firmatari: elemento_selezionato.firmatari,
+                    filename: null,
+                    entiSelezionati: elemento_selezionato.enti,
+                    editable: state === 'Review' ? true : false
+                }
+                if (state === 'Review') {
+                    obj['enti'] = ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"]
+                    obj['listaUtenti'] = self.getView().getModel("modello").getProperty("/utenti")
+                    obj['utentiSelect'] = self.getView().getModel("modello").getProperty("/utenti")
+                }
+                if (!this._dialogRevisioni) {
+                    this._dialogRevisioni = new sap.ui.core.Fragment.load({
+                        id: this.getView().getId(),
+                        name: "flexcollay.view.Fragments.creaRevisione",
+                        controller: this
+                    }).then(function (oDialog) {
+                        debugger
+                        return oDialog;
+                    });
+                }
+                self._dialogRevisioni.then(async function (oDialog) {
+                    oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
+                    oDialog.open();
+
+                }.bind(this));
+            },
+            creaRevisione: async function (oEvent) {
+                let filename = this.getFileName()
+                let oggettoSelezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                let copyObj = {
+                    id_nonconf: oggettoSelezionato.id_nonconf,
+                    data_ora: new Date(),
+                    pdfname: filename,
+                    stato: 'Aperto'
+                }
+                await Revisioni.createOne({ data: copyObj })
+                oEvent.getSource().getParent().destroy()
+            },
+
+
+            ////
+            afterClose: function (oEvent) {
+                debugger
+                if (this._dialog) {
+                    oEvent.getSource().destroy()
+                    this._dialog = null;
+                }
+
+                if (this._dialogRevisioni) {
+                    oEvent.getSource().destroy()
+                    this._dialogRevisioni = null;
+                }
             },
         })
     })

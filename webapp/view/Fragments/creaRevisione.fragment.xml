@@ -4,11 +4,12 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:unified="sap.ui.unified">
     <Dialog contentWidth="50%"
+        afterClose="afterClose"
         contentHeight="40%"
         titleAlignment="Center">
         <customHeader>
             <Toolbar>
-                <Title text="Creazione modello non conformità" />
+                <Title text="{modelloNewModel>/titleDialog}" />
                 <ToolbarSpacer />
                 <Button icon="sap-icon://decline"
                     type="Emphasized"
@@ -16,16 +17,16 @@
             </Toolbar>
         </customHeader>
         <!-- <HBox alignItems="Stretch"></HBox> -->
-        <f:SimpleForm layout="ResponsiveGridLayout"
-            title=""
+        <f:SimpleForm editable="false"
+            layout="ResponsiveGridLayout"
             labelSpanXL="2"
             labelSpanL="2"
             labelSpanM="2"
             labelSpanS="12"
             adjustLabelSpan="false"
-            emptySpanXL="4"
-            emptySpanL="4"
-            emptySpanM="4"
+            emptySpanXL="2"
+            emptySpanL="2"
+            emptySpanM="2"
             emptySpanS="0"
             columnsXL="1"
             columnsL="1"
@@ -35,40 +36,62 @@
                 <c:Title text=" " />
                 <Label text="Titolo"
                     required="true" />
-                <Text text="{modelloNewModel>/titolo}" />
+                <Input value="{modelloNewModel>/titolo}"
+                    editable="{modelloNewModel>/editable}"/>
                 <Label text="Data"
                     required="true" />
-                <DatePicker value="{modelloNewModel>/data}"
-                    editable="false"
+                <DatePicker value="{ 
+                        path:'modelloNewModel>/data',
+                        formatter: '.format.formatData'
+                     }"
+                    editable="{modelloNewModel>/editable}"
                     displayFormat="dd/MM/yyyy"/>
                 <Label text="Enti"
                     required="true" />
-                <MultiInput editable="false"
-                    width="500px"
-                    showValueHelp="false"
-                    showSuggestion="false"
-                    tokens="{
+                <!-- <MultiInput editable="{modelloNewModel>/editable}" showValueHelp="{modelloNewModel>/editable}" showSuggestion="{modelloNewModel>/editable}" tokens="{
                                 path: 'modelloNewModel>/enti'
                             }">
                     <tokens>
-                        <Token key="{modelloNewModel>}"
-                            text="{modelloNewModel>}" />
+                        <Token key="{modelloNewModel>}" text="{modelloNewModel>}" />
                     </tokens>
-                </MultiInput>
+                </MultiInput> -->
 
+                <MultiComboBox selectionFinish="filterData"
+                   
+                    showSelectAll="true"
+                    items="{
+                        path: 'modelloNewModel>/enti',
+                        sorter: {
+                            path: 'modelloNewModel>settore_lavorativo',
+                            descending: false,
+                            group: true
+                        },
+                        groupHeaderFactory: '.getGroupHeaderMultiCombobox'
+                        }"
+                    selectedKeys="{modelloNewModel>/entiSelezionati}">
+                    <c:Item key="{modelloNewModel>}"
+                        text="{modelloNewModel>}" />
+                </MultiComboBox>
                 <Label required="true"
-                    text="Firmatari"
-                    visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"/>
-                <MultiInput editable="false"
-                    width="500px"
-                    showValueHelp="false"
-                    showSuggestion="false"
-                    tokens="{path: 'modelloNewModel>/firmatari'}">
-                    <tokens>
-                        <Token key="{modelloNewModel>}"
-                            text="{modelloNewModel>}" />
-                    </tokens>
-                </MultiInput>
+                    text="Firmatari" />
+
+                <MultiComboBox editable="{modelloNewModel>/editable}"
+                    
+                    selectedKeys="{modelloNewModel>/firmatari}"
+                    items="{
+                                path: 'modelloNewModel>/utentiSelect',
+                                sorter: {
+                                    path: 'modelloNewModel>settore_lavorativo',
+                                    descending: false,
+                                    group: true
+                                },
+                                groupHeaderFactory: '.getGroupHeaderMultiCombobox'
+                            }">
+                    <c:Item key="{modelloNewModel>nome}"
+                        text="{modelloNewModel>nome}" />
+                </MultiComboBox>
+
+
                 <Label text="Caricamento file"
                     required="true" />
                 <unified:FileUploader name="myFileUpload"

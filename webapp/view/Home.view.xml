@@ -9,27 +9,113 @@
     xmlns:fb="sap.ui.comp.filterbar"
     height="100%"
     xmlns="sap.m">
-    <Page title="Non conformità"
-        showHeader="true"
-        showFooter="true">
-        <headerContent >
-            <Image src="../public/logo.jpg"
-                height="22.00000000px"
-                width="100px"
-                visible="true"
-                tooltip="Share" />
-        </headerContent>
 
-        <content>
-            <FlexBox justifyContent="End">
-                <ToolbarSpacer />
-                <Button text="Crea documento "
-                    icon="sap-icon://add"
-                    class="sapUiSmallMarginBottom"
-                    press="openDialogCreaModello"
-                    type="Emphasized"
-                    visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
-            </FlexBox>
+    <f:DynamicPage>
+        <f:title >
+            <f:DynamicPageTitle >
+                <f:heading>
+                    <Title text="QUALITÁ - NON CONFORMITÁ"/>
+                </f:heading>
+                <f:actions>
+                    <Image src="../public/logo.jpg"
+                        height="22.00000000px"
+                        width="100px"
+                        visible="true"
+                        tooltip="Share" />
+
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header >
+            <f:DynamicPageHeader>
+                <f:content>
+                    <layout:VerticalLayout width="100%">
+                        <layout:VerticalLayout class="sapUiMediumMarginEnd"
+                            width="100%">
+
+                            <fb:FilterBar useToolbar="false"
+                                search=".onSearch"
+                                showClearOnFB="true"
+                                clear="removeFilter"
+                                showRestoreButton="false"
+                                showFilterConfiguration="false">
+                                <fb:filterGroupItems>
+                                    <fb:FilterGroupItem name="Titolo"
+                                        label="Creatore"
+                                        groupName="Group1"
+                                        visibleInFilterBar="true">
+                                        <fb:control>
+                                            <Input value="{modelloFilter>/creatore}" />
+
+                                        </fb:control>
+                                    </fb:FilterGroupItem>
+                                    <fb:FilterGroupItem name="dataApertura"
+                                        label="Data"
+                                        groupName="Group1"
+                                        visibleInFilterBar="true">
+                                        <fb:control>
+                                            <DateRangeSelection value= "{
+                                                    'type': 'sap.ui.model.type.DateInterval',
+                                                    'formatOptions': {
+                                                        'pattern': 'dd/MM/yyyy'
+                                                    },
+                                                    'parts': [
+                                                        {
+                                                            'type': 'sap.ui.model.type.Date',
+                                                            'path': 'modelloFilter>/datainizio'
+                                                        },
+                                                        {
+                                                            'type': 'sap.ui.model.type.Date',
+                                                            'path': 'modelloFilter>/datafine'
+                                                        }
+                                                    ]
+                                                }" />
+
+
+                                        </fb:control>
+                                    </fb:FilterGroupItem>
+                                    <fb:FilterGroupItem name="SupplierName"
+                                        label="Stato"
+                                        groupName="Group1"
+                                        visibleInFilterBar="true">
+                                        <fb:control>
+                                            <ComboBox selectedKey="{modelloFilter>/stato}">
+                                                <core:Item key="Nuovo"
+                                                    text="Nuovo" />
+                                                <core:Item key="In_Firma"
+                                                    text="In Fase di Firma" />
+                                                <core:Item key="Bloccato"
+                                                    text="Bloccato" />
+                                                <core:Item key="Firmato "
+                                                    text="Firmato" />
+                                                <core:Item key="Chiuso"
+                                                    text="Chiuso" />
+                                            </ComboBox>
+                                            <!-- <Input value="{modelloFiltri>/localeFiltro}" /> -->
+                                        </fb:control>
+                                    </fb:FilterGroupItem>
+                                </fb:filterGroupItems>
+                            </fb:FilterBar>
+                        </layout:VerticalLayout>
+
+                        <layout:VerticalLayout width="100%">
+                            <FlexBox justifyContent="End">
+                                <Button text="Crea conformità"
+                                    icon="sap-icon://add"
+                                    class="sapUiSmallMarginBottom"
+                                    press="openDialogCreaModello"
+                                    type="Emphasized"
+                                    visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+                            </FlexBox>
+                        </layout:VerticalLayout>
+                    </layout:VerticalLayout>
+
+
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
             <Table class="tableProcessate"
                 items="{
                     path: 'modelloDatiNode>/',
@@ -91,7 +177,7 @@
                         <Text text="{modelloDatiNode>titolo}" />
                         <Text text="{ 
                         path:'modelloDatiNode>data_ora',
-                        formatter: '.format.formatData'
+                        'type': 'sap.ui.model.type.Date'
                      }" />
                         <Text text="{modelloDatiNode>creatore}" />
                         <Text text="{modelloDatiNode>revisione}" />
@@ -101,7 +187,7 @@
                             <customData>
                                 <core:CustomData key="TabellaHome"/>
                             </customData>
-                            </Button>
+                        </Button>
                         <Text text="{modelloDatiNode>stato}">
                             <customData>
                                 <core:CustomData writeToDom="true"
@@ -113,68 +199,7 @@
                 </ColumnListItem>
             </Table>
 
-            <!-- <Table items="{
-                path: 'model>/',
-                grouped: true,
-                sorter: {
-                    path: 'model>id_revisione',
-                   descending: true,
-                    group: '.getGroup'
-                },
-                groupHeaderFactory: '.getGroupHeader'
-            }" class="tableProcessate" id="tableRichieste">
-                <columns>
+        </f:content>
 
-                    <Column hAlign="Center" mergeDuplicates="true" width="25%">
-                        <header>
-                            <Text text="Titolo Permesso" />
-                        </header>
-                    </Column>
-
-                    <Column hAlign="Center" width="25%">
-                        <header>
-                            <Text text="Data Permesso" />
-                        </header>
-                    </Column>
-                    <Column hAlign="Center" width="25%">
-                        <header>
-                            <Text text="Creatore Permesso" />
-                        </header>
-                    </Column>
-                    <Column hAlign="Center" width="25%">
-                        <header>
-                            <Text text="Revisione" />
-                        </header>
-                    </Column>
-                    <Column hAlign="Center" width="25%">
-                        <header>
-                            <Text text="Allegato" />
-                        </header>
-                    </Column>
-                    <Column hAlign="Center" width="25%">
-                        <header>
-                            <Text text="Stato Permesso" />
-                        </header>
-                    </Column>
-
-                </columns>
-                <ColumnListItem vAlign="Middle" press="handleNavigateToMidColumnPress" type="Navigation">
-                    <cells>
-                        <Text text="{model>titolo}" />
-                        <Text text="{ 
-                            path:'model>data_rilevamento'
-                         }" />
-                        <Text text="{model>creatore}" />
-                        <Text text="{model>revisione}" />
-                        <Button icon="sap-icon://pdf-attachment" press="openDialogShowPDF" type="Emphasized"/>
-                        <Text text="{model>stato}">
-                            <customData>
-                                <core:CustomData writeToDom="true" key="prova" value="{model>stato}" />
-                            </customData>
-                        </Text>
-                    </cells>
-                </ColumnListItem>
-            </Table> -->
-        </content>
-    </Page>
+    </f:DynamicPage>
 </mvc:View>

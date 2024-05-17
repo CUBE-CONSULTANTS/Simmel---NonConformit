@@ -1,10 +1,10 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", "./BaseController", "../model/Revisioni", "../model/ModelNonConf",
+    "sap/ui/core/mvc/Controller", "./BaseController", "../model/Revisioni", "../model/ModelNonConf", 'sap/ui/model/FilterOperator'
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, BaseController, Revisioni, ModelNonConf) {
+    function (Controller, BaseController, Revisioni, ModelNonConf, FilterOperator) {
         "use strict";
 
         return BaseController.extend("flexcollay.controller.Home", {
@@ -28,22 +28,36 @@ sap.ui.define([
             },
 
             createModel: async function () {
-                let data = await Revisioni.getAll()
+                let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
+
+                let data = await Revisioni.getAll({ ruolo })
+                debugger
                 this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
                 this.getView().getModel("modelloDatiNode").setProperty("/", data)
                 let call = await fetch("../model/modelloDatiMock.json")
                 let obj = await call.json()
                 console.log(obj)
                 this.getView().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
+                this.getView().setModel(new sap.ui.model.json.JSONModel({
+                    creatore: null,
+                    datainizio: null,
+                    datafine: null,
+                    stato: null
+                }), "modelloFilter")
 
             },
             handleNavigateToMidColumnPress: function (oEvent) {
                 debugger
 
                 let obj = oEvent.getSource().getBindingContext("modelloDatiNode").getObject()
-
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
-                this.bus.publish("flexible", "setDetailPage");
+                if (obj.stato == 'Nuovo') { this.onNewRev(oEvent, "Review") }
+                else {
+                    this.bus.publish("flexible", "setDetailPage")
+                    this.bus.publish("flexible", "setDetailPage");
+                }
+
+
             },
 
             getGroupHeaderMultiCombobox: function (oGroup) {
@@ -54,9 +68,11 @@ sap.ui.define([
             },
 
             createModelloNonConf: async function (oEvent) {
-                // this.handleUploadPress(oEvent)
-                let filename=this.getFileName()
-                let oFileUploader = this.byId("myFileUpload")
+                let filename = this.getFileName(),
+                    oFileUploader = this.byId("myFileUpload"),
+                    stato
+                oEvent.getSource().getText() == 'Crea' ? stato = "In fase di firma" : stato = "Nuovo"
+
                 oFileUploader.checkFileReadable().then(function () {
                     oFileUploader.upload();
                 }, function (error) {
@@ -78,8 +94,8 @@ sap.ui.define([
                     ENTI: obj.entiSelezionati,
                     FIRMATARI: obj.firmatari,
                     PDFNAME: filename,
-                    STATO: 'Aperto',
-                    NOTE:{}
+                    STATO: stato,
+                    NOTE: {}
 
                 }
                 debugger
@@ -99,6 +115,53 @@ sap.ui.define([
                 entiSelezionati.length === 0 ? modello.setProperty("/entiSelezionati", null) : null
 
                 modello.updateBindings()
+            },
+
+            //filtri page
+            removeFilter: function () {
+                let obj =
+                {
+                    dataFiltro: null,
+                    creatoreFiltro: null,
+                    localeFiltro: null
+                }
+                this.getView().getModel("modelloFilter").setData(obj)
+                this.byId("tableRichieste").getBinding("items").filter([])
+            },
+            onSearch: function (evt) {
+                let arr = []
+                ///* //debugger */
+
+                let model = this.getView().getModel("modelloFilter")
+                let datainizio = model.getProperty("/datainizio")
+                let datafine = model.getProperty("/datafine")
+
+                let creatore = model.getProperty("/creatore")
+                let stato = model.getProperty("/stato")
+
+                if (datainizio && datafine) {
+                    arr.push(new sap.ui.model.Filter({
+                        path: "data_rilevamento",
+                        operator: sap.ui.model.FilterOperator.BT,
+                        value1: datainizio,
+                        value2: datafine
+                    }));
+                }
+                if (creatore) {
+                    arr.push(new sap.ui.model.Filter(
+                        "creatore",
+                        FilterOperator.Contains,
+                        creatore
+                    ))
+                }
+                if (stato) {
+                    arr.push(new sap.ui.model.Filter(
+                        "stato",
+                        FilterOperator.Contains,
+                        stato
+                    ))
+                }
+                this.byId("tableRichieste").getBinding("items").filter(arr)
             },
 
         });

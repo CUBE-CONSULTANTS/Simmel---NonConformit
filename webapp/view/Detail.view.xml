@@ -14,14 +14,14 @@
 		showAnchorBarPopover="false"
 		upperCaseAnchorBar="false">
 		<headerTitle>
-			<ObjectPageDynamicHeaderTitle>
+			<ObjectPageDynamicHeaderTitle areaShrinkRatio="1:1.6:1.6">
 				<heading>
 					<m:HBox alignItems="Center"
 						alignContent="Center">
 						<m:Button icon="sap-icon://nav-back"
 							type="Transparent"
 							press="handleNavigateToTable"/>
-						<m:Title text="Modello non conformità numero {modelloAppoggio>/elemento_selezionato/id}"/>
+						<m:Title text="Dettaglio non conformità numero {modelloAppoggio>/elemento_selezionato/id}"/>
 					</m:HBox>
 				</heading>
 
@@ -36,17 +36,17 @@
 		</headerTitle>
 		<sections>
 			<ObjectPageSection titleUppercase="false"
-				title="Info">
+				title="Informazioni non conformità">
 				<subSections>
-					<ObjectPageSubSection >
+					<ObjectPageSubSection  >
 						<blocks>
 							<f:SimpleForm id="SimpleFormDisplay354"
 								editable="false"
 								layout="ResponsiveGridLayout"
 								title=""
-								labelSpanXL="3"
-								labelSpanL="3"
-								labelSpanM="3"
+								labelSpanXL="12"
+								labelSpanL="12"
+								labelSpanM="12"
 								labelSpanS="12"
 								adjustLabelSpan="false"
 								emptySpanXL="4"
@@ -58,20 +58,18 @@
 								columnsM="2"
 								singleContainerFullSize="false">
 								<f:content>
-									<c:Title text=" " />
+									<c:Title text="Informazioni non conformità" />
 									<m:Label text="Titolo" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/titolo}" />
 									<m:Label text="Data" />
 									<m:Text text="{ 
-										path:'modelloAppoggio>/elemento_selezionato/data_ora',
-										formatter: '.format.formatData'
+										path:'modelloAppoggio>/elemento_selezionato/data_rilevamento'
 									 }" />
 									<!-- <m:Text text="{modelloAppoggio>/elemento_selezionato/data_ora}" /> -->
 									<m:Label text="Autore" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/creatore}" />
 									<m:Label text="Revisione numero" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/id_revisione}" />
-									<c:Title text=" " />
 									<m:Label text="Stato" />
 									<m:Text text="{modelloAppoggio>/elemento_selezionato/stato}">
 										<m:customData>
@@ -80,6 +78,7 @@
 												value="{modelloAppoggio>/elemento_selezionato/stato}" />
 										</m:customData>
 									</m:Text>
+									<c:Title text=" " />
 									<m:Label text="Enti" />
 									<m:MultiInput editable="false"
 										showValueHelp="false"
@@ -104,8 +103,16 @@
 												text="{modelloAppoggio>}" />
 										</m:tokens>
 									</m:MultiInput>
-
-
+									<m:Label text="Allegato non conformità" />
+									<m:Button text="Visualizza pdf"
+										width="100%"
+										type="Emphasized"
+										icon="sap-icon://pdf-reader"
+										press="openDialogShowPDF">
+										<m:customData>
+											<c:CustomData key="detail"/>
+										</m:customData>
+									</m:Button>
 								</f:content>
 							</f:SimpleForm>
 						</blocks>
@@ -113,29 +120,7 @@
 
 				</subSections>
 			</ObjectPageSection>
-
-			<ObjectPageSection titleUppercase="false"
-				title="Modello non conformità">
-				<subSections>
-					<ObjectPageSubSection>
-						<blocks>
-							<m:Button text="Visualizza pdf"
-								width="100%"
-								type="Emphasized"
-								icon="sap-icon://pdf-reader"
-								press="openDialogShowPDF">
-								<m:customData>
-									<c:CustomData key="detail"/>
-								</m:customData>
-							</m:Button>
-
-						</blocks>
-					</ObjectPageSubSection>
-
-				</subSections>
-			</ObjectPageSection>
-
-			<ObjectPageSection visible="{=${modelloRuolo>/settore} === 'Qualità' &amp;&amp; ${modelloAppoggio>/elemento_selezionato/stato}==='Bloccato'  ? true : false}"
+			<ObjectPageSection visible="{=${modelloRuolo>/settore} === 'Qualità' || ${modelloRuolo>/settore} === 'Responsabile' ? true : false}"
 				titleUppercase="false"
 				title="Note">
 				<subSections>
@@ -151,6 +136,7 @@
 								filterList="{modelloDettaglio>data}">
 								<commons:content>
 									<commons:TimelineItem id="idTemplateItem"
+										icon="{=${modelloDettaglio>firma}===true ? 'sap-icon://signature' : 'sap-icon://BusinessSuiteInAppSymbols/icon-blocked'}"
 										userNameClicked="onUserNameClick"
 										select="onPressItems"
 										dateTime="{modelloDettaglio>data}"

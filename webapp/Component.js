@@ -5,9 +5,9 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
     "sap/ui/Device",
-    "flexcollay/model/models"
+    "flexcollay/model/models", "sap/ui/core/IconPool"
 ],
-    function (UIComponent, Device, models) {
+    function (UIComponent, Device, models, IconPool) {
         "use strict";
 
         return UIComponent.extend("flexcollay.Component", {
@@ -27,16 +27,39 @@ sap.ui.define([
                 // enable routing
                 this.getRouter().initialize();
 
+                //set icon pool
+
+                let b = [];
+                let c = {};
+
+                let t = {
+                    fontFamily: "SAP-icons-TNT",
+                    fontURI: sap.ui.require.toUrl("sap/tnt/themes/base/fonts/")
+                };
+
+                IconPool.registerFont(t);
+                b.push(IconPool.fontLoaded("SAP-icons-TNT"));
+                c["SAP-icons-TNT"] = t;
+
+                let B = {
+                    fontFamily: "BusinessSuiteInAppSymbols",
+                    fontURI: sap.ui.require.toUrl("sap/ushell/themes/base/fonts/")
+                };
+
+                IconPool.registerFont(B);
+                b.push(IconPool.fontLoaded("BusinessSuiteInAppSymbols"));
+                c["BusinessSuiteInAppSymbols"] = B;
+
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
                 this.setModel(new sap.ui.model.json.JSONModel(), "modelloAppoggio");
                 let obj = {
                     nome: "Marco Rossi",
                     email: "marcorossi@gmail.com",
-                    // settore: "Qualità"
+                    settore: "Qualità"
                     // 
                     // settore: "Ingegneria"
-                    settore: "Responsabile"
+                    // settore: "Responsabile"
 
                 }
                 this.setModel(new sap.ui.model.json.JSONModel(obj), "modelloRuolo");

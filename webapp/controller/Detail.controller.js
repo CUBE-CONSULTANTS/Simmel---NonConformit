@@ -132,7 +132,6 @@ sap.ui.define([
                             type: sap.m.ButtonType.Emphasized,
                             text: "Si",
                             press: async function () {
-                                // this.saveData()
                                 let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                                 debugger
                                 await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Chiuso" })
@@ -160,48 +159,7 @@ sap.ui.define([
             saveData: function () { //funzione per il salvataggio dei dati
 
             },
-            onNewRev: function (oEvent) {
-                debugger
-                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
-                this.openDialogCreaRevisione(oEvent, elemento_selezionato)
-            },
-            openDialogCreaRevisione: function (oEvent, elemento_selezionato) {
-                debugger
-                let self = this, obj
-                obj = {
-                    titolo: elemento_selezionato.titolo,
-                    data: new Date(),
-                    firmatari: elemento_selezionato.firmatari,
-                    filename: null,
-                    entiSelezionati: elemento_selezionato.enti
-                }
-                if (!this._dialog) {
-                    this._dialog = new sap.ui.core.Fragment.load({
-                        id: this.getView().getId(),
-                        name: "flexcollay.view.Fragments.creaRevisione",
-                        controller: this
-                    }).then(function (oDialog) {
-                        debugger
-                        return oDialog;
-                    });
-                }
-                self._dialog.then(async function (oDialog) {
-                    oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
-                    oDialog.open();
 
-                }.bind(this));
-            },
-            creaRevisione: async function (oEvent) {
-                let filename = this.getFileName()
-                let oggettoSelezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
-                let copyObj = {
-                    id_nonconf: oggettoSelezionato.id_nonconf,
-                    data_ora: new Date(),
-                    pdfname: filename,
-                    stato: 'Aperto'
-                }
-                await Revisioni.createOne({ data: copyObj })
-            }
 
         });
     });

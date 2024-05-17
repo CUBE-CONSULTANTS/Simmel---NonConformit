@@ -2,8 +2,8 @@ sap.ui.define(["./API"], function (API) {
     "use strict";
 
     return {
-        getAll: async function () {
-            return await API.getEntitySet({ entity: "/Revisioni/getAllModel" });
+        getAll: async function ({ ruolo }) {
+            return await API.getEntitySet({ entity: `/Revisioni/getAllModel/${ruolo}` });
         },
         getOne: async function ({ id, ruolo }) {
             return await API.getEntity({ entity: `/Revisioni/getOne/${id}/${ruolo}` });
@@ -39,6 +39,8 @@ sap.ui.define(["./API"], function (API) {
         updateStato: async function ({ id, stato, data: note }) {
             return await API.updateEntity({ entity: `/Revisioni/updateStato/${id}/${stato}`, data: note });
         },
+
+
 
     };
 });

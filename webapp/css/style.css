@@ -22,7 +22,7 @@
   font-weight: bold;
 }
 
-span[data-prova="Aperto"] {
+span[data-prova="Nuovo"] {
   color: green;
   font-weight: bold;
 }
@@ -32,12 +32,17 @@ span[data-prova="Chiuso"] {
   font-weight: bold;
 }
 
-span[data-prova="In corso"] {
+span[data-prova="In fase di firma"] {
   color: rgb(255, 166, 0);
   font-weight: bold;
 }
 
 span[data-prova="Bloccato"] {
   color: rgb(161, 6, 6);
+  font-weight: bold;
+}
+
+span[data-prova="Firmato"] {
+  color: rgb(0, 29, 196);
   font-weight: bold;
 }
