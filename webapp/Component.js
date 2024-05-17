@@ -34,8 +34,9 @@ sap.ui.define([
                     nome: "Marco Rossi",
                     email: "marcorossi@gmail.com",
                     // settore: "Qualità"
-                    settore: "Ingegneria"
-                    // settore: "Responsabile"
+                    // 
+                    // settore: "Ingegneria"
+                    settore: "Responsabile"
 
                 }
                 this.setModel(new sap.ui.model.json.JSONModel(obj), "modelloRuolo");
