@@ -65,7 +65,7 @@ sap.ui.define([
                 }).then(function () {
                     new sap.m.MessageToast.show("File caricato con successo");
                     oFileUploader.clear();
-                    self.getView().getModel("modelloPDF").setProperty("/descrizione", null)
+                    // this.getView().getModel("modelloPDF").setProperty("/descrizione", null)
 
                 });
                 sap.m.MessageToast.show("Creazione avvenuta con successo")
@@ -73,11 +73,13 @@ sap.ui.define([
                 let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
                 let data = {
                     TITOLO: obj.titolo,
+                    CREATORE: this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
                     DATA_ORA: new Date(obj.data),
                     ENTI: obj.entiSelezionati,
                     FIRMATARI: obj.firmatari,
                     PDFNAME: filename,
-                    STATO: 'Aperto'
+                    STATO: 'Aperto',
+                    NOTE:{}
 
                 }
                 debugger

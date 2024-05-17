@@ -47,7 +47,7 @@ sap.ui.define([
                 let obj = await call.json()
                 this.getView().setModel(new sap.ui.model.json.JSONModel(obj.noteReject), "modelloDettaglio")
             },
-           
+
             AlertDialog: function (oEvent) {
                 debugger
                 let key = oEvent.getSource().getCustomData()[0].getKey(),
@@ -74,7 +74,7 @@ sap.ui.define([
                                                 text: "Note"
                                             }),
                                             new sap.m.TextArea({
-                                                value: null,
+                                                value: "{modelloDialog>/data}",
                                                 with: "220px"
                                             })
                                         ]
@@ -87,10 +87,16 @@ sap.ui.define([
                             type: sap.m.ButtonType.Emphasized,
                             text: "Si",
                             press: async function () {
-                                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
-                                debugger
-                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Bloccato" })
-                                // this.saveData()
+                                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato"),
+                                    notaAggiuntiva = this.oDefaultMessageDialog.getModel("modelloDialog").getProperty("/data"),
+                                    utenteModifica = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
+                                    date = new Date()
+                                let objNote = {
+                                    nota: notaAggiuntiva,
+                                    utente: utenteModifica,
+                                    data: date
+                                }
+                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Bloccato", note: objNote })
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 this.handleNavigateToTable()

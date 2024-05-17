@@ -9,6 +9,7 @@ sap.ui.define([
         return Controller.extend("project1.controller.BaseController", {
             openDialogShowPDF: function (oEvent) {
                 let self = this
+                let event = oEvent
                 //differenziare con il custom data
                 if (!this._dialgPDF) {
                     this._dialgPDF = new sap.ui.core.Fragment.load({
@@ -22,8 +23,10 @@ sap.ui.define([
                 }
 
                 self._dialgPDF.then(async function (oDialog) {
-                    
-                    let file = this.getView().getModel("modelloAppoggio").getProperty("/elemento_selezionato/pdfname")
+                    let file
+                    oEvent.getSource().getCustomData()[0].getKey() === 'TabellaHome' 
+                        ? file = oEvent.getSource().getBindingContext("modelloDatiNode").getObject("pdfname") 
+                        : file = this.getView().getModel("modelloAppoggio").getProperty("/elemento_selezionato/pdfname")
                     this.byId("PDF").setSource(`http://localhost:3404/NonCoformit/1/${file}.pdf`)
                     oDialog.open();
 
