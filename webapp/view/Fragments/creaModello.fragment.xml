@@ -8,7 +8,7 @@
         titleAlignment="Center">
         <customHeader>
             <Toolbar>
-                <Title text="Creazione modello non conformità" />
+                <Title text="Creazione non conformità" />
                 <ToolbarSpacer />
                 <Button icon="sap-icon://decline"
                     type="Emphasized"
@@ -18,15 +18,14 @@
         <!-- <HBox alignItems="Stretch"></HBox> -->
         <f:SimpleForm editable="false"
             layout="ResponsiveGridLayout"
-            title=""
             labelSpanXL="2"
             labelSpanL="2"
             labelSpanM="2"
             labelSpanS="12"
             adjustLabelSpan="false"
-            emptySpanXL="4"
-            emptySpanL="4"
-            emptySpanM="4"
+            emptySpanXL="2"
+            emptySpanL="2"
+            emptySpanM="2"
             emptySpanS="0"
             columnsXL="1"
             columnsL="1"
@@ -90,11 +89,13 @@
                     style="Emphasized"
                     fileType="pdf"
                     placeholder="Carica File..."/>
-
-                <!-- <Button text="Carica file" press="handleUploadPress" width="50%"/> -->
             </f:content>
         </f:SimpleForm>
         <buttons>
+            <Button text="Crea Bozza"
+                icon="sap-icon://BusinessSuiteInAppSymbols/icon-save-as"
+                type="Neutral"
+                press="createModelloNonConf"/>
             <Button text="Crea"
                 icon="sap-icon://create-form"
                 type="Emphasized"

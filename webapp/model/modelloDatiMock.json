@@ -8,7 +8,7 @@
       "responsabile": "Mario Rossi",
       "creatore": "Paolo Rossi",
       "data_rilevamento": "08-05-2024",
-      "stato": "Aperto",
+      "stato": "Firmato",
       "azione_correttiva": "Aggiornamento della documentazione entro il 15 maggio 2024"
     },
     {
@@ -30,7 +30,7 @@
       "responsabile": "Giovanni Verdi",
       "creatore": "Marco Verdi",
       "data_rilevamento": "07-05-2024",
-      "stato": "In corso",
+      "stato": "In fase di firma",
       "azione_correttiva": "Analisi approfondita del guasto e implementazione di misure correttive"
     },
     {
@@ -41,7 +41,7 @@
       "responsabile": "Luca Bianchi",
       "creatore": "Simona Bianchi",
       "data_rilevamento": "06-05-2024",
-      "stato": "Chiuso",
+      "stato": "Nuovo",
       "azione_correttiva": "Ricalibrazione della linea di produzione e monitoraggio continuo"
     }
   ],
@@ -150,101 +150,121 @@
   "noteReject": [
     {
       "nome": "Marco Rossi",
+      "firma": false,
       "data": "09-05-2024",
       "descrizione": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula velit quis lectus gravida, nec commodo enim varius."
     },
     {
       "nome": "Anna Bianchi",
+      "firma": false,
       "data": "08-05-2024",
       "descrizione": "Fusce rutrum augue vel ligula suscipit, eu ultrices sem feugiat. Nam vitae eros vitae leo posuere pellentesque."
     },
     {
       "nome": "Luca Verdi",
+      "firma": false,
       "data": "07-05-2024",
       "descrizione": "Duis vitae metus id tortor lacinia vestibulum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
     },
     {
       "nome": "Giulia Esposito",
+      "firma": true,
       "data": "06-05-2024",
-      "descrizione": "Integer nec velit ut urna eleifend venenatis a non lectus. Vestibulum efficitur, nisi sed viverra tincidunt, eros libero interdum nisi, nec cursus turpis ligula quis libero."
+      "descrizione": ""
     },
     {
       "nome": "Davide Russo",
+      "firma": false,
       "data": "05-05-2024",
       "descrizione": "Nullam efficitur enim vitae arcu tincidunt, sit amet consequat ex ultricies. Maecenas ac lorem lacinia, feugiat urna id, tempus ligula."
     },
     {
       "nome": "Chiara Ferrari",
+      "firma": false,
       "data": "04-05-2024",
       "descrizione": "Vivamus in purus convallis, sodales ligula sed, suscipit ex. Nam nec justo quis dolor dignissim sagittis."
     },
     {
       "nome": "Simone Romano",
+      "firma": false,
       "data": "03-05-2024",
       "descrizione": "Morbi dignissim risus et est tincidunt, sed sollicitudin quam fringilla. Nunc ut aliquam libero."
     },
     {
       "nome": "Alessia Marini",
+      "firma": false,
       "data": "02-05-2024",
       "descrizione": "Suspendisse potenti. Duis ullamcorper consequat enim, eu tincidunt libero tempus in."
     },
     {
       "nome": "Federico Costa",
+      "firma": false,
       "data": "01-05-2024",
       "descrizione": "Vestibulum sodales fermentum risus sit amet convallis. Nulla facilisi."
     },
     {
       "nome": "Valentina Giallo",
+      "firma": false,
       "data": "30-04-2024",
       "descrizione": "Quisque vestibulum convallis nulla sit amet eleifend. Maecenas lobortis justo eget felis pharetra, sit amet fermentum lorem tempus."
     },
     {
       "nome": "Giovanni Neri",
+      "firma": true,
       "data": "29-04-2024",
-      "descrizione": "Aliquam fringilla metus in elit vehicula, et tincidunt odio placerat. Nunc interdum, lorem non gravida elementum, ligula ex auctor eros, a pellentesque ipsum elit ut eros."
+      "descrizione": ""
     },
     {
       "nome": "Elisa Moro",
+      "firma": true,
       "data": "28-04-2024",
-      "descrizione": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent eget lorem non mauris ultricies varius."
+      "descrizione": ""
     },
     {
       "nome": "Paolo Rosso",
+      "firma": true,
       "data": "27-04-2024",
-      "descrizione": "Sed at felis luctus, fermentum elit nec, bibendum ex. Sed id nisi nec purus consequat varius."
+      "descrizione": ""
     },
     {
       "nome": "Sara Blu",
+      "firma": true,
       "data": "26-04-2024",
-      "descrizione": "Maecenas non odio varius, convallis mauris ac, vulputate libero. Etiam non nibh sit amet tellus efficitur vehicula sit amet eget mi."
+      "descrizione": ""
     },
     {
       "nome": "Matteo Verde",
+      "firma": false,
       "data": "25-04-2024",
       "descrizione": "Curabitur sollicitudin erat non metus pharetra, et consequat velit suscipit. Nam nec ullamcorper tortor."
     },
     {
       "nome": "Cristina Gialli",
+      "firma": false,
       "data": "24-04-2024",
       "descrizione": "Nam tincidunt nisl nec nisi volutpat, vel vestibulum urna placerat. Ut dapibus tellus id eros suscipit, id molestie purus vehicula."
     },
     {
       "nome": "Enrico Neri",
+      "firma": false,
       "data": "23-04-2024",
       "descrizione": "Vestibulum consectetur massa sed felis hendrerit, sit amet fermentum lacus auctor. Vivamus ac ultricies tortor."
     },
     {
       "nome": "Roberta Rossa",
+      "firma": true,
       "data": "22-04-2024",
-      "descrizione": "Donec fringilla magna vel quam cursus, at molestie orci varius. Cras ultrices, mi non mollis congue, dui est malesuada velit, ut vestibulum metus orci et nunc."
+      "descrizione": ""
     },
     {
       "nome": "Antonio Giallo",
+      "firma": false,
       "data": "21-04-2024",
       "descrizione": "Vivamus euismod felis at neque pharetra, nec interdum neque scelerisque. Integer tincidunt velit et magna feugiat, at fermentum libero volutpat."
     },
     {
       "nome": "Laura Verdi",
+      "firma": false,
       "data": "20-04-2024",
       "descrizione": "Quisque auctor velit in dolor convallis, quis elementum lorem volutpat. Sed ac justo ac ante tincidunt posuere."
     }

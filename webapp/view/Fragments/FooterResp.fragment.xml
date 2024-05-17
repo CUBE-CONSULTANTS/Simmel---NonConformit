@@ -10,7 +10,7 @@
             visible="{=${modelloRuolo>/settore} === 'Responsabile'  ? true : false}"
             press="AlertDialog"
             icon="sap-icon://accounting-document-verification"
-            text="Chiusura">
+            text="Chiusura non conformità">
             <customData>
                 <c:CustomData key="Chiusura"/>
             </customData>

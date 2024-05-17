@@ -1,10 +1,10 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", "./BaseController"
+    "sap/ui/core/mvc/Controller", "./BaseController", 'sap/ui/model/FilterOperator'
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, BaseController) {
+    function (Controller, BaseController, FilterOperator) {
         "use strict";
 
         return BaseController.extend("flexcollay.controller.Home", {
@@ -14,7 +14,7 @@ sap.ui.define([
             getGroupHeader: function (oGroup) {
                 return new sap.m.GroupHeaderListItem({
                     // type: sap.m.ListType.Navigation,
-                    title: "Modello " + oGroup.key,
+                    title: "Non conformità " + oGroup.key,
                     // press: this.nav.bind(this)
                 })
                     .addStyleClass("typeLink");
@@ -30,62 +30,30 @@ sap.ui.define([
             createModel: async function () {
                 let call = await fetch("../model/modelloDatiMock.json")
                 let obj = await call.json()
-                console.log(obj)
                 this.getView().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
+                this.getView().setModel(new sap.ui.model.json.JSONModel({
+                    creatore: null,
+                    data: null,
+                    stato: null
+                }), "modelloFilter")
+                debugger
 
+            },
+            onNewRev: function (oEvent) {
+                debugger
+                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                this.openDialogCreaModello(oEvent, elemento_selezionato)
             },
             handleNavigateToMidColumnPress: function (oEvent) {
                 debugger
-
                 let obj = oEvent.getSource().getBindingContext("modello").getObject()
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
-                this.bus.publish("flexible", "setDetailPage");
+                if (obj.stato == 'Nuovo') {
+                    this.onNewRev(oEvent)
+                } else {
+                    this.bus.publish("flexible", "setDetailPage");
+                }
             },
-            // openDialogCreaModello: async function (oEvent) {
-            //     let self = this
-            //     if (!this._dialog) {
-            //         this._dialog = new sap.ui.core.Fragment.load({
-            //             id: this.getView().getId(),
-            //             name: "flexcollay.view.Fragments.creaModello",
-            //             controller: this
-            //         }).then(function (oDialog) {
-            //             debugger
-            //             let obj = {
-            //                 titolo: null,
-            //                 data: self.formatData(new Date()),
-            //                 firmatari: null,
-            //                 filename: null,
-            //                 enti: ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"],
-            //                 entiSelezionati: null,
-            //                 listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),
-            //                 utentiSelect: self.getView().getModel("modello").getProperty("/utenti")
-            //             }
-            //             oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
-            //             return oDialog;
-            //         });
-            //     }
-            //     self._dialog.then(async function (oDialog) {
-            //         oDialog.open();
-
-            //     }.bind(this));
-            // },
-            // closeDialog: function (oEvent) {
-            //     // oEvent.getSource().getParent().getParent().destroy()
-            //     oEvent.getSource().getParent().getParent().close()
-            // },
-            // formatData: function (model) {
-            //     if (model) {
-            //         let datinizi = new Date(model);
-            //         let datainizioformat =
-            //             datinizi.getDate().toString().padStart(2, "0") +
-            //             "/" +
-            //             [datinizi.getMonth() + 1].toString().padStart(2, "0") +
-            //             "/" +
-            //             datinizi.getFullYear();
-            //         return datainizioformat;
-            //     } else return
-            // },
-
 
             getGroupHeaderMultiCombobox: function (oGroup) {
                 debugger
@@ -130,5 +98,49 @@ sap.ui.define([
                 modello.updateBindings()
             },
 
+
+            ///////funzioni per i filtri
+            removeFilter: function () {
+                let obj =
+                {
+                    dataFiltro: null,
+                    creatoreFiltro: null,
+                    localeFiltro: null
+                }
+                this.getView().getModel("modelloFilter").setData(obj)
+                this.byId("tableRichieste").getBinding("items").filter([])
+            },
+            onSearch: function (evt) {
+                let arr = []
+                ///* //debugger */
+
+                let model = this.getView().getModel("modelloFilter")
+                let data = model.getProperty("/data")
+                let creatore = model.getProperty("/creatore")
+                let stato = model.getProperty("/stato")
+
+                if (data) {
+                    arr.push(new sap.ui.model.Filter(
+                        "data_rilevamento",
+                        FilterOperator.Contains,
+                        this.formatData(data)
+                    ))
+                }
+                if (creatore) {
+                    arr.push(new sap.ui.model.Filter(
+                        "creatore",
+                        FilterOperator.Contains,
+                        creatore
+                    ))
+                }
+                if (stato) {
+                    arr.push(new sap.ui.model.Filter(
+                        "stato",
+                        FilterOperator.Contains,
+                        stato
+                    ))
+                }
+                this.byId("tableRichieste").getBinding("items").filter(arr)
+            },
         });
     });

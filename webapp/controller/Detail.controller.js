@@ -151,7 +151,7 @@ sap.ui.define([
             onNewRev: function (oEvent) {
                 debugger
                 let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
-                this.openDialogCreaModello(oEvent,elemento_selezionato)
+                this.openDialogCreaModello(oEvent, elemento_selezionato)
             }
 
         });

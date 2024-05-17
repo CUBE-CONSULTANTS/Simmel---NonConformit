@@ -9,27 +9,106 @@
     xmlns:fb="sap.ui.comp.filterbar"
     height="100%"
     xmlns="sap.m">
-    <Page title="Non conformità"
-        showHeader="true"
-        showFooter="true">
-        <headerContent >
-            <Image src="../public/logo.jpg"
-                height="22.00000000px"
-                width="100px"
-                visible="true"
-                tooltip="Share" />
-        </headerContent>
 
-        <content>
-            <FlexBox justifyContent="End">
-                <ToolbarSpacer />
-                <Button text="Crea documento "
-                    icon="sap-icon://add"
-                    class="sapUiSmallMarginBottom"
-                    press="openDialogCreaModello"
-                    type="Emphasized"
-                    visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
-            </FlexBox>
+
+    <f:DynamicPage>
+        <f:title >
+            <f:DynamicPageTitle >
+                <f:heading>
+                    <Title text="QUALITÁ - NON CONFORMITÁ"/>
+                </f:heading>
+                <f:actions>
+                    <Image src="../public/logo.jpg"
+                        height="22.00000000px"
+                        width="100px"
+                        visible="true"
+                        tooltip="Share" />
+
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header >
+            <f:DynamicPageHeader>
+                <f:content>
+                    <layout:VerticalLayout width="100%">
+                        <layout:VerticalLayout class="sapUiMediumMarginEnd"
+                            width="100%">
+
+                            <fb:FilterBar useToolbar="false"
+                                search=".onSearch"
+                                showClearOnFB="true"
+                                clear="removeFilter"
+                                showRestoreButton="false"
+                                showFilterConfiguration="false">
+                                <fb:filterGroupItems>
+                                    <fb:FilterGroupItem name="Titolo"
+                                        label="Creatore"
+                                        groupName="Group1"
+                                        visibleInFilterBar="true">
+                                        <fb:control>
+                                            <Input value="{modelloFilter>/creatore}" />
+
+                                        </fb:control>
+                                    </fb:FilterGroupItem>
+                                    <fb:FilterGroupItem name="dataApertura"
+                                        label="Data"
+                                        groupName="Group1"
+                                        visibleInFilterBar="true">
+                                        <fb:control>
+                                            <DatePicker value="{
+                                                'path': 'modelloFilter>/data',
+                                                'type': 'sap.ui.model.type.Date',
+                                                'formatOptions': {
+                                                    'pattern': 'dd/MM/yyyy'
+                                                }
+                                }"
+                                                placeholder="Enter Date"
+                                                change="handleChange" />
+
+                                        </fb:control>
+                                    </fb:FilterGroupItem>
+                                    <fb:FilterGroupItem name="SupplierName"
+                                        label="Stato"
+                                        groupName="Group1"
+                                        visibleInFilterBar="true">
+                                        <fb:control>
+                                            <ComboBox selectedKey="{modelloFilter>/stato}">
+                                                <core:Item key="Nuovo"
+                                                    text="Nuovo" />
+                                                <core:Item key="In_Firma"
+                                                    text="In Fase di Firma" />
+                                                <core:Item key="Bloccato"
+                                                    text="Bloccato" />
+                                                <core:Item key="Firmato "
+                                                    text="Firmato" />
+                                                <core:Item key="Chiuso"
+                                                    text="Chiuso" />
+                                            </ComboBox>
+                                            <!-- <Input value="{modelloFiltri>/localeFiltro}" /> -->
+                                        </fb:control>
+                                    </fb:FilterGroupItem>
+                                </fb:filterGroupItems>
+                            </fb:FilterBar>
+                        </layout:VerticalLayout>
+
+                        <layout:VerticalLayout width="100%">
+                            <FlexBox justifyContent="End">
+                                <Button text="Crea conformità"
+                                icon="sap-icon://add"
+                                class="sapUiSmallMarginBottom"
+                                press="openDialogCreaModello"
+                                type="Emphasized"
+                                visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+                            </FlexBox>
+                        </layout:VerticalLayout>
+                    </layout:VerticalLayout>
+
+
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
             <Table items="{
                 path: 'modello>/non_conformita',
                 grouped: true,
@@ -48,20 +127,20 @@
                         mergeDuplicates="true"
                         width="25%">
                         <header>
-                            <Text text="Titolo Permesso" />
+                            <Text text="Titolo" />
                         </header>
                     </Column>
 
                     <Column hAlign="Center"
                         width="25%">
                         <header>
-                            <Text text="Data Permesso" />
+                            <Text text="Data" />
                         </header>
                     </Column>
                     <Column hAlign="Center"
                         width="25%">
                         <header>
-                            <Text text="Creatore Permesso" />
+                            <Text text="Creatore" />
                         </header>
                     </Column>
                     <Column hAlign="Center"
@@ -79,7 +158,7 @@
                     <Column hAlign="Center"
                         width="25%">
                         <header>
-                            <Text text="Stato Permesso" />
+                            <Text text="Stato" />
                         </header>
                     </Column>
 
@@ -107,6 +186,81 @@
                     </cells>
                 </ColumnListItem>
             </Table>
+        </f:content>
+
+    </f:DynamicPage>
+    <!-- <Page title="QUALITÁ - NON CONFORMITÁ" titleAlignment="Center" showHeader="true" showFooter="true">
+        <headerContent >
+            <Image src="../public/logo.jpg" height="22.00000000px" width="100px" visible="true" tooltip="Share" />
+        </headerContent>
+
+        <content>
+            <FlexBox justifyContent="End">
+                <ToolbarSpacer />
+                <Button text="Crea documento " icon="sap-icon://add" class="sapUiSmallMarginBottom" press="openDialogCreaModello" type="Emphasized" visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+            </FlexBox>
+            <Table items="{
+                path: 'modello>/non_conformita',
+                grouped: true,
+                sorter: {
+                    path: 'modello>id_revisione',
+                   descending: true,
+                    group: '.getGroup'
+                },
+                groupHeaderFactory: '.getGroupHeader'
+            }" class="tableProcessate" id="tableRichieste">
+                <columns>
+
+                    <Column hAlign="Center" mergeDuplicates="true" width="25%">
+                        <header>
+                            <Text text="Titolo" />
+                        </header>
+                    </Column>
+
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Data" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Creatore" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Revisione" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Allegato" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center" width="25%">
+                        <header>
+                            <Text text="Stato" />
+                        </header>
+                    </Column>
+
+                </columns>
+                <ColumnListItem vAlign="Middle" press="handleNavigateToMidColumnPress" type="Navigation">
+                    <cells>
+                        <Text text="{modello>titolo}" />
+                        <Text text="{ 
+                            path:'modello>data_rilevamento'
+                         }" />
+                        <Text text="{modello>creatore}" />
+                        <Text text="{modello>revisione}" />
+                        <Button icon="sap-icon://pdf-attachment" press="openDialogShowPDF" type="Emphasized"/>
+                        <Text text="{modello>stato}">
+                            <customData>
+                                <core:CustomData writeToDom="true" key="prova" value="{modello>stato}" />
+                            </customData>
+                        </Text>
+                    </cells>
+                </ColumnListItem>
+            </Table>
         </content>
-    </Page>
+    </Page> -->
 </mvc:View>
