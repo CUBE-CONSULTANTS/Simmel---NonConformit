@@ -74,7 +74,7 @@
                             },
                             groupHeaderFactory: '.getGroupHeaderMultiCombobox'
                         }"
-                    selectedKeys="{modelloNewModel>/firmatari}">
+                    selectedKeys="{modelloNewModel>/firmatari}" selectionFinish="getSetLavUser">
                     <c:Item key="{modelloNewModel>nome}"
                         text="{modelloNewModel>nome}" />
                 </MultiComboBox>

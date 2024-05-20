@@ -156,8 +156,29 @@ sap.ui.define([
                 }), "modelloDialog")
                 this.oMessageDialogConfirm.open();
             },
-            saveData: function () { //funzione per il salvataggio dei dati
-
+            showPopoverEntiFragment: function (oEvent) {
+                var oButton = oEvent.getSource(),
+                    oView = this.getView();
+                let entiSelezionati = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato/enti/entiSelezionati")
+                debugger
+                // create popover
+                if (!this._pPopover) {
+                    this._pPopover = Fragment.load({
+                        id: oView.getId(),
+                        name: "flexcollay.view.Fragments.PopoverEntiFirmatariSelect",
+                        controller: this
+                    }).then(function (oPopover) {
+                        oView.addDependent(oPopover);
+                        debugger
+                        oPopover.setModel(new sap.ui.model.json.JSONModel(), "modelloPopover")
+                        oPopover.getModel("modelloPopover").setProperty("/entiSelezionati", entiSelezionati)
+                        // oPopover.bindElement("/ProductCollection/0");
+                        return oPopover;
+                    });
+                }
+                this._pPopover.then(function (oPopover) {
+                    oPopover.openBy(oButton);
+                });
             },
 
 

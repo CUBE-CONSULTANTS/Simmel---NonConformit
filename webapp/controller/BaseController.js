@@ -47,6 +47,7 @@ sap.ui.define([
                     data: new Date(),
                     firmatari: null,
                     filename: null,
+                    enti_firmatari: null,
                     enti: ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"],
                     entiSelezionati: null,
                     listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),

@@ -80,29 +80,9 @@
 									</m:Text>
 									<c:Title text=" " />
 									<m:Label text="Enti" />
-									<m:MultiInput editable="false"
-										showValueHelp="false"
-										showSuggestion="false"
-										tokens="{
-									path: 'modelloAppoggio>/elemento_selezionato/enti'
-								}">
-										<m:tokens>
-											<m:Token key="{modelloAppoggio>}"
-												text="{modelloAppoggio>}" />
-										</m:tokens>
-									</m:MultiInput>
-									<m:Label text="Firmatari" />
-									<m:MultiInput editable="false"
-										showValueHelp="false"
-										showSuggestion="false"
-										tokens="{
-										path: 'modelloAppoggio>/elemento_selezionato/firmatari'
-									}">
-										<m:tokens>
-											<m:Token key="{modelloAppoggio>}"
-												text="{modelloAppoggio>}" />
-										</m:tokens>
-									</m:MultiInput>
+
+									<m:Link text="Enti e firmatari" press="showPopoverEntiFragment"/>
+
 									<m:Label text="Allegato non conformità" />
 									<m:Button text="Visualizza pdf"
 										width="100%"

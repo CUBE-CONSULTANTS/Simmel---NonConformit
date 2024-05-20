@@ -23,6 +23,7 @@ sap.ui.define([
                 this.bus = this.getOwnerComponent().getEventBus();
                 var oModel = new sap.ui.model.json.JSONModel(sap.ui.require.toUrl("sap/ui/demo/mock/products.json"));
                 this.getView().setModel(oModel);
+
                 this.createModel()
 
             },
@@ -31,12 +32,12 @@ sap.ui.define([
                 let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
 
                 let data = await Revisioni.getAll({ ruolo })
-                debugger
                 this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
                 this.getView().getModel("modelloDatiNode").setProperty("/", data)
                 let call = await fetch("../model/modelloDatiMock.json")
                 let obj = await call.json()
                 console.log(obj)
+                debugger
                 this.getView().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
                 this.getView().setModel(new sap.ui.model.json.JSONModel({
                     creatore: null,
@@ -85,14 +86,13 @@ sap.ui.define([
 
                 });
                 sap.m.MessageToast.show("Creazione avvenuta con successo")
-                debugger
                 let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
+                debugger
                 let data = {
                     TITOLO: obj.titolo,
                     CREATORE: this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
                     DATA_ORA: new Date(obj.data),
-                    ENTI: obj.entiSelezionati,
-                    FIRMATARI: obj.firmatari,
+                    ENTI: { entiSelezionati: obj.enti_firmatari },
                     PDFNAME: filename,
                     STATO: stato,
                     NOTE: {}
@@ -163,6 +163,33 @@ sap.ui.define([
                 }
                 this.byId("tableRichieste").getBinding("items").filter(arr)
             },
+            getSetLavUser: function (oEvent) {
+                var oMultiComboBox = oEvent.getSource();
+
+                var aSelectedItems = oMultiComboBox.getSelectedItems();
+
+                var aSettoriLavorativi = [];
+
+                aSelectedItems.forEach(function (oItem) {
+                    var oBindingContext = oItem.getBindingContext("modelloNewModel").getObject()
+                    aSettoriLavorativi.push({ nome: oBindingContext.nome, firmato: false, settore_lavorativo: oBindingContext.settore_lavorativo });
+                });
+
+
+                const groupedData = aSettoriLavorativi.reduce((acc, item) => {
+                    const key = Object.keys(item)[0];
+                    if (!acc[key]) {
+                        acc[key] = [];
+                    }
+                    acc[key].push(item[key]);
+                    return acc;
+                }, {});
+                console.log((groupedData))
+                debugger
+                oEvent.getSource().getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
+
+            }
+
 
         });
     });
