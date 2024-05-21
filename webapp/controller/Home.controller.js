@@ -38,8 +38,8 @@ sap.ui.define([
                 let obj = await call.json()
                 console.log(obj)
                 debugger
-                this.getView().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
-                this.getView().setModel(new sap.ui.model.json.JSONModel({
+                this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
+                this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({
                     creatore: null,
                     datainizio: null,
                     datafine: null,

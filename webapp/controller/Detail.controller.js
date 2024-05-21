@@ -89,14 +89,18 @@ sap.ui.define([
                             press: async function () {
                                 let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato"),
                                     notaAggiuntiva = this.oDefaultMessageDialog.getModel("modelloDialog").getProperty("/data"),
-                                    utenteModifica = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
+                                    nomeutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
                                     date = new Date()
-                                let objNote = {
+                                let objNote = [{
                                     nota: notaAggiuntiva,
-                                    utente: utenteModifica,
+                                    utente: nomeutente,
                                     data: date
-                                }
-                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Bloccato", note: objNote })
+                                }]
+                                let settoreutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
+
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
+
+                                // await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Bloccato", note: objNote })
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 this.handleNavigateToTable()
@@ -134,7 +138,16 @@ sap.ui.define([
                             press: async function () {
                                 let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                                 debugger
-                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Chiuso" })
+                                let nomeutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
+                                let settoreutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
+
+                                let objNote = [{
+                                    nota: 'Firmato',
+                                    utente: nomeutente,
+                                    data: new Date()
+                                }]
+
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
                                 this.oMessageDialogConfirm.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 this.handleNavigateToTable()
@@ -172,7 +185,6 @@ sap.ui.define([
                         debugger
                         oPopover.setModel(new sap.ui.model.json.JSONModel(), "modelloPopover")
                         oPopover.getModel("modelloPopover").setProperty("/entiSelezionati", entiSelezionati)
-                        // oPopover.bindElement("/ProductCollection/0");
                         return oPopover;
                     });
                 }

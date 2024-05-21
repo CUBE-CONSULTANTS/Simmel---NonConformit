@@ -112,18 +112,17 @@
 								id="idTimeline"
 								height="100%"
 								enableDoubleSided="true"
-								content="{modelloDettaglio>/}"
-								filterList="{modelloDettaglio>data}">
+								content="{modelloAppoggio>/elemento_selezionato/note}"
+								filterList="{modelloAppoggio>data}">
 								<commons:content>
 									<commons:TimelineItem id="idTemplateItem"
-										icon="{=${modelloDettaglio>firma}===true ? 'sap-icon://signature' : 'sap-icon://BusinessSuiteInAppSymbols/icon-blocked'}"
+										icon="{=${modelloAppoggio>nota}==='Firmato' ? 'sap-icon://signature' : 'sap-icon://BusinessSuiteInAppSymbols/icon-blocked'}"
 										userNameClicked="onUserNameClick"
 										select="onPressItems"
-										dateTime="{modelloDettaglio>data}"
-										title="{Title}"
-										text="{modelloDettaglio>descrizione}"
-										userName="{modelloDettaglio>nome}"
-										filterValue="{modelloDettaglio>nome}">
+										dateTime="{modelloAppoggio>data}"
+										text="{modelloAppoggio>nota}"
+										userName="{modelloAppoggio>utente}"
+										filterValue="{modelloAppoggio>utente}">
 									</commons:TimelineItem>
 								</commons:content>
 								<commons:filterList>

@@ -41,6 +41,10 @@ sap.ui.define(["./API"], function (API) {
         },
 
 
+        updateSignature: async function ({ id, firma, utente, settore, data }) {
+            return await API.updateEntity({ entity: `/Revisioni/updateSignature/${id}/${firma}/${utente}/${settore}`, data });
+        },
+
 
     };
 });

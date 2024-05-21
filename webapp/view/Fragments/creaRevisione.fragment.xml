@@ -57,7 +57,7 @@
                 </MultiInput> -->
 
                 <MultiComboBox selectionFinish="filterData"
-                   
+                    editable="{modelloNewModel>/editable}"
                     showSelectAll="true"
                     items="{
                         path: 'modelloNewModel>/enti',
@@ -76,7 +76,6 @@
                     text="Firmatari" />
 
                 <MultiComboBox editable="{modelloNewModel>/editable}"
-                    
                     selectedKeys="{modelloNewModel>/firmatari}"
                     items="{
                                 path: 'modelloNewModel>/utentiSelect',

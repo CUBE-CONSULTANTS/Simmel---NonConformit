@@ -1,6 +1,8 @@
 <core:FragmentDefinition xmlns="sap.m"
     xmlns:core="sap.ui.core">
-    <Popover contentHeight="50%" showHeader="false" showArrow="true" 
+    <Popover 
+        showHeader="false"
+        showArrow="true"
         class="sapUiResponsivePadding--header sapUiResponsivePadding--footer"
         placement="Left">
         <List items="{
@@ -14,13 +16,5 @@
 			}">
             <StandardListItem title="{modelloPopover>nome}" />
         </List>
-        <!-- <footer>
-            <OverflowToolbar>
-                <ToolbarSpacer/>
-                <Button id="email"
-                    text="Email"
-                    press="handleEmailPress" />
-            </OverflowToolbar>
-        </footer> -->
     </Popover>
 </core:FragmentDefinition>

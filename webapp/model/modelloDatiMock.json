@@ -47,102 +47,102 @@
   ],
   "utenti": [
     {
-      "nome": "Mario",
+      "nome": "Mario Rossi",
       "email": "mario@example.com",
       "settore_lavorativo": "Produzione"
     },
     {
-      "nome": "Luca",
+      "nome": "Luca Rossi",
       "email": "luca@example.com",
       "settore_lavorativo": "Logistica"
     },
     {
-      "nome": "Anna",
+      "nome": "Anna Rossi",
       "email": "anna@example.com",
       "settore_lavorativo": "Ingegneria"
     },
     {
-      "nome": "Giulia",
+      "nome": "Giulia Rossi",
       "email": "giulia@example.com",
       "settore_lavorativo": "Controllo Qualità"
     },
     {
-      "nome": "Marco",
+      "nome": "Marco Rossi",
       "email": "marco@example.com",
       "settore_lavorativo": "Manutenzione"
     },
     {
-      "nome": "Francesca",
+      "nome": "Francesca Rossi",
       "email": "francesca@example.com",
       "settore_lavorativo": "Ricerca e Sviluppo"
     },
     {
-      "nome": "Paolo",
+      "nome": "Paolo Rossi",
       "email": "paolo@example.com",
       "settore_lavorativo": "Produzione"
     },
     {
-      "nome": "Laura",
+      "nome": "Laura Rossi",
       "email": "laura@example.com",
       "settore_lavorativo": "Logistica"
     },
     {
-      "nome": "Giovanni",
+      "nome": "Giovanni Rossi",
       "email": "giovanni@example.com",
       "settore_lavorativo": "Ingegneria"
     },
     {
-      "nome": "Sara",
+      "nome": "Sara Rossi",
       "email": "sara@example.com",
       "settore_lavorativo": "Controllo Qualità"
     },
     {
-      "nome": "Alessio",
+      "nome": "Alessio Rossi",
       "email": "alessio@example.com",
       "settore_lavorativo": "Manutenzione"
     },
     {
-      "nome": "Elena",
+      "nome": "Elena Rossi",
       "email": "elena@example.com",
       "settore_lavorativo": "Ricerca e Sviluppo"
     },
     {
-      "nome": "Roberto",
+      "nome": "Roberto Rossi",
       "email": "roberto@example.com",
       "settore_lavorativo": "Produzione"
     },
     {
-      "nome": "Martina",
+      "nome": "Martina Rossi",
       "email": "martina@example.com",
       "settore_lavorativo": "Logistica"
     },
     {
-      "nome": "Andrea",
+      "nome": "Andrea Rossi",
       "email": "andrea@example.com",
       "settore_lavorativo": "Ingegneria"
     },
     {
-      "nome": "Valentina",
+      "nome": "Valentina Rossi",
       "email": "valentina@example.com",
       "settore_lavorativo": "Controllo Qualità"
     },
     {
-      "nome": "Davide",
+      "nome": "Davide Rossi",
       "email": "davide@example.com",
       "settore_lavorativo": "Manutenzione"
     },
     {
-      "nome": "Chiara",
+      "nome": "Chiara Rossi",
       "email": "chiara@example.com",
       "settore_lavorativo": "Ricerca e Sviluppo"
     },
     {
-      "nome": "Simone",
+      "nome": "Simone Rossi",
       "email": "simone@example.com",
       "settore_lavorativo": "Produzione"
     },
     {
-      "nome": "Eleonora",
+      "nome": "Eleonora Rossi",
       "email": "eleonora@example.com",
       "settore_lavorativo": "Logistica"
     }

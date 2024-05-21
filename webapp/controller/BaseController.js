@@ -113,16 +113,16 @@ sap.ui.define([
                     titleDialog: state === 'Review' ? 'Invio a firma non conformità' : "Creazione revisione non conformità",
                     titolo: elemento_selezionato.titolo,
                     data: new Date(),
-                    firmatari: elemento_selezionato.firmatari,
+                    firmatari: (elemento_selezionato.enti.entiSelezionati).map(x => x.nome),
                     filename: null,
-                    entiSelezionati: elemento_selezionato.enti,
+                    entiSelezionati: (elemento_selezionato.enti.entiSelezionati).map(x => x.settore_lavorativo),
                     editable: state === 'Review' ? true : false
                 }
-                if (state === 'Review') {
-                    obj['enti'] = ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"]
-                    obj['listaUtenti'] = self.getView().getModel("modello").getProperty("/utenti")
-                    obj['utentiSelect'] = self.getView().getModel("modello").getProperty("/utenti")
-                }
+                // if (state === 'Review') {
+                obj['enti'] = ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"]
+                obj['listaUtenti'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
+                obj['utentiSelect'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
+                // }
                 if (!this._dialogRevisioni) {
                     this._dialogRevisioni = new sap.ui.core.Fragment.load({
                         id: this.getView().getId(),
@@ -134,6 +134,7 @@ sap.ui.define([
                     });
                 }
                 self._dialogRevisioni.then(async function (oDialog) {
+                    debugger
                     oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
                     oDialog.open();
 
@@ -146,7 +147,7 @@ sap.ui.define([
                     id_nonconf: oggettoSelezionato.id_nonconf,
                     data_ora: new Date(),
                     pdfname: filename,
-                    stato: 'Aperto'
+                    stato: 'In fase di firma'
                 }
                 await Revisioni.createOne({ data: copyObj })
                 oEvent.getSource().getParent().destroy()

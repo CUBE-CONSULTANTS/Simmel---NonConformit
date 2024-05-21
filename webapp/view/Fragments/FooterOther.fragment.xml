@@ -4,7 +4,7 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:unified="sap.ui.unified">
 
-    <OverflowToolbar>
+    <OverflowToolbar visible="{=${modelloAppoggio>/elemento_selezionato/stato}==='Bloccato' ? false : true}">
         <Button type="Reject"
             icon="sap-icon://decline"
             press="AlertDialog"
