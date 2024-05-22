@@ -52,7 +52,7 @@ sap.ui.define([
                 debugger
                 let key = oEvent.getSource().getCustomData()[0].getKey(),
                     descrizione = null
-                key == "Reject" ? this.dialogReject(this, descrizione) : this.dialogConferma(this, descrizione)
+                key == "Reject" ? this.dialogReject(this, descrizione) : this.dialogConferma(this, descrizione, key)
 
             },
             dialogReject: function (self, descrizione) {
@@ -100,7 +100,6 @@ sap.ui.define([
 
                                 await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
 
-                                // await Revisioni.updateStato({ id: elemento_selezionato.id, stato: "Bloccato", note: objNote })
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 this.handleNavigateToTable()
@@ -122,24 +121,26 @@ sap.ui.define([
                 }), "modelloDialog")
                 this.oDefaultMessageDialog.open();
             },
-            dialogConferma: function (self, descrizione) {
-                if (!this.oMessageDialogConfirm) {
-                    this.oMessageDialogConfirm = new sap.m.Dialog({
-                        type: sap.m.DialogType.Message,
-                        title: "Conferma",
-                        content:
-                            new sap.m.Text({
-                                text: "Sei sicuro di voler confermare?"
+            dialogConferma: function (self, descrizione, key) {
+                new sap.m.MessageBox.show(
+                    "Sei sicuro di voler confermare?", {
+                    icon: sap.m.MessageBox.Icon.SUCCESS,
+                    title: "Salvataggio",
+                    content: [key, self],
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    emphasizedAction: sap.m.MessageBox.Action.YES,
+                    onClose: async function (sAction) {
+                        debugger
+                        let self = this.content[1]
+                        if (sAction == 'YES') {
+                            let elemento_selezionato = self.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                            if (this.content[0] === 'Chiusura') {
+                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso' })
 
-                            }),
-                        beginButton: new sap.m.Button({
-                            type: sap.m.ButtonType.Emphasized,
-                            text: "Si",
-                            press: async function () {
-                                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                            } else {
                                 debugger
-                                let nomeutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
-                                let settoreutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
+                                let nomeutente = self.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
+                                let settoreutente = self.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
 
                                 let objNote = [{
                                     nota: 'Firmato',
@@ -147,27 +148,14 @@ sap.ui.define([
                                     data: new Date()
                                 }]
 
-                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
-                                this.oMessageDialogConfirm.close();
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: true, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
                                 MessageToast.show("Salvataggio avvenuto con successo")
-                                this.handleNavigateToTable()
-                            }.bind(this)
-                        }),
-                        endButton: new sap.m.Button({
-                            type: sap.m.ButtonType.Emphasized,
-                            text: "No",
-                            press: function () {
-                                this.oMessageDialogConfirm.close();
-                            }.bind(this)
-                        })
-                    })
+                                self.handleNavigateToTable()
+                            }
+                        }
+                    }
                 }
-
-                this.oMessageDialogConfirm.setModel(new sap.ui.model.json.JSONModel({
-                    self: self,
-                    data: descrizione
-                }), "modelloDialog")
-                this.oMessageDialogConfirm.open();
+                );
             },
             showPopoverEntiFragment: function (oEvent) {
                 var oButton = oEvent.getSource(),
@@ -184,11 +172,11 @@ sap.ui.define([
                         oView.addDependent(oPopover);
                         debugger
                         oPopover.setModel(new sap.ui.model.json.JSONModel(), "modelloPopover")
-                        oPopover.getModel("modelloPopover").setProperty("/entiSelezionati", entiSelezionati)
                         return oPopover;
                     });
                 }
                 this._pPopover.then(function (oPopover) {
+                    oPopover.getModel("modelloPopover").setProperty("/entiSelezionati", entiSelezionati)
                     oPopover.openBy(oButton);
                 });
             },

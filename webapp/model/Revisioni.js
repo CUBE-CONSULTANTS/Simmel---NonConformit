@@ -36,8 +36,8 @@ sap.ui.define(["./API"], function (API) {
             return await API.createEntity({ entity: "/Revisioni/createOrUpdate", data });
         },
 
-        updateStato: async function ({ id, stato, data: note }) {
-            return await API.updateEntity({ entity: `/Revisioni/updateStato/${id}/${stato}`, data: note });
+        updateStato: async function ({ id, stato }) {
+            return await API.updateEntity({ entity: `/Revisioni/updateStato/${id}/${stato}` });
         },
 
 

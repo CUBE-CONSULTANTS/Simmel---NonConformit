@@ -84,7 +84,7 @@
                                                 <core:Item key="Nuovo"
                                                     text="Nuovo" />
                                                 <core:Item key="In_Firma"
-                                                    text="In Fase di Firma" />
+                                                    text="In fase di firma" />
                                                 <core:Item key="Bloccato"
                                                     text="Bloccato" />
                                                 <core:Item key="Firmato "
@@ -92,7 +92,6 @@
                                                 <core:Item key="Chiuso"
                                                     text="Chiuso" />
                                             </ComboBox>
-                                            <!-- <Input value="{modelloFiltri>/localeFiltro}" /> -->
                                         </fb:control>
                                     </fb:FilterGroupItem>
                                 </fb:filterGroupItems>

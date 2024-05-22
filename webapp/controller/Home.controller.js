@@ -21,13 +21,15 @@ sap.ui.define([
             },
             onInit: function () {
                 this.bus = this.getOwnerComponent().getEventBus();
+            },
+            onAfterRendering: function (oEvent) {
+                debugger
                 var oModel = new sap.ui.model.json.JSONModel(sap.ui.require.toUrl("sap/ui/demo/mock/products.json"));
                 this.getView().setModel(oModel);
 
                 this.createModel()
 
             },
-
             createModel: async function () {
                 let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
 
@@ -62,7 +64,6 @@ sap.ui.define([
             },
 
             getGroupHeaderMultiCombobox: function (oGroup) {
-                debugger
                 return new sap.ui.core.SeparatorItem({
                     text: oGroup.key
                 });
@@ -82,7 +83,6 @@ sap.ui.define([
                 }).then(function () {
                     new sap.m.MessageToast.show("File caricato con successo");
                     oFileUploader.clear();
-                    // this.getView().getModel("modelloPDF").setProperty("/descrizione", null)
 
                 });
                 sap.m.MessageToast.show("Creazione avvenuta con successo")
@@ -184,7 +184,6 @@ sap.ui.define([
                     acc[key].push(item[key]);
                     return acc;
                 }, {});
-                console.log((groupedData))
                 debugger
                 oEvent.getSource().getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
 

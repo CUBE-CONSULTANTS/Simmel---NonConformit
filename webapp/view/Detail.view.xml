@@ -81,7 +81,8 @@
 									<c:Title text=" " />
 									<m:Label text="Enti" />
 
-									<m:Link text="Enti e firmatari" press="showPopoverEntiFragment"/>
+									<m:Link text="Enti e firmatari"
+										press="showPopoverEntiFragment"/>
 
 									<m:Label text="Allegato non conformità" />
 									<m:Button text="Visualizza pdf"
@@ -106,7 +107,7 @@
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks >
-							<commons:Timeline showSearch="false"
+							<commons:Timeline showSearch="false" textHeight="2"
 								enableScroll="false"
 								showTimeFilter="false"
 								id="idTimeline"

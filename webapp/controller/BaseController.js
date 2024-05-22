@@ -113,9 +113,9 @@ sap.ui.define([
                     titleDialog: state === 'Review' ? 'Invio a firma non conformità' : "Creazione revisione non conformità",
                     titolo: elemento_selezionato.titolo,
                     data: new Date(),
-                    firmatari: (elemento_selezionato.enti.entiSelezionati).map(x => x.nome),
+                    firmatari: (elemento_selezionato.enti.entiSelezionati) != null ? (elemento_selezionato.enti.entiSelezionati).map(x => x.nome) : null,
                     filename: null,
-                    entiSelezionati: (elemento_selezionato.enti.entiSelezionati).map(x => x.settore_lavorativo),
+                    entiSelezionati: (elemento_selezionato.enti.entiSelezionati) != null ? (elemento_selezionato.enti.entiSelezionati).map(x => x.settore_lavorativo) : null,
                     editable: state === 'Review' ? true : false
                 }
                 // if (state === 'Review') {
@@ -147,7 +147,9 @@ sap.ui.define([
                     id_nonconf: oggettoSelezionato.id_nonconf,
                     data_ora: new Date(),
                     pdfname: filename,
-                    stato: 'In fase di firma'
+                    stato: 'In fase di firma',
+                    enti: oggettoSelezionato.enti
+
                 }
                 await Revisioni.createOne({ data: copyObj })
                 oEvent.getSource().getParent().destroy()
