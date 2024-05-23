@@ -48,13 +48,7 @@
                     displayFormat="dd/MM/yyyy"/>
                 <Label text="Enti"
                     required="true" />
-                <!-- <MultiInput editable="{modelloNewModel>/editable}" showValueHelp="{modelloNewModel>/editable}" showSuggestion="{modelloNewModel>/editable}" tokens="{
-                                path: 'modelloNewModel>/enti'
-                            }">
-                    <tokens>
-                        <Token key="{modelloNewModel>}" text="{modelloNewModel>}" />
-                    </tokens>
-                </MultiInput> -->
+
 
                 <MultiComboBox selectionFinish="filterData"
                     editable="{modelloNewModel>/editable}"
@@ -75,7 +69,7 @@
                 <Label required="true"
                     text="Firmatari" />
 
-                <MultiComboBox editable="{modelloNewModel>/editable}"
+                <MultiComboBox editable="{modelloNewModel>/editable}" selectionFinish="getSetLavUser"
                     selectedKeys="{modelloNewModel>/firmatari}"
                     items="{
                                 path: 'modelloNewModel>/utentiSelect',
@@ -109,9 +103,15 @@
         </f:SimpleForm>
         <buttons>
             <Button text="Crea"
+                visible="{=${modelloNewModel>/titleDialog}!=='Invio a firma non conformità' ? true : false}"
                 icon="sap-icon://create-form"
                 type="Emphasized"
                 press="creaRevisione"/>
+            <Button text="Crea"
+                visible="{=${modelloNewModel>/titleDialog} ==='Invio a firma non conformità' ? true : false}"
+                icon="sap-icon://create-form"
+                type="Emphasized"
+                press="Updatedraft"/>
         </buttons>
     </Dialog>
 </c:FragmentDefinition>

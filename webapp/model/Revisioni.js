@@ -2,8 +2,8 @@ sap.ui.define(["./API"], function (API) {
     "use strict";
 
     return {
-        getAll: async function ({ ruolo }) {
-            return await API.getEntitySet({ entity: `/Revisioni/getAllModel/${ruolo}` });
+        getAll: async function ({ ruolo,nome }) {
+            return await API.getEntitySet({ entity: `/Revisioni/getAllModel/${ruolo}/${nome}` });
         },
         getOne: async function ({ id, ruolo }) {
             return await API.getEntity({ entity: `/Revisioni/getOne/${id}/${ruolo}` });

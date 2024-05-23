@@ -23,7 +23,7 @@ sap.ui.define([
                 this.bus = this.getOwnerComponent().getEventBus();
             },
             onAfterRendering: function (oEvent) {
-                debugger
+                // debugger
                 var oModel = new sap.ui.model.json.JSONModel(sap.ui.require.toUrl("sap/ui/demo/mock/products.json"));
                 this.getView().setModel(oModel);
 
@@ -32,14 +32,14 @@ sap.ui.define([
             },
             createModel: async function () {
                 let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
-
-                let data = await Revisioni.getAll({ ruolo })
+                let nome = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
+                let data = await Revisioni.getAll({ ruolo,nome })
                 this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
                 this.getView().getModel("modelloDatiNode").setProperty("/", data)
                 let call = await fetch("../model/modelloDatiMock.json")
                 let obj = await call.json()
                 console.log(obj)
-                debugger
+                // debugger
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({
                     creatore: null,
@@ -50,7 +50,7 @@ sap.ui.define([
 
             },
             handleNavigateToMidColumnPress: function (oEvent) {
-                debugger
+                // debugger
 
                 let obj = oEvent.getSource().getBindingContext("modelloDatiNode").getObject()
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
@@ -87,7 +87,7 @@ sap.ui.define([
                 });
                 sap.m.MessageToast.show("Creazione avvenuta con successo")
                 let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
-                debugger
+                // debugger
                 let data = {
                     TITOLO: obj.titolo,
                     CREATORE: this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
@@ -98,16 +98,14 @@ sap.ui.define([
                     NOTE: {}
 
                 }
-                debugger
                 await ModelNonConf.createFirstModel({ data })
                 oEvent.getSource().getParent().getModel("modelloNewModel").setData()
                 oEvent.getSource().getParent().close()
                 this.createModel()
-                ///funzione di salvataggio
 
             },
             filterData: function (oEvent) {
-                debugger
+                // debugger
                 let modello = oEvent.getSource().oPropagatedProperties.oModels.modelloNewModel,
                     entiSelezionati = modello.getProperty("/entiSelezionati"),
                     listaUtenti = modello.getProperty("/listaUtenti").filter(x => entiSelezionati.includes(x.settore_lavorativo))
@@ -186,6 +184,16 @@ sap.ui.define([
                 }, {});
                 debugger
                 oEvent.getSource().getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
+            },
+            Updatedraft: async function (oEvent) {
+                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                let id = elemento_selezionato.id
+                let dialog = oEvent.getSource().getParent()
+                let model = dialog.getModel("modelloNewModel").getData()
+                await ModelNonConf.updateModelAndRev({ id, data: model, objrev: elemento_selezionato })
+                dialog.close();
+                this.createModel()
+                debugger
 
             }
 

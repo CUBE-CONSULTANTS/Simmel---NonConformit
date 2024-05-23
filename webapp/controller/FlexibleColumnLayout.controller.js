@@ -34,6 +34,12 @@ sap.ui.define([
 			}).then(function (detailView) {
 				this.oFlexibleColumnLayout.addMidColumnPage(detailView);
 				this.oFlexibleColumnLayout.setLayout(LayoutType.TwoColumnsMidExpanded);
+				detailView.attachAfterClose(function () {
+					debugger
+					this.oFlexibleColumnLayout.removeMidColumnPage(detailView);
+					// Qui puoi eseguire il riload dei dati, ad esempio chiamando una funzione per ricaricare i dati
+					// this._reloadData();
+				}, this);
 			}.bind(this));
 		},
 

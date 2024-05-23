@@ -113,5 +113,18 @@ sap.ui.define([], function () {
                 });
             });
         },
+
+        updateModelAndRev: function ({ entity, data }) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: endpoint + entity,
+                    type: "PUT",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: (res) => resolve(res),
+                    error: (e) => reject(e),
+                });
+            });
+        },
     };
 });

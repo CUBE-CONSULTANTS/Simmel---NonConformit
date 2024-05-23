@@ -118,11 +118,9 @@ sap.ui.define([
                     entiSelezionati: (elemento_selezionato.enti.entiSelezionati) != null ? (elemento_selezionato.enti.entiSelezionati).map(x => x.settore_lavorativo) : null,
                     editable: state === 'Review' ? true : false
                 }
-                // if (state === 'Review') {
                 obj['enti'] = ["Produzione", "Logistica", "Ingegneria", "Controllo Qualità", "Manutenzione", "Ricerca e Sviluppo"]
                 obj['listaUtenti'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
                 obj['utentiSelect'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
-                // }
                 if (!this._dialogRevisioni) {
                     this._dialogRevisioni = new sap.ui.core.Fragment.load({
                         id: this.getView().getId(),

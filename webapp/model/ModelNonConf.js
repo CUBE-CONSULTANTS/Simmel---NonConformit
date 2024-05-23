@@ -35,6 +35,8 @@ sap.ui.define(["./API"], function (API) {
         createOrUpdate: async function ({ data }) {
             return await API.createEntity({ entity: "/ModelNonConf/createOrUpdate", data });
         },
-
+        updateModelAndRev: async function ({ id, data, objrev }) {
+            return await API.updateModelAndRev({ entity: `/ModelNonConf/updateModelAndRev/${id}`, data: [data, objrev] });
+        },
     };
 });
