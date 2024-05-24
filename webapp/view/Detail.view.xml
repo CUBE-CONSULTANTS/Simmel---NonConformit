@@ -15,15 +15,20 @@
 		upperCaseAnchorBar="false">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle areaShrinkRatio="1:1.6:1.6">
-				<heading>
-					<m:HBox alignItems="Center"
-						alignContent="Center">
-						<m:Button icon="sap-icon://nav-back"
-							type="Transparent"
-							press="handleNavigateToTable"/>
+				<expandedHeading>
+					<m:Title text="Dettaglio non conformità numero {modelloAppoggio>/elemento_selezionato/id}"
+						wrapping="true"/>
+				</expandedHeading>
+
+
+
+
+				<!-- <heading>
+					<m:HBox alignItems="Center" alignContent="Center">
+						<m:Button icon="sap-icon://nav-back" type="Transparent" press="handleNavigateToTable"/>
 						<m:Title text="Dettaglio non conformità numero {modelloAppoggio>/elemento_selezionato/id}"/>
 					</m:HBox>
-				</heading>
+				</heading> -->
 
 				<actions>
 					<m:Image src="../public/logo.jpg"
@@ -107,7 +112,8 @@
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks >
-							<commons:Timeline showSearch="false" textHeight="2"
+							<commons:Timeline showSearch="false"
+								textHeight="2"
 								enableScroll="false"
 								showTimeFilter="false"
 								id="idTimeline"

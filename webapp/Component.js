@@ -56,8 +56,8 @@ sap.ui.define([
                 let obj = {
                     nome: "Laura Rossi",
                     email: "marcorossi@gmail.com",
-                    // settore: "Qualità"
-                    settore: "Produzione"
+                    settore: "Qualità"
+                    // settore: "Produzione"
                     // settore: "Responsabile"
 
                 }
