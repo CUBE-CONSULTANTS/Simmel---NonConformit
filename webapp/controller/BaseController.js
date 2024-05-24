@@ -36,8 +36,13 @@ sap.ui.define([
                 oEvent.getSource().getParent().getParent().close()
             },
             openDialogCreaModello: async function (oEvent, elemento_selezionato) {
-                debugger
                 let self = this, obj
+                let call = await fetch("../model/modelloDatiMock.json")
+                let oggetto = await call.json()
+                console.log(oggetto)
+                // debugger
+                self.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(oggetto), "modello")
+                debugger
                 elemento_selezionato !== undefined ? obj = {
                     titolo: elemento_selezionato.titolo,
                     data: new Date(),

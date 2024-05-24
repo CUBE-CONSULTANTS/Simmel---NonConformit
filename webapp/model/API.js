@@ -1,7 +1,7 @@
 sap.ui.define([], function () {
     "use strict";
 
-    const endpoint = "http://localhost:3000";
+    const endpoint = "http://localhost:3001";
 
     return {
         getEntitySet: function ({ entity }) {
