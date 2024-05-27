@@ -84,12 +84,7 @@ sap.ui.define([
                 formatData: function (model) {
                     if (model) {
                         let datinizi = new Date(model)
-                        let datainizioformat =
-                            datinizi.getDate().toString().padStart(2, "0") +
-                            "/" +
-                            [datinizi.getMonth() + 1].toString().padStart(2, "0") +
-                            "/" +
-                            datinizi.getFullYear();
+                        let datainizioformat = `${datinizi.getDate().toString().padStart(2, "0")}/${[datinizi.getMonth() + 1].toString().padStart(2, "0")}/${datinizi.getFullYear()}`
                         debugger
                         return datainizioformat;
                     } else return

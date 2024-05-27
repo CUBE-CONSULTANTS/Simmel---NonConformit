@@ -175,9 +175,7 @@
                     <cells>
                         <Text text="{modelloDatiNode>titolo}" />
                         <Text text="{ 
-                        path:'modelloDatiNode>data_ora',
-                        'type': 'sap.ui.model.type.Date'
-                     }" />
+                        path:'modelloDatiNode>data_ora'}" />
                         <Text text="{modelloDatiNode>creatore}" />
                         <Text text="{modelloDatiNode>revisione}" />
                         <Button icon="sap-icon://pdf-attachment"

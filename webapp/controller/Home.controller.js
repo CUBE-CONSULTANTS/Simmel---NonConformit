@@ -33,8 +33,10 @@ sap.ui.define([
             createModel: async function () {
                 let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
                 let nome = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
-                let data = await Revisioni.getAll({ ruolo,nome })
+                let data = await Revisioni.getAll({ ruolo, nome })
                 this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
+                data.map((x, index, data) => data[index].data_ora = this.format.formatData(x.data_ora))
+                debugger
                 this.getView().getModel("modelloDatiNode").setProperty("/", data)
                 let call = await fetch("../model/modelloDatiMock.json")
                 let obj = await call.json()
@@ -128,8 +130,7 @@ sap.ui.define([
             },
             onSearch: function (evt) {
                 let arr = []
-                ///* //debugger */
-
+                debugger
                 let model = this.getView().getModel("modelloFilter")
                 let datainizio = model.getProperty("/datainizio")
                 let datafine = model.getProperty("/datafine")
@@ -139,10 +140,10 @@ sap.ui.define([
 
                 if (datainizio && datafine) {
                     arr.push(new sap.ui.model.Filter({
-                        path: "data_rilevamento",
+                        path: "data_ora",
                         operator: sap.ui.model.FilterOperator.BT,
-                        value1: datainizio,
-                        value2: datafine
+                        value1: this.format.formatData(datainizio),
+                        value2: this.format.formatData(datafine)
                     }));
                 }
                 if (creatore) {
