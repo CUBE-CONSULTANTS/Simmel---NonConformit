@@ -158,15 +158,16 @@ sap.ui.define([
                 if (!this.oDefaultMessageDialog) {
                     this.oDefaultMessageDialog = new sap.m.Dialog({
                         type: sap.m.DialogType.Message,
-                        title: "Conferma",
+                        title: "Rifiuta",
                         content: [
+
                             new sap.m.VBox({
                                 items: [
                                     new sap.m.Text({
                                         text: "Sei sicuro di voler Rifiutare?"
                                     }),
                                     new sap.m.VBox({
-                                        with: "220px",
+                                        width: "auto",
                                         alignItems: sap.m.FlexAlignItems.Baseline,
                                         items: [
                                             new sap.m.Label({
@@ -174,11 +175,10 @@ sap.ui.define([
                                             }),
                                             new sap.m.TextArea({
                                                 value: "{modelloDialog>/data}",
-                                                with: "220px"
+                                                width: "260px"
                                             })
                                         ]
                                     })
-
                                 ]
                             })
                         ],
@@ -187,7 +187,7 @@ sap.ui.define([
                             text: "Si",
                             press: async function () {
                                 debugger
-                              
+
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 this.handleNavigateToTable()
@@ -223,9 +223,9 @@ sap.ui.define([
                         if (sAction == 'YES') {
                             let elemento_selezionato = self.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                             if (this.content[0] === 'Chiusura') {
-                                self.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato/stato","Chiuso")
-                                let index=self.getOwnerComponent().getModel("modello").getProperty("/non_conformita").findIndex(x=>x===elemento_selezionato)
-                                self.getOwnerComponent().getModel("modello").setProperty(`/non_conformita/${index}/stato`,'Chiuso')
+                                self.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato/stato", "Chiuso")
+                                let index = self.getOwnerComponent().getModel("modello").getProperty("/non_conformita").findIndex(x => x === elemento_selezionato)
+                                self.getOwnerComponent().getModel("modello").setProperty(`/non_conformita/${index}/stato`, 'Chiuso')
                                 self.getOwnerComponent().getModel("modello").updateBindings()
                                 // await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso' })
                                 debugger
