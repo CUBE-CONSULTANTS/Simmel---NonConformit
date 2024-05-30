@@ -17,6 +17,25 @@
                 <f:heading>
                     <Title text="QUALITÁ - NON CONFORMITÁ"/>
                 </f:heading>
+                <f:expandedContent>
+                    <layout:VerticalLayout width="100%">
+                        <HBox alignContent="SpaceBetween"
+                            alignItems="Center">
+                            <Label text="Ruolo:"/>
+                            <Select class="sapUiTinyMarginBegin"
+                                forceSelection="false"
+                                selectedKey="{modelloRuolo>/settore}"
+                                change="changeUser">
+                                <core:Item key="Qualità"
+                                    text="Qualità" />
+                                <core:Item key="Ingegneria"
+                                    text="Ingegneria" />
+                                <core:Item key="Responsabile"
+                                    text="Responsabile" />
+                            </Select>
+                        </HBox>
+                    </layout:VerticalLayout>
+                </f:expandedContent>
                 <f:actions>
                     <Image src="../public/logo.jpg"
                         height="22.00000000px"
@@ -32,6 +51,7 @@
             <f:DynamicPageHeader>
                 <f:content>
                     <layout:VerticalLayout width="100%">
+
                         <layout:VerticalLayout class="sapUiMediumMarginEnd"
                             width="100%">
 
@@ -56,15 +76,29 @@
                                         groupName="Group1"
                                         visibleInFilterBar="true">
                                         <fb:control>
-                                            <DatePicker value="{
+                                            <!-- <DatePicker value="{
                                                 'path': 'modelloFilter>/data',
                                                 'type': 'sap.ui.model.type.Date',
                                                 'formatOptions': {
                                                     'pattern': 'dd/MM/yyyy'
                                                 }
-                                }"
-                                                placeholder="Enter Date"
-                                                change="handleChange" />
+                                }" placeholder="Enter Date" change="handleChange" /> -->
+                                            <DateRangeSelection value= "{
+                                                    'type': 'sap.ui.model.type.DateInterval',
+                                                    'formatOptions': {
+                                                        'pattern': 'dd/MM/yyyy'
+                                                    },
+                                                    'parts': [
+                                                        {
+                                                            'type': 'sap.ui.model.type.Date',
+                                                            'path': 'modelloFilter>/datainizio'
+                                                        },
+                                                        {
+                                                            'type': 'sap.ui.model.type.Date',
+                                                            'path': 'modelloFilter>/datafine'
+                                                        }
+                                                    ]
+                                                }" />
 
                                         </fb:control>
                                     </fb:FilterGroupItem>
@@ -95,16 +129,14 @@
                         <layout:VerticalLayout width="100%">
                             <FlexBox justifyContent="End">
                                 <Button text="Crea conformità"
-                                icon="sap-icon://add"
-                                class="sapUiSmallMarginBottom"
-                                press="openDialogCreaModello"
-                                type="Emphasized"
-                                visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+                                    icon="sap-icon://add"
+                                    class="sapUiSmallMarginBottom"
+                                    press="openDialogCreaModello"
+                                    type="Emphasized"
+                                    visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
                             </FlexBox>
                         </layout:VerticalLayout>
                     </layout:VerticalLayout>
-
-
                 </f:content>
             </f:DynamicPageHeader>
         </f:header>

@@ -9,7 +9,7 @@
         titleAlignment="Center">
         <customHeader>
             <Toolbar>
-                <Title text="Creazione non conformità" />
+                <Title text="{modelloNewModel>/titleDialog}" />
                 <ToolbarSpacer />
                 <Button icon="sap-icon://decline"
                     type="Emphasized"
@@ -36,55 +36,61 @@
                 <c:Title text=" " />
                 <Label text="Titolo"
                     required="true" />
-                <Input value="{modelloNewModel>/titolo}" />
+                <Input value="{modelloNewModel>/titolo}"
+                    editable="{modelloNewModel>/editable}"/>
                 <Label text="Data"
                     required="true" />
                 <DatePicker value="{ 
                         path:'modelloNewModel>/data',
                         formatter: '.format.formatData'
                      }"
+                    editable="{modelloNewModel>/editable}"
                     displayFormat="dd/MM/yyyy"/>
                 <Label text="Enti"
                     required="true" />
+
+
                 <MultiComboBox selectionFinish="filterData"
+                    editable="{modelloNewModel>/editable}"
                     showSelectAll="true"
                     items="{
-                            path: 'modelloNewModel>/enti',
-                            sorter: {
-                                path: 'modelloNewModel>settore_lavorativo',
-                                descending: false,
-                                group: true
-                            },
-                            groupHeaderFactory: '.getGroupHeaderMultiCombobox'
-                            }"
+                        path: 'modelloNewModel>/enti',
+                        sorter: {
+                            path: 'modelloNewModel>settore_lavorativo',
+                            descending: false,
+                            group: true
+                        },
+                        groupHeaderFactory: '.getGroupHeaderMultiCombobox'
+                        }"
                     selectedKeys="{modelloNewModel>/entiSelezionati}">
                     <c:Item key="{modelloNewModel>}"
                         text="{modelloNewModel>}" />
                 </MultiComboBox>
                 <Label required="true"
-                    text="Firmatari"
-                    visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"/>
-                <MultiComboBox visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"
-                    items="{
-                            path: 'modelloNewModel>/utentiSelect',
-                            sorter: {
-                                path: 'modelloNewModel>settore_lavorativo',
-                                descending: false,
-                                group: true
-                            },
-                            groupHeaderFactory: '.getGroupHeaderMultiCombobox'
-                        }"
+                    text="Firmatari" />
+
+                <MultiComboBox editable="{modelloNewModel>/editable}" selectionFinish="getSetLavUser"
                     selectedKeys="{modelloNewModel>/firmatari}"
-                    selectionFinish="getSetLavUser">
+                    items="{
+                                path: 'modelloNewModel>/utentiSelect',
+                                sorter: {
+                                    path: 'modelloNewModel>settore_lavorativo',
+                                    descending: false,
+                                    group: true
+                                },
+                                groupHeaderFactory: '.getGroupHeaderMultiCombobox'
+                            }">
                     <c:Item key="{modelloNewModel>nome}"
                         text="{modelloNewModel>nome}" />
                 </MultiComboBox>
+
+
                 <Label text="Caricamento file"
                     required="true" />
                 <unified:FileUploader name="myFileUpload"
                     id="myFileUpload"
                     width="100%"
-                    uploadUrl='http://localhost:3404/upload/NonConformit/1'
+                    uploadUrl='http://localhost:3404/upload/NonCoformit/1'
                     tooltip="Upload your file to the local server"
                     uploadComplete="handleUploadComplete"
                     change="handleChangeFile"
@@ -92,18 +98,20 @@
                     style="Emphasized"
                     fileType="pdf"
                     placeholder="Carica File..."/>
+
             </f:content>
         </f:SimpleForm>
         <buttons>
-            <Button text="Crea Bozza"
-                visible="{=${modelloNewModel>/stato}==='Nuovo'?false:true}"
-                icon="sap-icon://BusinessSuiteInAppSymbols/icon-save-as"
-                type="Neutral"
-                press="createModelloNonConf"/>
             <Button text="Crea"
+                visible="{=${modelloNewModel>/titleDialog}!=='Invio a firma non conformità' ? true : false}"
                 icon="sap-icon://create-form"
                 type="Emphasized"
-                press="createModelloNonConf"/>
+                press="creaRevisione"/>
+            <Button text="Crea"
+                visible="{=${modelloNewModel>/titleDialog} ==='Invio a firma non conformità' ? true : false}"
+                icon="sap-icon://create-form"
+                type="Emphasized"
+                press="Updatedraft"/>
         </buttons>
     </Dialog>
 </c:FragmentDefinition>

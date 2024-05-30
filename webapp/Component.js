@@ -5,9 +5,9 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
     "sap/ui/Device",
-    "flexcollay/model/models","sap/ui/core/IconPool"
+    "flexcollay/model/models", "sap/ui/core/IconPool"
 ],
-    function (UIComponent, Device, models,IconPool) {
+    function (UIComponent, Device, models, IconPool) {
         "use strict";
 
         return UIComponent.extend("flexcollay.Component", {
@@ -55,12 +55,14 @@ sap.ui.define([
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
                 this.setModel(new sap.ui.model.json.JSONModel(), "modelloAppoggio");
+                let settore_lavorativo
+                debugger
+                localStorage.getItem('settore_utente') === null ? settore_lavorativo = 'Qualità' : settore_lavorativo = localStorage.getItem('settore_utente')
+
                 let obj = {
                     nome: "Marco Rossi",
                     email: "marcorossi@gmail.com",
-                    settore: "Qualità"
-                    // settore: "Ingegneria"
-                    // settore: "Responsabile"
+                    settore: settore_lavorativo
 
                 }
                 this.setModel(new sap.ui.model.json.JSONModel(obj), "modelloRuolo");

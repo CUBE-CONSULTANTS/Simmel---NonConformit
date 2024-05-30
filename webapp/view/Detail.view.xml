@@ -80,34 +80,26 @@
 									</m:Text>
 									<c:Title text=" " />
 									<m:Label text="Enti" />
-									<m:MultiInput editable="false"
-										showValueHelp="false"
-										showSuggestion="false"
-										tokens="{
-									path: 'modelloAppoggio>/elemento_selezionato/enti'
-								}">
-										<m:tokens>
-											<m:Token key="{modelloAppoggio>}"
-												text="{modelloAppoggio>}" />
-										</m:tokens>
-									</m:MultiInput>
-									<m:Label text="Firmatari" />
-									<m:MultiInput editable="false"
-										showValueHelp="false"
-										showSuggestion="false"
-										tokens="{
-										path: 'modelloAppoggio>/elemento_selezionato/firmatari'
-									}">
-										<m:tokens>
-											<m:Token key="{modelloAppoggio>}"
-												text="{modelloAppoggio>}" />
-										</m:tokens>
-									</m:MultiInput>
+
+									<m:Link text="Enti e firmatari"
+										press="showPopoverEntiFragment"/>
+
 									<m:Label text="Allegato non conformità" />
+									<m:Button text="Visualizza pdf"
+										width="100%"
+										type="Emphasized"
+										icon="sap-icon://pdf-reader"
+										press="openDialogShowPDF">
+										<m:customData>
+											<c:CustomData key="detail"/>
+										</m:customData>
+									</m:Button>
+									
+									<!-- <m:Label text="Allegato non conformità" />
 									<m:Button text="Visualizza allegato"
 										type="Emphasized"
 										icon="sap-icon://pdf-reader"
-										press="openDialogShowPDF"/>
+										press="openDialogShowPDF"/> -->
 								</f:content>
 							</f:SimpleForm>
 						</blocks>
@@ -137,13 +129,14 @@
 							<commons:Timeline showSearch="false"
 								enableScroll="false"
 								showTimeFilter="false"
-								id="idTimeline" 
+								id="idTimeline"
 								height="100%"
 								enableDoubleSided="true"
 								content="{modelloDettaglio>/}"
 								filterList="{modelloDettaglio>data}">
 								<commons:content>
-									<commons:TimelineItem id="idTemplateItem" icon="{=${modelloDettaglio>firma}===true ? 'sap-icon://signature' : 'sap-icon://BusinessSuiteInAppSymbols/icon-blocked'}"
+									<commons:TimelineItem id="idTemplateItem"
+										icon="{=${modelloDettaglio>firma}===true ? 'sap-icon://signature' : 'sap-icon://BusinessSuiteInAppSymbols/icon-blocked'}"
 										userNameClicked="onUserNameClick"
 										select="onPressItems"
 										dateTime="{modelloDettaglio>data}"

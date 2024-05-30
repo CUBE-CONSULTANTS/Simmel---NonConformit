@@ -30,7 +30,7 @@ sap.ui.define([
             createModel: async function () {
                 let call = await fetch("../model/modelloDatiMock.json")
                 let obj = await call.json()
-                this.getView().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
+                this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
                 this.getView().setModel(new sap.ui.model.json.JSONModel({
                     creatore: null,
                     data: null,
@@ -39,18 +39,18 @@ sap.ui.define([
                 debugger
 
             },
-            onNewRev: function (oEvent) {
+            onNewRev: function (oEvent,state) {
                 debugger
                 let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
-                this.openDialogCreaModello(oEvent, elemento_selezionato)
+                this.openDialogCreaRevisione(oEvent, elemento_selezionato, state)
             },
             handleNavigateToMidColumnPress: function (oEvent) {
                 debugger
                 let obj = oEvent.getSource().getBindingContext("modello").getObject()
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
-                if (obj.stato == 'Nuovo') {
-                    this.onNewRev(oEvent)
-                } else {
+                if (obj.stato == 'Nuovo') { this.onNewRev(oEvent, "Review") }
+                else {
+                    this.bus.publish("flexible", "setDetailPage")
                     this.bus.publish("flexible", "setDetailPage");
                 }
             },
@@ -81,6 +81,26 @@ sap.ui.define([
             },
             createModelloNonConf: function (oEvent) {
                 // this.handleUploadPress(oEvent)
+                let stato
+                oEvent.getSource().getText() == 'Crea' ? stato = "In fase di firma" : stato = "Nuovo"
+                let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
+                let nonConformita = this.getView().getModel("modello").getProperty("/non_conformita")
+
+                // debugger
+                let data = {
+                    id_revisione: nonConformita.reduce((max, item) => item.id_revisione > max ? item.id_revisione : max, nonConformita[0].id_revisione) + 1,
+                    titolo: obj.titolo,
+                    creatore: this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
+                    data_rilevamento: this.format.formatData(new Date(obj.data)),
+                    ENTI: { entiSelezionati: obj.enti_firmatari },
+                    PDFNAME: '',
+                    stato: stato,
+                    NOTE: {}
+
+                }
+                debugger
+                this.getView().getModel("modello").getProperty("/non_conformita").push(data)
+                this.getView().getModel("modello").updateBindings()
                 sap.m.MessageToast.show("Creazione avvenuta con successo")
                 debugger
                 oEvent.getSource().getParent().close()
@@ -115,16 +135,18 @@ sap.ui.define([
                 ///* //debugger */
 
                 let model = this.getView().getModel("modelloFilter")
-                let data = model.getProperty("/data")
+                let datainizio = model.getProperty("/datainizio")
+                let datafine = model.getProperty("/datafine")
                 let creatore = model.getProperty("/creatore")
                 let stato = model.getProperty("/stato")
 
-                if (data) {
-                    arr.push(new sap.ui.model.Filter(
-                        "data_rilevamento",
-                        FilterOperator.Contains,
-                        this.formatData(data)
-                    ))
+                if (datainizio && datafine) {
+                    arr.push(new sap.ui.model.Filter({
+                        path: "data_rilevamento",
+                        operator: sap.ui.model.FilterOperator.BT,
+                        value1: this.format.formatData(datainizio),
+                        value2: this.format.formatData(datafine)
+                    }));
                 }
                 if (creatore) {
                     arr.push(new sap.ui.model.Filter(
@@ -142,5 +164,39 @@ sap.ui.define([
                 }
                 this.byId("tableRichieste").getBinding("items").filter(arr)
             },
+            getSetLavUser: function (oEvent) {
+                var oMultiComboBox = oEvent.getSource();
+
+                var aSelectedItems = oMultiComboBox.getSelectedItems();
+
+                var aSettoriLavorativi = [];
+
+                aSelectedItems.forEach(function (oItem) {
+                    var oBindingContext = oItem.getBindingContext("modelloNewModel").getObject()
+                    aSettoriLavorativi.push({ nome: oBindingContext.nome, firmato: false, settore_lavorativo: oBindingContext.settore_lavorativo });
+                });
+
+
+                const groupedData = aSettoriLavorativi.reduce((acc, item) => {
+                    const key = Object.keys(item)[0];
+                    if (!acc[key]) {
+                        acc[key] = [];
+                    }
+                    acc[key].push(item[key]);
+                    return acc;
+                }, {});
+                debugger
+                oEvent.getSource().getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
+            },
+            changeUser: function (oEvent) {
+                debugger
+                let settore_selezionato = oEvent.getSource().getSelectedItem().getKey()
+
+                this.getOwnerComponent().getModel("modelloRuolo").setProperty("/settore", settore_selezionato)
+                localStorage.setItem('settore_utente', settore_selezionato)
+                location.reload();
+
+
+            }
         });
     });
