@@ -187,19 +187,7 @@ sap.ui.define([
                             text: "Si",
                             press: async function () {
                                 debugger
-                                // let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato"),
-                                //     notaAggiuntiva = this.oDefaultMessageDialog.getModel("modelloDialog").getProperty("/data"),
-                                //     nomeutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
-                                //     date = new Date()
-                                // let objNote = [{
-                                //     nota: notaAggiuntiva,
-                                //     utente: nomeutente,
-                                //     data: date
-                                // }]
-                                // let settoreutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
-
-                                // await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
-
+                              
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 this.handleNavigateToTable()
