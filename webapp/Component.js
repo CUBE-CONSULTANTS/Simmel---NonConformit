@@ -54,9 +54,9 @@ sap.ui.define([
                 this.setModel(models.createDeviceModel(), "device");
                 this.setModel(new sap.ui.model.json.JSONModel(), "modelloAppoggio");
                 let obj = {
-                    nome: "Laura Rossi",
+                    nome: "Paolo Rossi",
                     email: "marcorossi@gmail.com",
-                    settore: "Qualità"
+                    settore: "Qualità"  
                     // settore: "Produzione"
                     // settore: "Responsabile"
 
