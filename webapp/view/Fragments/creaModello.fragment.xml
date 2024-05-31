@@ -82,7 +82,7 @@
                 <Label text="Caricamento file"
                     required="true" />
                 <unified:FileUploader name="myFileUpload"
-                    id="myFileUpload"
+                    
                     width="100%"
                     uploadUrl='http://localhost:3404/upload/NonConformit/1'
                     tooltip="Upload your file to the local server"
