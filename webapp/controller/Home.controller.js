@@ -30,6 +30,10 @@ sap.ui.define([
             createModel: async function () {
                 let call = await fetch("../model/modelloDatiMock.json")
                 let obj = await call.json()
+                if (localStorage.settore_utente === 'Ingegneria') {
+                    let indexStatoNuovo = obj.non_conformita.findIndex(x => x.stato == "Nuovo")
+                    obj.non_conformita.splice(indexStatoNuovo, 1)
+                }
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "modello")
                 this.getView().setModel(new sap.ui.model.json.JSONModel({
                     creatore: null,
@@ -39,7 +43,7 @@ sap.ui.define([
                 debugger
 
             },
-            onNewRev: function (oEvent,state) {
+            onNewRev: function (oEvent, state) {
                 debugger
                 let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                 this.openDialogCreaRevisione(oEvent, elemento_selezionato, state)
@@ -81,6 +85,7 @@ sap.ui.define([
             },
             createModelloNonConf: function (oEvent) {
                 // this.handleUploadPress(oEvent)
+                debugger
                 let stato
                 oEvent.getSource().getText() == 'Crea' ? stato = "In fase di firma" : stato = "Nuovo"
                 let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
@@ -98,11 +103,10 @@ sap.ui.define([
                     NOTE: {}
 
                 }
-                debugger
+
                 this.getView().getModel("modello").getProperty("/non_conformita").push(data)
                 this.getView().getModel("modello").updateBindings()
                 sap.m.MessageToast.show("Creazione avvenuta con successo")
-                debugger
                 oEvent.getSource().getParent().close()
                 ///funzione di salvataggio
 
@@ -195,7 +199,42 @@ sap.ui.define([
                 this.getOwnerComponent().getModel("modelloRuolo").setProperty("/settore", settore_selezionato)
                 localStorage.setItem('settore_utente', settore_selezionato)
                 location.reload();
+            },
+            Updatedraft: async function (oEvent) {
+                debugger
+                let arr = this.getView().getModel("modello").getProperty("/non_conformita")
 
+                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                let id = elemento_selezionato.id
+                let dialog = oEvent.getSource().getParent()
+                let model = dialog.getModel("modelloNewModel").getData()
+                let index = this.getView().getModel("modello").getProperty("/non_conformita").findIndex(x => x.id == id)
+
+                arr.splice(index, 1)
+
+                let data = {
+
+                    id,
+                    id_revisione: elemento_selezionato.id_revisione,
+                    responsabile: elemento_selezionato.responsabile,
+                    revisione: elemento_selezionato.revisione,
+                    titolo: model.titolo,
+                    creatore: this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
+                    data_rilevamento: this.format.formatData(new Date()),
+                    ENTI: { entiSelezionati: model.enti_firmatari },
+                    PDFNAME: '',
+                    stato: 'In fase di firma',
+                    NOTE: {}
+
+                }
+                arr.push(data)
+                this.getView().getModel("modello").setProperty("/non_conformita", arr)
+                this.getView().getModel("modello").updateBindings()
+
+
+                dialog.close();
+                // this.createModel()
+                debugger
 
             }
         });

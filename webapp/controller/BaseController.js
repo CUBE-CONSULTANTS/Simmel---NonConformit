@@ -128,5 +128,26 @@ sap.ui.define([
                 },
 
             },
+            creaRevisione: async function (oEvent) {
+                debugger
+                // let filename = this.getFileName()
+                let oggettoSelezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+
+                let copyObj = {
+                    id: (this.getView().getModel("modello").getProperty("/non_conformita").length + 1),
+                    id_revisione: oggettoSelezionato.id_revisione,
+                    azione_correttiva: "",
+                    creatore: "Mario Rossi",
+                    revisione: "",
+                    stato: 'In fase di firma',
+                    titolo: oggettoSelezionato.titolo,
+                    data_rilevamento: this.formatData(new Date()),
+                    responsabile: "Mario Rossi"
+                }
+                this.getView().getModel("modello").getProperty("/non_conformita").push(copyObj)
+                this.getView().getModel("modello").updateBindings()
+                // await Revisioni.createOne({ data: copyObj })
+                oEvent.getSource().getParent().destroy()
+            },
         })
     })

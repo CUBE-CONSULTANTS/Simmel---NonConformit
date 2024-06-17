@@ -187,7 +187,11 @@ sap.ui.define([
                             text: "Si",
                             press: async function () {
                                 debugger
-
+                                let id = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato/id")
+                                this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato/stato", "Bloccato")
+                                let index = this.getView().getModel("modello").getProperty("/non_conformita").findIndex(x => x.id == 2)
+                                this.getView().getModel("modello").setProperty(`/non_conformita/${index}/stato`, "Bloccato")
+                                this.getView().getModel("modello").updateBindings()
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 this.handleNavigateToTable()
