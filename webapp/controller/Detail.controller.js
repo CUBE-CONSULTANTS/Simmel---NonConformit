@@ -43,9 +43,9 @@ sap.ui.define([
 
             },
             initialModel: async function () {
-                let call = await fetch("../model/modelloDatiMock.json")
-                let obj = await call.json()
-                this.getView().setModel(new sap.ui.model.json.JSONModel(obj.noteReject), "modelloDettaglio")
+                // let call = await fetch("../model/modelloDatiMock.json")
+                // let obj = await call.json()
+                // this.getView().setModel(new sap.ui.model.json.JSONModel(obj.noteReject), "modelloDettaglio")
             },
 
             AlertDialog: function (oEvent) {
@@ -59,15 +59,15 @@ sap.ui.define([
                 if (!this.oDefaultMessageDialog) {
                     this.oDefaultMessageDialog = new sap.m.Dialog({
                         type: sap.m.DialogType.Message,
-                        title: "Conferma",
+                        title: "Rifiuta",
                         content: [
                             new sap.m.VBox({
                                 items: [
                                     new sap.m.Text({
-                                        text: "Sei sicuro di voler Rifiutare?"
+                                        text: "Sei sicuro di voler rifiutare?"
                                     }),
                                     new sap.m.VBox({
-                                        with: "220px",
+                                        width: "auto",
                                         alignItems: sap.m.FlexAlignItems.Baseline,
                                         items: [
                                             new sap.m.Label({
@@ -75,11 +75,10 @@ sap.ui.define([
                                             }),
                                             new sap.m.TextArea({
                                                 value: "{modelloDialog>/data}",
-                                                with: "220px"
+                                                width: "260px"
                                             })
                                         ]
                                     })
-
                                 ]
                             })
                         ],
@@ -103,6 +102,7 @@ sap.ui.define([
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 this.handleNavigateToTable()
+
                             }.bind(this)
                         }),
                         endButton: new sap.m.Button({
@@ -114,7 +114,6 @@ sap.ui.define([
                         })
                     })
                 }
-                debugger
                 this.oDefaultMessageDialog.setModel(new sap.ui.model.json.JSONModel({
                     self: self,
                     data: descrizione
@@ -136,7 +135,9 @@ sap.ui.define([
                             let elemento_selezionato = self.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                             if (this.content[0] === 'Chiusura') {
                                 await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso' })
-
+                                this.onClose()
+                                MessageToast.show("Salvataggio avvenuto con successo")
+                                self.handleNavigateToTable()
                             } else {
                                 debugger
                                 let nomeutente = self.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
@@ -149,9 +150,13 @@ sap.ui.define([
                                 }]
 
                                 await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: true, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
+                                this.onClose()
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 self.handleNavigateToTable()
                             }
+                            
+                        } else {
+                            this.onClose()
                         }
                     }
                 }

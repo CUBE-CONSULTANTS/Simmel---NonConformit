@@ -9,7 +9,7 @@ sap.ui.define(["./API"], function (API) {
             return await API.getEntity({ entity: `/Revisioni/getOne/${id}/${ruolo}` });
         },
         createOne: async function ({ data }) {
-            return await API.createEntity({ entity: "/Revisioni/create", data });
+            return await API.createEntity({ entity: "/Revisioni/createRevisione", data });
         },
         createMany: async function ({ data }) {
             return await API.createEntity({ entity: "/Revisioni/create", data });

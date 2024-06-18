@@ -39,11 +39,15 @@
                 <Input value="{modelloNewModel>/titolo}" />
                 <Label text="Data"
                     required="true" />
-                <DatePicker value="{ 
+                <DatePicker
+                    value="{ 
                         path:'modelloNewModel>/data',
                         formatter: '.format.formatData'
                      }"
-                    displayFormat="dd/MM/yyyy"/>
+                    displayFormat="dd/MM/yyyy" />
+                <Label text="Tipologia"
+                    required="true" />
+                <Input value="{modelloNewModel>/tipologia}" />
                 <Label text="Enti"
                     required="true" />
                 <MultiComboBox selectionFinish="filterData"
@@ -63,18 +67,19 @@
                 </MultiComboBox>
                 <Label required="true"
                     text="Firmatari"
-                    visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"/>
-                <MultiComboBox visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"
+                    visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}" />
+                <MultiComboBox
+                    visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"
                     items="{
                             path: 'modelloNewModel>/utentiSelect',
                             sorter: {
-                                path: 'modelloNewModel>settore_lavorativo',
+                                path: 'modelloNewModel>ruolo',
                                 descending: false,
                                 group: true
                             },
                             groupHeaderFactory: '.getGroupHeaderMultiCombobox'
                         }"
-                    selectedKeys="{modelloNewModel>/firmatari}" selectionFinish="getSetLavUser">
+                    selectedKeys="{modelloNewModel>/firmatari}" >
                     <c:Item key="{modelloNewModel>nome}"
                         text="{modelloNewModel>nome}" />
                 </MultiComboBox>
@@ -90,18 +95,18 @@
                     typeMissmatch="handleTypeMissmatch"
                     style="Emphasized"
                     fileType="pdf"
-                    placeholder="Carica File..."/>
+                    placeholder="Carica File..." />
             </f:content>
         </f:SimpleForm>
         <buttons>
             <Button text="Crea Bozza"
                 icon="sap-icon://BusinessSuiteInAppSymbols/icon-save-as"
                 type="Neutral"
-                press="createModelloNonConf"/>
+                press="createModelloNonConf" />
             <Button text="Crea"
                 icon="sap-icon://create-form"
                 type="Emphasized"
-                press="createModelloNonConf"/>
+                press="createModelloNonConf" />
         </buttons>
     </Dialog>
 </c:FragmentDefinition>

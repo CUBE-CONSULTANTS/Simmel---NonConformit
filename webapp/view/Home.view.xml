@@ -11,10 +11,10 @@
     xmlns="sap.m">
 
     <f:DynamicPage>
-        <f:title >
-            <f:DynamicPageTitle >
+        <f:title>
+            <f:DynamicPageTitle>
                 <f:heading>
-                    <Title text="QUALITÁ - NON CONFORMITÁ"/>
+                    <Title text="QUALITÁ - NON CONFORMITÁ" />
                 </f:heading>
                 <f:actions>
                     <Image src="../public/logo.jpg"
@@ -27,7 +27,7 @@
             </f:DynamicPageTitle>
         </f:title>
         <!-- DynamicPage Header -->
-        <f:header >
+        <f:header>
             <f:DynamicPageHeader>
                 <f:content>
                     <layout:VerticalLayout width="100%">
@@ -50,12 +50,24 @@
 
                                         </fb:control>
                                     </fb:FilterGroupItem>
+
+                                    <!-- filtro per tipologia non conformità -->
+                                    <fb:FilterGroupItem name="Tipologia"
+                                        label="Tipologia"
+                                        groupName="Group1"
+                                        visibleInFilterBar="true">
+                                        <fb:control>
+                                            <Input value="{modelloFilter>/tipologia}" />
+                                        </fb:control>
+                                    </fb:FilterGroupItem>
+
                                     <fb:FilterGroupItem name="dataApertura"
                                         label="Data"
                                         groupName="Group1"
                                         visibleInFilterBar="true">
                                         <fb:control>
-                                            <DateRangeSelection value= "{
+                                            <DateRangeSelection
+                                                value="{
                                                     'type': 'sap.ui.model.type.DateInterval',
                                                     'formatOptions': {
                                                         'pattern': 'dd/MM/yyyy'
@@ -83,7 +95,7 @@
                                             <ComboBox selectedKey="{modelloFilter>/stato}">
                                                 <core:Item key="Nuovo"
                                                     text="Nuovo" />
-                                                <core:Item key="In_Firma"
+                                                <core:Item key="In fase di firma"
                                                     text="In fase di firma" />
                                                 <core:Item key="Bloccato"
                                                     text="Bloccato" />
@@ -100,14 +112,14 @@
 
                         <layout:VerticalLayout width="100%">
                             <FlexBox justifyContent="End">
-                                <Button text="Crea conformità"
-                                    icon="sap-icon://add"
-                                    class="sapUiSmallMarginBottom"
-                                    press="openDialogCreaModello"
+                                <Button press="navToGestioneRuoli"
+                                   
+                                    text="Gestione Ruoli"
                                     type="Emphasized"
-                                    visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+                                    icon="sap-icon://role" />
                             </FlexBox>
                         </layout:VerticalLayout>
+
                     </layout:VerticalLayout>
 
 
@@ -127,26 +139,44 @@
                     groupHeaderFactory: '.getGroupHeader'
                 }"
                 id="tableRichieste">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <Button text="Crea conformità"
+                            icon="sap-icon://add"
+                            class="sapUiSmallMarginBottom"
+                            press="openDialogCreaModello"
+                            type="Emphasized"
+                            visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}" />
+                    </OverflowToolbar>
+                </headerToolbar>
+
                 <columns>
 
                     <Column hAlign="Center"
                         mergeDuplicates="true"
                         width="25%">
                         <header>
-                            <Text text="Titolo Permesso" />
+                            <Text text="Titolo" />
                         </header>
                     </Column>
 
                     <Column hAlign="Center"
                         width="25%">
                         <header>
-                            <Text text="Data Permesso" />
+                            <Text text="Data" />
                         </header>
                     </Column>
                     <Column hAlign="Center"
                         width="25%">
                         <header>
-                            <Text text="Creatore Permesso" />
+                            <Text text="Creatore" />
+                        </header>
+                    </Column>
+                    <Column hAlign="Center"
+                        width="25%">
+                        <header>
+                            <Text text="Tipologia" />
                         </header>
                     </Column>
                     <Column hAlign="Center"
@@ -164,7 +194,7 @@
                     <Column hAlign="Center"
                         width="25%">
                         <header>
-                            <Text text="Stato Permesso" />
+                            <Text text="Stato" />
                         </header>
                     </Column>
 
@@ -177,12 +207,13 @@
                         <Text text="{ 
                         path:'modelloDatiNode>data_ora'}" />
                         <Text text="{modelloDatiNode>creatore}" />
-                        <Text text="{modelloDatiNode>revisione}" />
+                        <Text text="{modelloDatiNode>tipologia}" />
+                        <Text text="{modelloDatiNode>numero_revisione}" />
                         <Button icon="sap-icon://pdf-attachment"
                             press="openDialogShowPDF"
                             type="Emphasized">
                             <customData>
-                                <core:CustomData key="TabellaHome"/>
+                                <core:CustomData key="TabellaHome" />
                             </customData>
                         </Button>
                         <Text text="{modelloDatiNode>stato}">

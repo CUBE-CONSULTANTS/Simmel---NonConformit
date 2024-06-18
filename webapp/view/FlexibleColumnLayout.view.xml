@@ -1,17 +1,17 @@
 <mvc:View xmlns="sap.f"
+    xmlns:m="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     controllerName="flexcollay.controller.FlexibleColumnLayout"
     height="100%">
-    <FlexibleColumnLayout id="fcl">
-        <!-- <landmarkInfo>
-            <FlexibleColumnLayoutAccessibleLandmarkInfo firstColumnLabel="Custom Label For First Column"
-                lastColumnLabel="Test Label for Last Column" />
-        </landmarkInfo> -->
-        <beginColumnPages>
-            <mvc:XMLView id="beginView"
-                async="true"
-                viewName="flexcollay.view.Home" />
-        </beginColumnPages>
-    </FlexibleColumnLayout>
+    <m:App id="App">
+        <FlexibleColumnLayout id="fcl" restoreFocusOnBackNavigation="true">
+
+            <beginColumnPages>
+                <mvc:XMLView id="beginView"
+                    async="true"
+                    viewName="flexcollay.view.Home" />
+            </beginColumnPages>
+        </FlexibleColumnLayout>
+    </m:App>
 </mvc:View>

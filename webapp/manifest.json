@@ -80,9 +80,12 @@
         {
           "name": "RouteHome",
           "pattern": ":?query:",
-          "target": [
-            "TargetHome"
-          ]
+          "target": ["TargetHome"]
+        },
+        {
+          "name": "GestioneRuoli",
+          "pattern": "GestioneRuoli",
+          "target": ["GestioneRuoli"]
         }
       ],
       "targets": {
@@ -92,6 +95,14 @@
           "clearControlAggregation": false,
           "viewId": "Home",
           "viewName": "Home"
+        },
+        "GestioneRuoli": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "GestioneRuoli",
+          "viewName": "GestioneRuoli",
+          "controlId": "App"
         }
       }
     },

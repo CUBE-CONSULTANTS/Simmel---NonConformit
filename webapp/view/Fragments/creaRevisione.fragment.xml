@@ -37,19 +37,22 @@
                 <Label text="Titolo"
                     required="true" />
                 <Input value="{modelloNewModel>/titolo}"
-                    editable="{modelloNewModel>/editable}"/>
+                    editable="{modelloNewModel>/editable}" />
                 <Label text="Data"
                     required="true" />
-                <DatePicker value="{ 
+                <DatePicker
+                    value="{ 
                         path:'modelloNewModel>/data',
                         formatter: '.format.formatData'
                      }"
                     editable="{modelloNewModel>/editable}"
-                    displayFormat="dd/MM/yyyy"/>
+                    displayFormat="dd/MM/yyyy" />
+                <Label text="Tipologia"
+                    required="true" />
+                <Input value="{modelloNewModel>/tipologia}" editable="{modelloNewModel>/editable}" />
                 <Label text="Enti"
                     required="true" />
-
-
+                <!-- tipologia -->
                 <MultiComboBox selectionFinish="filterData"
                     editable="{modelloNewModel>/editable}"
                     showSelectAll="true"
@@ -69,7 +72,8 @@
                 <Label required="true"
                     text="Firmatari" />
 
-                <MultiComboBox editable="{modelloNewModel>/editable}" selectionFinish="getSetLavUser"
+                <MultiComboBox editable="{modelloNewModel>/editable}"
+                    selectionFinish="getSetLavUser"
                     selectedKeys="{modelloNewModel>/firmatari}"
                     items="{
                                 path: 'modelloNewModel>/utentiSelect',
@@ -97,7 +101,7 @@
                     typeMissmatch="handleTypeMissmatch"
                     style="Emphasized"
                     fileType="pdf"
-                    placeholder="Carica File..."/>
+                    placeholder="Carica File..." />
 
             </f:content>
         </f:SimpleForm>
@@ -106,12 +110,12 @@
                 visible="{=${modelloNewModel>/titleDialog}!=='Invio a firma non conformità' ? true : false}"
                 icon="sap-icon://create-form"
                 type="Emphasized"
-                press="creaRevisione"/>
+                press="creaRevisione" />
             <Button text="Crea"
                 visible="{=${modelloNewModel>/titleDialog} ==='Invio a firma non conformità' ? true : false}"
                 icon="sap-icon://create-form"
                 type="Emphasized"
-                press="Updatedraft"/>
+                press="Updatedraft" />
         </buttons>
     </Dialog>
 </c:FragmentDefinition>

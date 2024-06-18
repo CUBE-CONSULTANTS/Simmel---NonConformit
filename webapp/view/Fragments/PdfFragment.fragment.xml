@@ -18,7 +18,7 @@
         </customHeader>
         <PDFViewer 
             isTrustedSource="true" id="PDF"
-            title="Permesso_numero_2.pdf " 
+            title="{modelloDialogFile>/filename}" 
             height="100vh">
             <layoutData>
                 <FlexItemData growFactor="1" />

@@ -1,0 +1,111 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout"
+    xmlns:fb="sap.ui.comp.filterbar"
+    controllerName="flexcollay.controller.GestioneRuoli"
+    height="100%"
+>
+    <!-- <App id="fcl" > -->
+        <Page title="GESTIONE RUOLI"
+            showHeader="true"
+            navButtonPress="navPagPrec"
+            showNavButton="true">
+            <headerContent>
+                <Image src="../public/logo.jpg"
+                    height="22.00000000px"
+                    width="100px"
+                    visible="true"
+                    tooltip="Share" />
+            </headerContent>
+
+            <subHeader>
+                <OverflowToolbar>
+                    <SearchField liveChange=".onSearch" placeholder="Cerca utente"
+                        width="80%" />
+                </OverflowToolbar>
+            </subHeader>
+
+
+            <Table mode="MultiSelect"
+            id="tableUser"
+            items="{
+            templateShareable: false,
+            path: 'modelloListaUtenti>/utenti',
+            grouped: true,
+            sorter: {
+                path: 'nome',  
+                descending: false,
+                group: '.getGroup'
+            },
+            groupHeaderFactory: '.getGroupHeader'
+        }"
+            class="tableProcessate">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <content>
+                        <ToolbarSpacer />
+                        <Button text="Aggiungi"
+                            type="Emphasized"
+                            press="addUser"
+                            icon="sap-icon://add-employee" />
+                        <Button text="Elimina"
+                            press="deleteUser"
+                            type="Neutral"
+                            icon="sap-icon://delete" />
+                    </content>
+                </OverflowToolbar>
+            </headerToolbar>
+
+            <columns>
+                <Column>
+                    <Text text="Nome" />
+                </Column>
+                <Column>
+                    <Text text="Email" />
+                </Column>
+                <Column>
+                    <Text text="Ruoli" />
+                </Column>
+
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <Text text="{modelloListaUtenti>nome}" />
+                        <Input value="{modelloListaUtenti>email}"
+                            width="50%" />
+                        <MultiComboBox selectedKeys="{modelloListaUtenti>ruolo}"
+                            width="70%"
+                            items="{
+                            templateShareable: true,
+                            path: 'modelloGestioneRuoli>/listaRuoli',
+                            sorter: { path: 'nome' }
+                        }">
+
+                            <core:Item key="{modelloGestioneRuoli>nome}"
+                                text="{modelloGestioneRuoli>nome}" />
+
+                        </MultiComboBox>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table> 
+            
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <FlexBox justifyContent="End">
+                    <Button press="onSaveChangeUser"
+                        text="Salva"
+                        type="Emphasized" />
+                    <ToolbarSpacer />
+                </FlexBox>
+            </OverflowToolbar>
+        </footer>
+        </Page>
+    <!-- </App> -->
+</mvc:View>
