@@ -8,8 +8,8 @@ sap.ui.define(["./API"], function (API) {
         getOne: async function ({ nome }) {
             return await API.getEntity({ entity: `/Utenti/getRuoloByName/${nome}` });
         },
-        createFirstModel: async function ({ data }) {
-            return await API.createEntity({ entity: "/Utenti/createFirstModel", data });
+        updateUser: async function ({ data }) {
+            return await API.createEntity({ entity: "/Utenti/updateUser", data });
         },
         createMany: async function ({ data }) {
             return await API.createEntity({ entity: "/Utenti/create", data });

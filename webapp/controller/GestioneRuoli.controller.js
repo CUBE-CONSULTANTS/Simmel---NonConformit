@@ -17,8 +17,9 @@ sap.ui.define([
         },
 
         addUser: function () {
-            if (!this.oDialog) {
-                this.oDialog = new sap.m.Dialog({
+            debugger
+            if (!this.oDialogNewUser) {
+                this.oDialogNewUser = new sap.m.Dialog({
                     contentWidth: "550px",
                     contentHeight: "250px",
                     customHeader: new sap.m.Bar({
@@ -30,7 +31,7 @@ sap.ui.define([
                                 icon: 'sap-icon://decline',
                                 type: 'Emphasized',
                                 press: function (oEvent) {
-                                    this.oDialog.close();
+                                    this.oDialogNewUser.close();
                                 }.bind(this)
                             })
                         ]
@@ -115,8 +116,9 @@ sap.ui.define([
 
             this.getView().getModel("modelloListaUtenti").setProperty("/utenti", utenti)
 
-            let listaRuoli = ["Qualità", 'Ricerca e Sviluppo', "Logistica", "Acquisti", "PM"]
+            let listaRuoli = [{ nome: "Qualità" }, { nome: 'Ricerca e Sviluppo' }, { nome: "Logistica" }, { nome: "Acquisti" }, { nome: "PM" }]
             this.getView().getModel("modelloGestioneRuoli").setProperty("/", { listaRuoli: listaRuoli })
+            debugger
         },
         deleteUser: function (oEvent) {
             let table = this.byId("tableUser")
@@ -191,7 +193,7 @@ sap.ui.define([
                 });
             }
         },
-        navPagPrec:function(){
+        navPagPrec: function () {
 
         },
         onSearch: function (oEvent) {

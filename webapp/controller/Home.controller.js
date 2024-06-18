@@ -210,12 +210,6 @@ sap.ui.define([
                         dialog.getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
                     })
                 } else {
-                    // let promise = data.enti.map(function (oItem) {
-                    //     return new Promise((resolve) => {
-                    //         resolve(Utenti.getOne({ nome: oItem }))
-                    //     })
-                    //     // 
-                    // });
 
                     data.enti.forEach(x => {
                         debugger
@@ -246,13 +240,196 @@ sap.ui.define([
                 debugger
 
             },
+
+            //funzioni per la gestione dei ruoli
             navToGestioneRuoli: function () {
                 debugger
-                sap.ui.core.UIComponent.getRouterFor(this).navTo('GestioneRuoli')
+                let self = this
+                if (!this._DialogRuoli) {
+                    this._DialogRuoli = new sap.ui.core.Fragment.load({
+                        id: this.getView().getId(),
+                        name: "flexcollay.view.GestioneRuoli",
+                        controller: this
+                    }).then(function (oDialog) {
+                        debugger
+                        this._DialogRuoli = oDialog
+                        return oDialog;
+                    }.bind(this));
+                }
+                self._DialogRuoli.then(async function (oDialog) {
+                    debugger
+                    let utenti = await Utenti.getAll()
 
-                let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                // oRouter.navTo("GestioneRuoli");
-                // this.getRouter().navTo("GestioneRuoli");
+                    oDialog.setModel(new sap.ui.model.json.JSONModel(), "modelloListaUtenti")
+                    oDialog.setModel(new sap.ui.model.json.JSONModel(), "modelloGestioneRuoli")
+
+                    oDialog.getModel("modelloListaUtenti").setProperty("/utenti", utenti)
+
+                    let listaRuoli = [{ nome: "Qualità" }, { nome: 'Ricerca e Sviluppo' }, { nome: "Logistica" }, { nome: "Acquisti" }, { nome: "PM" }]
+                    oDialog.getModel("modelloGestioneRuoli").setProperty("/", { listaRuoli: listaRuoli })
+
+                    oDialog.open();
+
+                }.bind(this));
+
+            },
+            addUser: function () {
+                debugger
+                if (!this.oDialogNewUser) {
+                    this.oDialogNewUser = new sap.m.Dialog({
+                        contentWidth: "550px",
+                        contentHeight: "250px",
+                        customHeader: new sap.m.Bar({
+                            contentMiddle: [
+                                new sap.m.Title({ text: "Inserimento nuovo utente" })
+                            ],
+                            contentRight: [
+                                new sap.m.Button({
+                                    icon: 'sap-icon://decline',
+                                    type: 'Emphasized',
+                                    press: function (oEvent) {
+                                        this.oDialogNewUser.destroy();
+                                        this.oDialogNewUser = undefined
+                                    }.bind(this)
+                                })
+                            ]
+                        }),
+                        content: [
+                            new sap.ui.layout.form.SimpleForm({
+                                layout: "ResponsiveGridLayout",
+                                content: [
+                                    new sap.m.Label({ text: "Nome", required: true }),
+                                    new sap.m.Input({ value: "{modelloDialog>/nome}" }),
+                                    new sap.m.Label({ text: "Email", required: true }),
+                                    new sap.m.Input({ value: "{modelloDialog>/email}" }),
+                                    new sap.m.Label({ text: "Ruolo", width: "50%", required: true }),
+                                    new sap.m.MultiComboBox({
+                                        selectedKeys: '{modelloDialog>/ruolo}',
+                                        items: {
+                                            path: "modelloGestioneRuoli>/listaRuoli",
+                                            template: new sap.ui.core.Item({
+                                                key: "{modelloGestioneRuoli>nome}",
+                                                text: "{modelloGestioneRuoli>nome}"
+                                            })
+                                        },
+
+                                    })
+                                ]
+                            })
+                        ],
+                        endButton: new sap.m.Button({
+                            text: "OK",
+                            type: 'Emphasized',
+                            press: function (oEvent) {
+                                let valoriInseriti = oEvent.getSource().getParent().getModel("modelloDialog").getProperty("/")
+                                if (Object.keys(valoriInseriti).find(x => valoriInseriti[x] === null || valoriInseriti[x].length == 0) !== undefined) {
+                                    sap.m.MessageBox.error("Inserire tutti i campi");
+                                } else {
+                                    sap.m.MessageBox.confirm(
+                                        "Sei sicuro di voler creare un nuovo utente?", {
+                                        icon: sap.m.MessageBox.Icon.INFORMATION,
+                                        title: "Creazione utente",
+                                        actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                                        emphasizedAction: sap.m.MessageBox.Action.YES,
+                                        onClose: function (oAction) {
+                                            if (oAction == 'YES') {
+                                                this._DialogRuoli.getModel("modelloListaUtenti").getProperty("/utenti").push(valoriInseriti);
+                                                this._DialogRuoli.getModel("modelloListaUtenti").updateBindings();
+                                            }
+                                            this.oDialogNewUser.destroy();
+                                        }.bind(this)
+                                    })
+
+                                }
+                            }.bind(this)
+                        }),
+                        beginButton: new sap.m.Button({
+                            text: "Annulla",
+                            press: function () {
+                                this.oDialogNewUser.destroy();
+                            }.bind(this)
+                        })
+                    });
+
+                    // Add dialog to the root view
+                    this.getView().addDependent(this.oDialog);
+                }
+                debugger
+                this.oDialogNewUser.setModel(new sap.ui.model.json.JSONModel(), "modelloDialog")
+                this.oDialogNewUser.setModel(new sap.ui.model.json.JSONModel(), "modelloGestioneRuoli")
+                this.oDialogNewUser.getModel("modelloDialog").setProperty("/", {
+                    nome: null,
+                    email: null,
+                    ruolo: [],
+                    flag: "I"
+
+
+                })
+                let listaRuoli = [{ nome: "Qualità" }, { nome: 'Ricerca e Sviluppo' }, { nome: "Logistica" }, { nome: "Acquisti" }, { nome: "PM" }]
+                this.oDialogNewUser.getModel("modelloGestioneRuoli").setProperty("/", { listaRuoli: listaRuoli })
+                this.oDialogNewUser.open();
+            },
+            deleteUser: function (oEvent) {
+                let table = this.byId("tableUser")
+                let dialog = oEvent.getSource().getParent().getParent().getParent() ///attenzione
+                const oModel = dialog.getModel("modelloListaUtenti")
+                const oData = oModel.getProperty("/utenti")
+                const aSelectedIndices = table.getSelectedItems()
+                if (aSelectedIndices.length === 0) {
+                    sap.m.MessageBox.error('Selezionare almeno una riga')
+                } else {
+                    sap.m.MessageBox.confirm(
+                        "Sei sicuro di voler eliminare gli utenti selezionati?", {
+                        icon: sap.m.MessageBox.Icon.INFORMATION,
+                        title: "Conferma cancellazione",
+                        actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                        emphasizedAction: sap.m.MessageBox.Action.YES,
+                        onClose: function (oAction) {
+                            if (oAction == 'YES') {
+                                let indexElementRemove = [], arrayDelete = []
+                                aSelectedIndices.forEach(x => {
+                                    let obj = x.getBindingContext("modelloListaUtenti").getObject()
+                                    let index = oData.findIndex(x => x.nome == obj.nome)
+                                    if (index != -1) {
+                                        indexElementRemove.push(index)
+                                    }
+                                })
+                                indexElementRemove.sort((a, b) => b - a);
+
+
+                                indexElementRemove.forEach(indice => {
+                                    arrayDelete.push(oData[indice])
+                                    oData.splice(indice, 1);
+
+                                });
+                                aSelectedIndices.forEach(x => x.setSelected(false))
+                                dialog.getModel("modelloListaUtenti").setProperty("/utentiCancellati", arrayDelete)
+                                dialog.getModel("modelloListaUtenti").updateBindings()
+
+
+                            }
+                        }.bind(this)
+                    }
+                    );
+                }
+            },
+
+
+            onSaveChangeUser: async function (oEvent) {
+                let dataob = this._DialogRuoli.getModel("modelloListaUtenti").getData()
+
+                debugger
+                await Utenti.updateUser({ data: [dataob] })
+                sap.m.MessageBox.success("Salvataggio avvenuto con successo", {
+                    title: "Salvataggio",
+                    actions: [sap.m.MessageBox.Action.OK],
+                    emphasizedAction: sap.m.MessageBox.Action.OK,
+                    onClose: function (oAction) {
+                        // this.navPagPrec()
+                        this._DialogRuoli.destroy()
+                        this._DialogRuoli = undefined;
+                    }.bind(this)
+                });
 
             },
 
