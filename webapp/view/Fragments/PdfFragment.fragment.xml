@@ -9,7 +9,7 @@
         titleAlignment="Center">
         <customHeader>
             <Toolbar>
-                <Title text="Creazione modello non conformità" />
+                <Title text="Allegato" />
                 <ToolbarSpacer />
                 <Button icon="sap-icon://decline"
                     type="Emphasized"

@@ -88,7 +88,7 @@
                 <unified:FileUploader name="myFileUpload"
                     id="myFileUpload"
                     width="100%"
-                    uploadUrl='http://localhost:3404/upload/NonConformit/1'
+                    uploadUrl='http://localhost:51531/upload/NonConformit/1'
                     tooltip="Upload your file to the local server"
                     uploadComplete="handleUploadComplete"
                     change="handleChangeFile"

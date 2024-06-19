@@ -4,7 +4,7 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:unified="sap.ui.unified">
 
-    <OverflowToolbar visible="{=${modelloAppoggio>/elemento_selezionato/stato}!=='In fase di firma' ? false : true}">
+    <OverflowToolbar >
         <Button type="Reject"
             icon="sap-icon://decline"
             press="AlertDialog"
@@ -16,8 +16,8 @@
         <ToolbarSpacer/>
         <Button type="Accept"
             press="AlertDialog"
-            icon="sap-icon://accept"
-            text="Accetta">
+            icon="sap-icon://signature"
+            text="Firma">
             <customData>
                 <c:CustomData key="Accept"/>
             </customData>

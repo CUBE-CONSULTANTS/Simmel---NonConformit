@@ -4,7 +4,9 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:unified="sap.ui.unified">
 
-    <OverflowToolbar visible="{=${modelloAppoggio>/elemento_selezionato/stato} === 'Bloccato'  ? true : false}">
+    <!-- visible="{=${modelloAppoggio>/elemento_selezionato/stato} === 'Bloccato'  ? true : false}" -->
+    <OverflowToolbar >
+       
         <ToolbarSpacer />
         <Button type="Success"
             visible="true"

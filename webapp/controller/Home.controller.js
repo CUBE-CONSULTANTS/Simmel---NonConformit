@@ -29,20 +29,13 @@ sap.ui.define([
 
             },
             createModel: async function () {
-                let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
-                let nome = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
-                debugger
-                let data = await Revisioni.getAll({ ruolo, nome })
+                //debugger
                 let arrayPromise = []
                 //
-                this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
-                data.map((x, index, data) => data[index].data_ora = this.format.formatData(x.data_ora))
-
-                this.getView().getModel("modelloDatiNode").setProperty("/", data)
-
+                this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
                 arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll())))
                 Promise.all(arrayPromise).then(results => {
-                    debugger
+                    //debugger
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ utenti: results[0] }), "modello")
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({
                         creatore: null,
@@ -52,10 +45,11 @@ sap.ui.define([
                         tipologia: null
                     }), "modelloFilter")
                 })
+                await this.renderModelDatiNode()
 
             },
             handleNavigateToMidColumnPress: function (oEvent) {
-                debugger
+                //debugger
 
                 let obj = oEvent.getSource().getBindingContext("modelloDatiNode").getObject()
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
@@ -63,12 +57,11 @@ sap.ui.define([
                 else {
                     debugger
                     this.bus.publish("flexible", "setDetailPage")
-                    // this.bus.publish("flexible", "setDetailPage");
                 }
             },
 
             getGroupHeaderMultiCombobox: function (oGroup) {
-                debugger
+                //debugger
                 return new sap.ui.core.SeparatorItem({
                     text: oGroup.key
                 });
@@ -76,7 +69,7 @@ sap.ui.define([
 
             createModelloNonConf: async function (oEvent) {
                 await this.getSetLavUser(oEvent)
-                debugger
+                //debugger
                 let filename = this.getFileName(),
                     oFileUploader = this.byId("myFileUpload"),
                     stato
@@ -106,7 +99,7 @@ sap.ui.define([
 
                 }
                 let id = await ModelNonConf.createFirstModel({ data })
-                
+
                 await Revisioni.sendEmail({ id: id[0].id })
                 oEvent.getSource().getParent().getModel("modelloNewModel").setData()
                 oEvent.getSource().getParent().close()
@@ -114,7 +107,7 @@ sap.ui.define([
 
             },
             filterData: function (oEvent) {
-                debugger
+                //debugger
                 let modello = oEvent.getSource().oPropagatedProperties.oModels.modelloNewModel,
                     entiSelezionati = modello.getProperty("/entiSelezionati"),
                     listaUtenti = modello.getProperty("/listaUtenti").filter(x => entiSelezionati.includes(x.ruolo))
@@ -138,7 +131,7 @@ sap.ui.define([
             },
             onSearch: function (evt) {
                 let arr = []
-                debugger
+                //debugger
                 let model = this.getView().getModel("modelloFilter")
                 let datainizio = model.getProperty("/datainizio")
                 let datafine = model.getProperty("/datafine")
@@ -159,14 +152,14 @@ sap.ui.define([
                     arr.push(new sap.ui.model.Filter(
                         "creatore",
                         FilterOperator.Contains,
-                        creatore
+                        creatore.trim()
                     ))
                 }
                 if (tipologia) {
                     arr.push(new sap.ui.model.Filter(
                         "tipologia",
                         FilterOperator.Contains,
-                        tipologia
+                        tipologia.trim()
                     ))
                 }
                 if (stato) {
@@ -207,13 +200,13 @@ sap.ui.define([
                             acc[key].push(item[key]);
                             return acc;
                         }, {});
-                        debugger
+                        //debugger
                         dialog.getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
                     })
                 } else {
 
                     data.enti.forEach(x => {
-                        debugger
+                        //debugger
                         aSettoriLavorativi.push({ nome: '', firmato: false, settore_lavorativo: x[0].ruolo });
                     })
                     const groupedData = aSettoriLavorativi.reduce((acc, item) => {
@@ -224,7 +217,7 @@ sap.ui.define([
                         acc[key].push(item[key]);
                         return acc;
                     }, {});
-                    debugger
+                    //debugger
                     return dialog.getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
 
                 }
@@ -238,13 +231,13 @@ sap.ui.define([
                 await ModelNonConf.updateModelAndRev({ id, data: model, objrev: elemento_selezionato })
                 dialog.close();
                 this.createModel()
-                debugger
+                //debugger
 
             },
 
             //funzioni per la gestione dei ruoli
             navToGestioneRuoli: function () {
-                debugger
+                //debugger
                 let self = this
                 if (!this._DialogRuoli) {
                     this._DialogRuoli = new sap.ui.core.Fragment.load({
@@ -252,13 +245,13 @@ sap.ui.define([
                         name: "flexcollay.view.GestioneRuoli",
                         controller: this
                     }).then(function (oDialog) {
-                        debugger
+                        //debugger
                         this._DialogRuoli = oDialog
                         return oDialog;
                     }.bind(this));
                 }
                 self._DialogRuoli.then(async function (oDialog) {
-                    debugger
+                    //debugger
                     let utenti = await Utenti.getAll()
 
                     oDialog.setModel(new sap.ui.model.json.JSONModel(), "modelloListaUtenti")
@@ -275,7 +268,7 @@ sap.ui.define([
 
             },
             addUser: function () {
-                debugger
+                //debugger
                 if (!this.oDialogNewUser) {
                     this.oDialogNewUser = new sap.m.Dialog({
                         contentWidth: "550px",
@@ -338,6 +331,7 @@ sap.ui.define([
                                                 this._DialogRuoli.getModel("modelloListaUtenti").updateBindings();
                                             }
                                             this.oDialogNewUser.destroy();
+                                            this.oDialogNewUser = undefined
                                         }.bind(this)
                                     })
 
@@ -348,14 +342,15 @@ sap.ui.define([
                             text: "Annulla",
                             press: function () {
                                 this.oDialogNewUser.destroy();
+                                this.oDialogNewUser = undefined
                             }.bind(this)
                         })
                     });
 
-                    // Add dialog to the root view
-                    this.getView().addDependent(this.oDialog);
+                    // // Add dialog to the root view
+                    // this.getView().addDependent(this.oDialog);
                 }
-                debugger
+                //debugger
                 this.oDialogNewUser.setModel(new sap.ui.model.json.JSONModel(), "modelloDialog")
                 this.oDialogNewUser.setModel(new sap.ui.model.json.JSONModel(), "modelloGestioneRuoli")
                 this.oDialogNewUser.getModel("modelloDialog").setProperty("/", {
@@ -419,7 +414,7 @@ sap.ui.define([
             onSaveChangeUser: async function (oEvent) {
                 let dataob = this._DialogRuoli.getModel("modelloListaUtenti").getData()
 
-                debugger
+                //debugger
                 await Utenti.updateUser({ data: [dataob] })
                 sap.m.MessageBox.success("Salvataggio avvenuto con successo", {
                     title: "Salvataggio",

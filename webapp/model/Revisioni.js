@@ -48,6 +48,8 @@ sap.ui.define(["./API"], function (API) {
         sendEmail: async function ({ id }) {
             return await API.getEntitySet({ entity: `/Revisioni/sendEmail/${id}` });
         },
-
+        setVisibilityByStateAndSignature: async function ({ id, user }) {
+            return await API.getEntitySet({ entity: `/Revisioni/setVisibilityByStateAndSignature/${id}/${user}` });
+        },
     };
 });

@@ -16,19 +16,7 @@
                     press="closeDialog" />
             </Toolbar>
         </customHeader>
-        <!-- <App id="fcl" > -->
-        <!-- <Page title="GESTIONE RUOLI"
-            showHeader="true"
-            navButtonPress="navPagPrec"
-            showNavButton="true">
-            <headerContent>
-                <Image src="../public/logo.jpg"
-                    height="22.00000000px"
-                    width="100px"
-                    visible="true"
-                    tooltip="Share" />
-            </headerContent>
--->
+     
         <subHeader>
             <OverflowToolbar>
                 <SearchField liveChange=".onSearchField" placeholder="Cerca utente"
@@ -68,7 +56,7 @@
             </headerToolbar>
 
             <columns>
-                <Column>
+                <Column  autoPopinWidth="5">
                     <Text text="Nome" />
                 </Column>
                 <Column>
@@ -84,9 +72,9 @@
                     <cells>
                         <Text text="{modelloListaUtenti>nome}" />
                         <Input value="{modelloListaUtenti>email}"
-                            width="50%" />
+                            />
                         <ComboBox selectedKey="{modelloListaUtenti>ruolo}"
-                            width="70%"
+                           
                             items="{
                             templateShareable: true,
                             path: 'modelloGestioneRuoli>/listaRuoli',
@@ -114,6 +102,4 @@
         </footer>
     </Dialog>
 
-    <!-- </Page> -->
-    <!-- </App> -->
 </core:FragmentDefinition>

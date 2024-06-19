@@ -99,7 +99,7 @@
                                                     text="In fase di firma" />
                                                 <core:Item key="Bloccato"
                                                     text="Bloccato" />
-                                                <core:Item key="Firmato "
+                                                <core:Item key="Firmato"
                                                     text="Firmato" />
                                                 <core:Item key="Chiuso"
                                                     text="Chiuso" />

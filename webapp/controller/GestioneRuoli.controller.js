@@ -9,7 +9,7 @@ sap.ui.define([
 
     return BaseController.extend("flexcollay.controller.GestioneRuoli", {
         onInit: function () {
-            debugger
+            //debugger
             this.getOwnerComponent()
                 .getRouter()
                 .getRoute("GestioneRuoli")
@@ -17,7 +17,7 @@ sap.ui.define([
         },
 
         addUser: function () {
-            debugger
+            //debugger
             if (!this.oDialogNewUser) {
                 this.oDialogNewUser = new sap.m.Dialog({
                     contentWidth: "550px",
@@ -118,7 +118,7 @@ sap.ui.define([
 
             let listaRuoli = [{ nome: "Qualità" }, { nome: 'Ricerca e Sviluppo' }, { nome: "Logistica" }, { nome: "Acquisti" }, { nome: "PM" }]
             this.getView().getModel("modelloGestioneRuoli").setProperty("/", { listaRuoli: listaRuoli })
-            debugger
+            //debugger
         },
         deleteUser: function (oEvent) {
             let table = this.byId("tableUser")

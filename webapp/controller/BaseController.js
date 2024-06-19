@@ -1,12 +1,24 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", "../model/Revisioni", "../model/Utenti", 'sap/ui/model/FilterOperator'
+    "sap/ui/core/mvc/Controller", "../model/Revisioni", "../model/Utenti", 'sap/ui/model/FilterOperator', 'sap/m/MessageToast', "sap/ui/core/Fragment",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, Revisioni, Utenti, FilterOperator) {
+    function (Controller, Revisioni, Utenti, FilterOperator, MessageToast, Fragment) {
         "use strict";
         return Controller.extend("project1.controller.BaseController", {
+            //funzione per ripopolare il modello della tabella principale aggiornato
+            renderModelDatiNode: async function () {
+                let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
+                let nome = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
+                let data = await Revisioni.getAll({ ruolo, nome })
+                // debugger
+                data.map((x, index, data) => data[index].data_ora = this.format.formatData(x.data_ora))
+                this.getOwnerComponent().getModel("modelloDatiNode").setProperty("/", data)
+            },
+
+
+
             openDialogShowPDF: function (oEvent) {
                 let self = this
                 //differenziare con il custom data
@@ -16,7 +28,7 @@ sap.ui.define([
                         name: "flexcollay.view.Fragments.PdfFragment",
                         controller: this
                     }).then(function (oDialog) {
-                        debugger
+                        //debugger
                         return oDialog;
                     });
                 }
@@ -26,7 +38,7 @@ sap.ui.define([
                     oEvent.getSource().getCustomData()[0].getKey() === 'TabellaHome'
                         ? file = oEvent.getSource().getBindingContext("modelloDatiNode").getObject("pdfname")
                         : file = this.getView().getModel("modelloAppoggio").getProperty("/elemento_selezionato/pdfname")
-                    this.byId("PDF").setSource(`http://localhost:3404/NonConformit/1/${file}.pdf`)
+                    this.byId("PDF").setSource(`http://localhost:51531/NonConformit/1/${file}.pdf`)
                     oDialog.setModel(new sap.ui.model.json.JSONModel({ filename: file }), "modelloDialogFile")
                     oDialog.open();
 
@@ -38,15 +50,11 @@ sap.ui.define([
             openDialogCreaModello: async function (oEvent, elemento_selezionato) {
                 let self = this, obj,
                     arrayPromise = []
-                // debugger
-                // let call = await fetch("../model/modelloDatiMock.json")
-                // let oggetto = await call.json()
-                // console.log(oggetto)
-                // // debugger
+                
                 arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll())))
                 Promise.all(arrayPromise).then(results => {
                     self.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ utenti: results[0] }), "modello")
-                    debugger
+                    //debugger
                     elemento_selezionato !== undefined ? obj = {
                         titolo: elemento_selezionato.titolo,
                         data: new Date(),
@@ -68,7 +76,7 @@ sap.ui.define([
                             name: "flexcollay.view.Fragments.creaModello",
                             controller: this
                         }).then(function (oDialog) {
-                            debugger
+                            //debugger
                             return oDialog;
                         });
                     }
@@ -152,6 +160,10 @@ sap.ui.define([
                 }
                 await Revisioni.createOne({ data: copyObj })
                 oEvent.getSource().getParent().destroy()
+                this.handleNavigateToTable()
+
+                //ricarico i dati aggiornati nella tabella principale
+                this.renderModelDatiNode()
             },
 
 
@@ -177,6 +189,127 @@ sap.ui.define([
                 var oList = this.byId("tableUser");
                 var oBinding = oList.getBinding("items");
                 oBinding.filter(aFilters, "Application");
-            }
+            },
+
+            //prova
+            AlertDialog: function (oEvent) {
+                //debugger
+                let key = oEvent.getSource().getCustomData()[0].getKey(),
+                    descrizione = null
+                key == "Reject" ? this.dialogReject(this, descrizione) : this.dialogConferma(this, descrizione, key)
+
+            },
+            dialogReject: function (self, descrizione) {
+                if (!this.oDefaultMessageDialog) {
+                    this.oDefaultMessageDialog = new sap.m.Dialog({
+                        type: sap.m.DialogType.Message,
+                        title: "Rifiuta",
+                        content: [
+                            new sap.m.VBox({
+                                items: [
+                                    new sap.m.Text({
+                                        text: "Sei sicuro di voler rifiutare?"
+                                    }),
+                                    new sap.m.VBox({
+                                        width: "auto",
+                                        alignItems: sap.m.FlexAlignItems.Baseline,
+                                        items: [
+                                            new sap.m.Label({
+                                                text: "Note"
+                                            }),
+                                            new sap.m.TextArea({
+                                                value: "{modelloDialog>/data}",
+                                                width: "260px"
+                                            })
+                                        ]
+                                    })
+                                ]
+                            })
+                        ],
+                        beginButton: new sap.m.Button({
+                            type: sap.m.ButtonType.Emphasized,
+                            text: "Si",
+                            press: async function () {
+                                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato"),
+                                    notaAggiuntiva = this.oDefaultMessageDialog.getModel("modelloDialog").getProperty("/data"),
+                                    nomeutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
+                                    date = new Date()
+                                let objNote = [{
+                                    nota: notaAggiuntiva,
+                                    utente: nomeutente,
+                                    data: date
+                                }]
+                                let settoreutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
+
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
+
+                                this.oDefaultMessageDialog.close();
+                                MessageToast.show("Salvataggio avvenuto con successo")
+                                this.handleNavigateToTable()
+
+                                //ricarico i dati aggiornati nella tabella principale
+                                this.renderModelDatiNode()
+
+                            }.bind(this)
+                        }),
+                        endButton: new sap.m.Button({
+                            type: sap.m.ButtonType.Emphasized,
+                            text: "No",
+                            press: function () {
+                                this.oDefaultMessageDialog.close();
+                            }.bind(this)
+                        })
+                    })
+                }
+                this.oDefaultMessageDialog.setModel(new sap.ui.model.json.JSONModel({
+                    self: self,
+                    data: descrizione
+                }), "modelloDialog")
+                this.oDefaultMessageDialog.open();
+            },
+            dialogConferma: function (self, descrizione, key) {
+                new sap.m.MessageBox.show(
+                    "Sei sicuro di voler confermare?", {
+                    icon: sap.m.MessageBox.Icon.SUCCESS,
+                    title: "Salvataggio",
+                    content: [key, self],
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    emphasizedAction: sap.m.MessageBox.Action.YES,
+                    onClose: async function (sAction) {
+                        //debugger
+                        let self = this.content[1]
+                        if (sAction == 'YES') {
+                            let elemento_selezionato = self.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                            if (this.content[0] === 'Chiusura') {
+                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso' })
+                                this.onClose()
+                                MessageToast.show("Salvataggio avvenuto con successo")
+                                self.handleNavigateToTable()
+                            } else {
+                                //debugger
+                                let nomeutente = self.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
+                                let settoreutente = self.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
+
+                                let objNote = [{
+                                    nota: 'Firmato',
+                                    utente: nomeutente,
+                                    data: new Date()
+                                }]
+
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: true, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
+                                this.onClose()
+                                MessageToast.show("Salvataggio avvenuto con successo")
+                                self.handleNavigateToTable()
+                                //ricarico i dati aggiornati nella tabella principale
+                                this.renderModelDatiNode()
+                            }
+
+                        } else {
+                            this.onClose()
+                        }
+                    }
+                }
+                );
+            },
         })
     })
