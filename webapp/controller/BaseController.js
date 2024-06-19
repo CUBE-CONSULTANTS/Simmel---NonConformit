@@ -1,10 +1,13 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", "../model/Revisioni", "../model/Utenti", 'sap/ui/model/FilterOperator', 'sap/m/MessageToast', "sap/ui/core/Fragment",
+    "sap/ui/core/mvc/Controller", "../model/Revisioni",
+    "../model/Utenti", 'sap/ui/model/FilterOperator',
+    'sap/m/MessageToast', "sap/ui/core/Fragment",
+    "../model/Enti"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, Revisioni, Utenti, FilterOperator, MessageToast, Fragment) {
+    function (Controller, Revisioni, Utenti, FilterOperator, MessageToast, Fragment, Enti) {
         "use strict";
         return Controller.extend("project1.controller.BaseController", {
             //funzione per ripopolare il modello della tabella principale aggiornato
@@ -12,13 +15,9 @@ sap.ui.define([
                 let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
                 let nome = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
                 let data = await Revisioni.getAll({ ruolo, nome })
-                // debugger
                 data.map((x, index, data) => data[index].data_ora = this.format.formatData(x.data_ora))
                 this.getOwnerComponent().getModel("modelloDatiNode").setProperty("/", data)
             },
-
-
-
             openDialogShowPDF: function (oEvent) {
                 let self = this
                 //differenziare con il custom data
@@ -50,11 +49,12 @@ sap.ui.define([
             openDialogCreaModello: async function (oEvent, elemento_selezionato) {
                 let self = this, obj,
                     arrayPromise = []
-                
+
                 arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll())))
+                arrayPromise.push(new Promise((resolve) => resolve(Enti.getAll())))
+
                 Promise.all(arrayPromise).then(results => {
                     self.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ utenti: results[0] }), "modello")
-                    //debugger
                     elemento_selezionato !== undefined ? obj = {
                         titolo: elemento_selezionato.titolo,
                         data: new Date(),
@@ -65,7 +65,7 @@ sap.ui.define([
                         firmatari: null,
                         filename: null,
                         enti_firmatari: null,
-                        enti: ["Qualità", 'Ricerca e Sviluppo', "Logistica", "Acquisti", "PM"],
+                        enti: results[1].map(x => x.nome),
                         entiSelezionati: null,
                         listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),
                         utentiSelect: self.getView().getModel("modello").getProperty("/utenti")
@@ -118,7 +118,7 @@ sap.ui.define([
 
 
             openDialogCreaRevisione: function (oEvent, elemento_selezionato, state) {
-                let self = this, obj
+                let self = this, obj, arrayPromise = []
                 obj = {
                     titleDialog: state === 'Review' ? 'Invio a firma non conformità' : "Creazione revisione non conformità",
                     titolo: elemento_selezionato.titolo,
@@ -129,33 +129,42 @@ sap.ui.define([
                     editable: state === 'Review' ? true : false,
                     tipologia: elemento_selezionato.tipologia || null
                 }
-                obj['enti'] = ["Qualità", 'Ricerca e Sviluppo', "Logistica", "Acquisti", "PM"],
-                    obj['listaUtenti'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
-                obj['utentiSelect'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
-                if (!this._dialogRevisioni) {
-                    this._dialogRevisioni = new sap.ui.core.Fragment.load({
-                        id: this.getView().getId(),
-                        name: "flexcollay.view.Fragments.creaRevisione",
-                        controller: this
-                    }).then(function (oDialog) {
-                        return oDialog;
-                    });
-                }
-                self._dialogRevisioni.then(async function (oDialog) {
-                    oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
-                    oDialog.open();
+                arrayPromise.push(new Promise((resolve) => resolve(Enti.getAll())))
+                Promise.all(arrayPromise).then(results => {
+                    obj['enti'] = results[0].map(x => x.nome),
+                        obj['listaUtenti'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
+                    obj['utentiSelect'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
+                    if (!this._dialogRevisioni) {
+                        this._dialogRevisioni = new sap.ui.core.Fragment.load({
+                            id: this.getView().getId(),
+                            name: "flexcollay.view.Fragments.creaRevisione",
+                            controller: this
+                        }).then(function (oDialog) {
+                            return oDialog;
+                        });
+                    }
+                    self._dialogRevisioni.then(async function (oDialog) {
+                        oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
+                        oDialog.open();
 
-                }.bind(this));
+                    }.bind(this));
+                })
             },
             creaRevisione: async function (oEvent) {
                 let filename = this.getFileName()
                 let oggettoSelezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+
+                oggettoSelezionato.enti.entiSelezionati.forEach(ente => {
+                    ente.firmato = false;
+                });
                 let copyObj = {
                     id_nonconf: oggettoSelezionato.id_nonconf,
                     data_ora: new Date(),
                     pdfname: filename,
                     stato: 'In fase di firma',
                     enti: oggettoSelezionato.enti
+
+                    // enti: oggettoSelezionato.enti
 
                 }
                 await Revisioni.createOne({ data: copyObj })

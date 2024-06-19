@@ -5,9 +5,9 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
     "sap/ui/Device",
-    "flexcollay/model/models", "sap/ui/core/IconPool"
+    "flexcollay/model/models", "sap/ui/core/IconPool", "./model/Utenti"
 ],
-    function (UIComponent, Device, models, IconPool) {
+    function (UIComponent, Device, models, IconPool, Utenti) {
         "use strict";
 
         return UIComponent.extend("flexcollay.Component", {
@@ -53,15 +53,21 @@ sap.ui.define([
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
                 this.setModel(new sap.ui.model.json.JSONModel(), "modelloAppoggio");
-                let obj = {
-                    nome: "Cellacchi Anthea",
-                    email: "marcorossi@gmail.com",
-                    settore: "Qualità"
-                    // settore: "Produzione"
-                    // settore: "Responsabile"
 
-                }
-                this.setModel(new sap.ui.model.json.JSONModel(obj), "modelloRuolo");
+                let nome = 'Anthea Cellacchi'
+                let arrayPromise = [new Promise((resolve) => {
+                    resolve(Utenti.getInfoUserLog({ nome }))
+                })]
+                Promise.all(arrayPromise).then(results => {
+                    let obj = {
+                        nome: results[0][0].nome,
+                        email: results[0][0].email,
+                        settore: results[0][0].ruolo
+                    }
+                    this.setModel(new sap.ui.model.json.JSONModel(obj), "modelloRuolo");
+                    debugger
+                })
+
             }
         });
     }

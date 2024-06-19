@@ -175,7 +175,7 @@ sap.ui.define([
                 var dialog = oEvent.getSource().getParent()
                 let data = dialog.getModel("modelloNewModel").getData()
 
-                var aSelectedItems = data.firmatari
+                var aSelectedItems = data.firmatari && data.firmatari.filter(x => x != '')
 
                 var aSettoriLavorativi = [];
 
@@ -205,9 +205,9 @@ sap.ui.define([
                     })
                 } else {
 
-                    data.enti.forEach(x => {
+                    data.entiSelezionati.forEach(x => {
                         //debugger
-                        aSettoriLavorativi.push({ nome: '', firmato: false, settore_lavorativo: x[0].ruolo });
+                        aSettoriLavorativi.push({ nome: '', firmato: false, settore_lavorativo: x });
                     })
                     const groupedData = aSettoriLavorativi.reduce((acc, item) => {
                         const key = Object.keys(item)[0];
