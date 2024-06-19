@@ -1,10 +1,10 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", "../model/Revisioni","../model/Utenti"
+    "sap/ui/core/mvc/Controller", "../model/Revisioni", "../model/Utenti", 'sap/ui/model/FilterOperator'
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, Revisioni,Utenti) {
+    function (Controller, Revisioni, Utenti, FilterOperator) {
         "use strict";
         return Controller.extend("project1.controller.BaseController", {
             openDialogShowPDF: function (oEvent) {
@@ -57,7 +57,7 @@ sap.ui.define([
                         firmatari: null,
                         filename: null,
                         enti_firmatari: null,
-                        enti: ["Qualità",'Ricerca e Sviluppo',"Logistica", "Acquisti", "PM"],
+                        enti: ["Qualità", 'Ricerca e Sviluppo', "Logistica", "Acquisti", "PM"],
                         entiSelezionati: null,
                         listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),
                         utentiSelect: self.getView().getModel("modello").getProperty("/utenti")
@@ -121,7 +121,7 @@ sap.ui.define([
                     editable: state === 'Review' ? true : false,
                     tipologia: elemento_selezionato.tipologia || null
                 }
-                obj['enti'] = ["Qualità",'Ricerca e Sviluppo',"Logistica", "Acquisti", "PM"],
+                obj['enti'] = ["Qualità", 'Ricerca e Sviluppo', "Logistica", "Acquisti", "PM"],
                     obj['listaUtenti'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
                 obj['utentiSelect'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
                 if (!this._dialogRevisioni) {
@@ -167,5 +167,16 @@ sap.ui.define([
                     this._dialogRevisioni = null;
                 }
             },
+            onSearchField: function (oEvent) {
+                var aFilters = [];
+                var sQuery = oEvent.getSource().getValue();
+                if (sQuery && sQuery.length > 0) {
+                    var filter = new sap.ui.model.Filter("nome", FilterOperator.Contains, sQuery);
+                    aFilters.push(filter);
+                }
+                var oList = this.byId("tableUser");
+                var oBinding = oList.getBinding("items");
+                oBinding.filter(aFilters, "Application");
+            }
         })
     })

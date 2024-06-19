@@ -94,7 +94,6 @@ sap.ui.define([
                 });
                 sap.m.MessageToast.show("Creazione avvenuta con successo") //aggiustare
                 let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
-                debugger
                 let data = {
                     TITOLO: obj.titolo,
                     CREATORE: this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
@@ -106,7 +105,9 @@ sap.ui.define([
                     NOTE: {}
 
                 }
-                await ModelNonConf.createFirstModel({ data })
+                let id = await ModelNonConf.createFirstModel({ data })
+                
+                await Revisioni.sendEmail({ id: id[0].id })
                 oEvent.getSource().getParent().getModel("modelloNewModel").setData()
                 oEvent.getSource().getParent().close()
                 this.createModel()
@@ -303,8 +304,8 @@ sap.ui.define([
                                     new sap.m.Label({ text: "Email", required: true }),
                                     new sap.m.Input({ value: "{modelloDialog>/email}" }),
                                     new sap.m.Label({ text: "Ruolo", width: "50%", required: true }),
-                                    new sap.m.MultiComboBox({
-                                        selectedKeys: '{modelloDialog>/ruolo}',
+                                    new sap.m.ComboBox({
+                                        selectedKey: '{modelloDialog>/ruolo}',
                                         items: {
                                             path: "modelloGestioneRuoli>/listaRuoli",
                                             template: new sap.ui.core.Item({

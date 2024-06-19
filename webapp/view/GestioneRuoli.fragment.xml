@@ -28,13 +28,13 @@
                     visible="true"
                     tooltip="Share" />
             </headerContent>
-
-            <subHeader>
-                <OverflowToolbar>
-                    <SearchField liveChange=".onSearch" placeholder="Cerca utente"
-                        width="80%" />
-                </OverflowToolbar>
-            </subHeader> -->
+-->
+        <subHeader>
+            <OverflowToolbar>
+                <SearchField liveChange=".onSearchField" placeholder="Cerca utente"
+                    width="80%" />
+            </OverflowToolbar>
+        </subHeader>
 
 
         <Table mode="MultiSelect"
@@ -85,7 +85,7 @@
                         <Text text="{modelloListaUtenti>nome}" />
                         <Input value="{modelloListaUtenti>email}"
                             width="50%" />
-                        <MultiComboBox selectedKeys="{modelloListaUtenti>ruolo}"
+                        <ComboBox selectedKey="{modelloListaUtenti>ruolo}"
                             width="70%"
                             items="{
                             templateShareable: true,
@@ -96,7 +96,7 @@
                             <core:Item key="{modelloGestioneRuoli>nome}"
                                 text="{modelloGestioneRuoli>nome}" />
 
-                        </MultiComboBox>
+                        </ComboBox>
                     </cells>
                 </ColumnListItem>
             </items>
