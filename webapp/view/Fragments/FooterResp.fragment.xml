@@ -4,11 +4,7 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:unified="sap.ui.unified">
 
-    <OverflowToolbar 
-    visible="{parts:[
-    {path:'modelloAppoggio>/elemento_selezionato'},
-    {value:'Qualità'}
-    ], formatter:'.setVisibleFooter'}">
+    <OverflowToolbar>
         <ToolbarSpacer />
         <Button type="Success"
             press="AlertDialog"

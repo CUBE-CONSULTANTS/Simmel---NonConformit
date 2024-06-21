@@ -55,7 +55,7 @@
                     items="{
                             path: 'modelloNewModel>/enti',
                             sorter: {
-                                path: 'modelloNewModel>settore_lavorativo',
+                                path: 'settore_lavorativo',
                                 descending: false,
                                 group: true
                             },
@@ -68,12 +68,12 @@
                 <Label required="true"
                     text="Firmatari"
                     visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}" />
-                <MultiComboBox
+                <MultiComboBox  
                     visible="{=${modelloNewModel>/entiSelezionati} !== null ? true : false}"
                     items="{
                             path: 'modelloNewModel>/utentiSelect',
                             sorter: {
-                                path: 'modelloNewModel>ruolo',
+                                path: 'ruolo',
                                 descending: false,
                                 group: true
                             },

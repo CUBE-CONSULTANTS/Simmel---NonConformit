@@ -28,6 +28,9 @@ sap.ui.define([
                 this.createModel()
 
             },
+            onFormat: function (oEvent) {
+
+            },
             createModel: async function () {
                 //debugger
                 let arrayPromise = []
@@ -61,14 +64,15 @@ sap.ui.define([
             },
 
             getGroupHeaderMultiCombobox: function (oGroup) {
-                //debugger
                 return new sap.ui.core.SeparatorItem({
                     text: oGroup.key
                 });
             },
 
             createModelloNonConf: async function (oEvent) {
-                await this.getSetLavUser(oEvent)
+                var dialog = oEvent.getSource().getParent()
+
+                await this.getSetLavUser(dialog)
                 //debugger
                 let filename = this.getFileName(),
                     oFileUploader = this.byId("myFileUpload"),
@@ -107,7 +111,7 @@ sap.ui.define([
 
             },
             filterData: function (oEvent) {
-                //debugger
+                debugger
                 let modello = oEvent.getSource().oPropagatedProperties.oModels.modelloNewModel,
                     entiSelezionati = modello.getProperty("/entiSelezionati"),
                     listaUtenti = modello.getProperty("/listaUtenti").filter(x => entiSelezionati.includes(x.ruolo))
@@ -171,16 +175,23 @@ sap.ui.define([
                 }
                 this.byId("tableRichieste").getBinding("items").filter(arr)
             },
-            getSetLavUser: function (oEvent) {
-                var dialog = oEvent.getSource().getParent()
+            formatEnti: function (oEvent) {
+                let modello = this._dialogRevisioni.getModel("modelloNewModel"),
+                    entiSelezionati = modello.getProperty("/entiSelezionati"),
+                    listaUtenti = modello.getProperty("/listaUtenti").filter(x => entiSelezionati.includes(x.ruolo))
+                modello.setProperty("/utentiSelect", listaUtenti)
+                entiSelezionati.length === 0 ? modello.setProperty("/entiSelezionati", null) : null
+
+                debugger
+                modello.updateBindings()
+            },
+            getSetLavUser: function (dialog) {
+                debugger
                 let data = dialog.getModel("modelloNewModel").getData()
 
                 var aSelectedItems = data.firmatari && data.firmatari.filter(x => x != '')
 
                 var aSettoriLavorativi = [];
-
-
-
                 if (aSelectedItems) {
                     let promise = aSelectedItems.map(function (oItem) {
                         return new Promise((resolve) => {
@@ -190,7 +201,7 @@ sap.ui.define([
                     });
                     return Promise.all(promise).then(results => {
                         results.forEach(x => {
-                            aSettoriLavorativi.push({ nome: x[0].nome, firmato: false, settore_lavorativo: x[0].ruolo });
+                            if (x.length != 0) aSettoriLavorativi.push({ nome: x[0].nome, firmato: false, settore_lavorativo: x[0].ruolo });
                         })
                         const groupedData = aSettoriLavorativi.reduce((acc, item) => {
                             const key = Object.keys(item)[0];
@@ -205,9 +216,9 @@ sap.ui.define([
                     })
                 } else {
 
-                    data.entiSelezionati.forEach(x => {
+                    data.entiSelezionati && data.entiSelezionati.forEach(x => {
                         //debugger
-                        aSettoriLavorativi.push({ nome: '', firmato: false, settore_lavorativo: x });
+                        if (x.length != 0) aSettoriLavorativi.push({ nome: '', firmato: false, settore_lavorativo: x });
                     })
                     const groupedData = aSettoriLavorativi.reduce((acc, item) => {
                         const key = Object.keys(item)[0];
@@ -228,10 +239,11 @@ sap.ui.define([
                 let id = elemento_selezionato.id
                 let dialog = oEvent.getSource().getParent()
                 let model = dialog.getModel("modelloNewModel").getData()
+                debugger
+                await this.getSetLavUser(dialog)
                 await ModelNonConf.updateModelAndRev({ id, data: model, objrev: elemento_selezionato })
                 dialog.close();
                 this.createModel()
-                //debugger
 
             },
 
@@ -415,17 +427,34 @@ sap.ui.define([
                 let dataob = this._DialogRuoli.getModel("modelloListaUtenti").getData()
 
                 //debugger
-                await Utenti.updateUser({ data: [dataob] })
-                sap.m.MessageBox.success("Salvataggio avvenuto con successo", {
-                    title: "Salvataggio",
-                    actions: [sap.m.MessageBox.Action.OK],
-                    emphasizedAction: sap.m.MessageBox.Action.OK,
-                    onClose: function (oAction) {
-                        // this.navPagPrec()
-                        this._DialogRuoli.destroy()
-                        this._DialogRuoli = undefined;
-                    }.bind(this)
-                });
+                let userNotChang = await Utenti.updateUser({ data: [dataob] })
+                if (JSON.parse(userNotChang).length != 0) {
+                    sap.m.MessageBox.information("Impossibile effettuare modifiche su alcuni utenti", {
+                        title: "Attenzione",
+                        details: `Gli utenti ${JSON.parse(userNotChang).toString()} non possono essere modificati poichè sono coinvolti in attività ancora non concluse. \nPer modificarli concludere le attività`,
+                        contentWidth: "100px",
+                        actions: [sap.m.MessageBox.Action.OK],
+                        emphasizedAction: sap.m.MessageBox.Action.OK,
+                        onClose: function (oAction) {
+                            this._DialogRuoli.destroy()
+                            this._DialogRuoli = undefined;
+                        }.bind(this)
+                    });
+                }
+                else {
+                    sap.m.MessageBox.success("Salvataggio avvenuto con successo", {
+                        title: "Salvataggio",
+                        actions: [sap.m.MessageBox.Action.OK],
+                        emphasizedAction: sap.m.MessageBox.Action.OK,
+                        onClose: function (oAction) {
+                            // this.navPagPrec()
+                            this._DialogRuoli.destroy()
+                            this._DialogRuoli = undefined;
+                        }.bind(this)
+                    });
+                }
+
+
 
             },
 

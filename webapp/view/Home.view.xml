@@ -131,11 +131,17 @@
                 items="{
                     path: 'modelloDatiNode>/',
                     grouped: true,
-                    sorter: {
+                    sorter: [{
                         path: 'modelloDatiNode>id_nonconf',
                        descending: true,
                         group: '.getGroup'
                     },
+                    {
+                        path: 'modelloDatiNode>numero_revisione',
+                       descending: false,
+                        group: '.getGroup'
+                    }
+                    ],
                     groupHeaderFactory: '.getGroupHeader'
                 }"
                 id="tableRichieste">

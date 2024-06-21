@@ -10,11 +10,39 @@ sap.ui.define([
     function (Controller, Revisioni, Utenti, FilterOperator, MessageToast, Fragment, Enti) {
         "use strict";
         return Controller.extend("project1.controller.BaseController", {
+
+            //funzioni per i token
+            _getToken: function () {
+                return JSON.parse(localStorage.getItem("simmel_user_data")).user_token.value;
+            },
+            _getTokenTimeout: function () {
+                return new Date().getTime();
+            },
+            checkAuth: function () {
+                if (!localStorage.getItem("simmel_user_data")) return false;
+
+                const { user_token } = JSON.parse(
+                    localStorage.getItem("simmel_user_data")
+                );
+
+                if (!user_token) return false;
+
+                const { expiry } = user_token;
+
+                if (this._getToken.Timeout() - expiry >= 86400 * 1000) {
+                    localStorage.removeItem("simmel_user_data");
+                    return false;
+                }
+
+                return true;
+            },
+
             //funzione per ripopolare il modello della tabella principale aggiornato
             renderModelDatiNode: async function () {
                 let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
                 let nome = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
                 let data = await Revisioni.getAll({ ruolo, nome })
+                debugger
                 data.map((x, index, data) => data[index].data_ora = this.format.formatData(x.data_ora))
                 this.getOwnerComponent().getModel("modelloDatiNode").setProperty("/", data)
             },
@@ -27,7 +55,7 @@ sap.ui.define([
                         name: "flexcollay.view.Fragments.PdfFragment",
                         controller: this
                     }).then(function (oDialog) {
-                        //debugger
+                        self._dialgPDF = oDialog
                         return oDialog;
                     });
                 }
@@ -76,14 +104,13 @@ sap.ui.define([
                             name: "flexcollay.view.Fragments.creaModello",
                             controller: this
                         }).then(function (oDialog) {
-                            //debugger
+                            self._dialog = oDialog
                             return oDialog;
                         });
                     }
                     self._dialog.then(async function (oDialog) {
 
                         oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
-
                         oDialog.open();
 
                     }.bind(this));
@@ -140,11 +167,25 @@ sap.ui.define([
                             name: "flexcollay.view.Fragments.creaRevisione",
                             controller: this
                         }).then(function (oDialog) {
+
                             return oDialog;
                         });
                     }
                     self._dialogRevisioni.then(async function (oDialog) {
                         oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
+                        debugger
+                        ////filter data
+                        let modello = oDialog.getModel("modelloNewModel"),
+                            entiSelezionati = modello.getProperty("/entiSelezionati"),
+                            listaUtenti = modello.getProperty("/listaUtenti").filter(x => entiSelezionati.includes(x.ruolo))
+                        modello.setProperty("/utentiSelect", listaUtenti)
+                        entiSelezionati.length === 0 ? modello.setProperty("/entiSelezionati", null) : null
+
+                        modello.updateBindings()
+                        debugger
+                        oDialog.getModel("modelloNewModel").setProperty("/firmatari", oDialog.getModel("modelloNewModel").getProperty("/firmatari").filter(x => x != ''))
+
+
                         oDialog.open();
 
                     }.bind(this));
@@ -291,9 +332,11 @@ sap.ui.define([
                             let elemento_selezionato = self.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                             if (this.content[0] === 'Chiusura') {
                                 await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso' })
-                                this.onClose()
+                                // this.close()
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 self.handleNavigateToTable()
+                                //ricarico i dati aggiornati nella tabella principale
+                                self.renderModelDatiNode()
                             } else {
                                 //debugger
                                 let nomeutente = self.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
@@ -306,15 +349,15 @@ sap.ui.define([
                                 }]
 
                                 await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: true, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
-                                this.onClose()
+                                // this.close()
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 self.handleNavigateToTable()
                                 //ricarico i dati aggiornati nella tabella principale
-                                this.renderModelDatiNode()
+                                self.renderModelDatiNode()
                             }
 
                         } else {
-                            this.onClose()
+                            // this.close()
                         }
                     }
                 }

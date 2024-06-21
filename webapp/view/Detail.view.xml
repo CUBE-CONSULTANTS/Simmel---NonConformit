@@ -10,8 +10,8 @@
 	xmlns:m="sap.m"
 	height="100%">
 	<ObjectPageLayout showFooter="true"
-		id="ObjectPageLayout" 
-		showAnchorBarPopover="false" headerContentPinned="true"
+		id="ObjectPageLayout"   
+		showAnchorBarPopover="true" headerContentPinned="true"
 		upperCaseAnchorBar="false">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle >

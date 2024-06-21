@@ -59,7 +59,7 @@
                     items="{
                         path: 'modelloNewModel>/enti',
                         sorter: {
-                            path: 'modelloNewModel>settore_lavorativo',
+                            path: 'settore_lavorativo',
                             descending: false,
                             group: true
                         },
@@ -69,22 +69,24 @@
                     <c:Item key="{modelloNewModel>}"
                         text="{modelloNewModel>}" />
                 </MultiComboBox>
+                <!-- firmatari -->
                 <Label required="true"
                     text="Firmatari" />
 
-                <MultiComboBox editable="{modelloNewModel>/editable}"
+                <MultiComboBox editable="{modelloNewModel>/editable}" 
+               
                     selectionFinish="getSetLavUser"
                     selectedKeys="{modelloNewModel>/firmatari}"
                     items="{
                                 path: 'modelloNewModel>/utentiSelect',
                                 sorter: {
-                                    path: 'modelloNewModel>settore_lavorativo',
+                                    path: 'ruolo',
                                     descending: false,
                                     group: true
                                 },
                                 groupHeaderFactory: '.getGroupHeaderMultiCombobox'
                             }">
-                    <c:Item key="{modelloNewModel>nome}"
+                    <c:Item key="{modelloNewModel>nome}" 
                         text="{modelloNewModel>nome}" />
                 </MultiComboBox>
 

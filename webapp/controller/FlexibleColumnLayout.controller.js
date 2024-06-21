@@ -80,9 +80,9 @@ sap.ui.define([
 			} else { page.setFooter(null) }
 		},
 		setVisibleFooter: async function (footerRole) {
-			debugger
 			let value = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
 			let user = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
+			debugger
 			return await Revisioni.setVisibilityByStateAndSignature({ id: value.id, user: JSON.stringify({ nome: user, footerRole: footerRole }) })
 		},
 

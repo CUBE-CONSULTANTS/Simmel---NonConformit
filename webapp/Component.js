@@ -20,6 +20,33 @@ sap.ui.define([
              * @public
              * @override
              */
+            //funzioni per i token 
+            _getToken: function () {
+                return JSON.parse(localStorage.getItem("simmel_user_data")).user_token.value;
+            },
+            _getTokenTimeout: function () {
+                return new Date().getTime();
+            },
+            checkAuth: function () {
+                if (!localStorage.getItem("simmel_user_data")) return false;
+
+                const { user_token } = JSON.parse(
+                    localStorage.getItem("simmel_user_data")
+                );
+
+                if (!user_token) return false;
+
+                const { expiry } = user_token;
+
+                if (this._getToken.Timeout() - expiry >= 86400 * 1000) {
+                    localStorage.removeItem("simmel_user_data");
+                    return false;
+                }
+
+                return true;
+            },
+
+
             init: function () {
                 // call the base component's init function
                 UIComponent.prototype.init.apply(this, arguments);
@@ -54,7 +81,9 @@ sap.ui.define([
                 this.setModel(models.createDeviceModel(), "device");
                 this.setModel(new sap.ui.model.json.JSONModel(), "modelloAppoggio");
 
-                let nome = 'Anthea Cellacchi'
+                let nome = 'Federico De Carolis'
+                // let nome = 'Anthea Cellacchi'
+
                 let arrayPromise = [new Promise((resolve) => {
                     resolve(Utenti.getInfoUserLog({ nome }))
                 })]
