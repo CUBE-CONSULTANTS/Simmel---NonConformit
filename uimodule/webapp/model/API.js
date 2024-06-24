@@ -1,13 +1,15 @@
 sap.ui.define([], function () {
     "use strict";
 
-    const endpoint = "http://localhost:3001";
-
+    const endpoint = "http://192.168.50.64/dev/Simmel----NonConformit-NodeJS";
     return {
-        getEntitySet: function ({ entity }) {
+        getEntitySet: function ({ entity, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `${endpoint}${entity}`,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "GET",
                     contentType: "application/json",
                     success: (res) => resolve(res),
@@ -16,10 +18,13 @@ sap.ui.define([], function () {
             });
         },
 
-        getExpandedEntitySet: function ({ entity, data }) {
+        getExpandedEntitySet: function ({ entity, data, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `${endpoint}${entity}`,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(data),
@@ -29,10 +34,13 @@ sap.ui.define([], function () {
             });
         },
 
-        getEntity: function ({ entity }) {
+        getEntity: function ({ entity, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: endpoint + entity,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "GET",
                     contentType: "application/json",
                     success: (res) => resolve(res),
@@ -41,10 +49,13 @@ sap.ui.define([], function () {
             });
         },
 
-        createEntity: function ({ entity, data }) {
+        createEntity: function ({ entity, data, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: endpoint + entity,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(data),
@@ -54,10 +65,13 @@ sap.ui.define([], function () {
             });
         },
 
-        updateEntity: function ({ entity, data }) {
+        updateEntity: function ({ entity, data, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: endpoint + entity,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "PUT",
                     contentType: "application/json",
                     data: JSON.stringify(data),
@@ -67,10 +81,13 @@ sap.ui.define([], function () {
             });
         },
 
-        deleteEntity: function ({ entity }) {
+        deleteEntity: function ({ entity, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: endpoint + entity,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "DELETE",
                     contentType: "application/json",
                     success: (res) => resolve(res),
@@ -78,10 +95,13 @@ sap.ui.define([], function () {
                 });
             });
         },
-        getFilter: function ({ entity }) {
+        getFilter: function ({ entity, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: endpoint + entity,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "GET",
                     contentType: "application/json",
                     success: (res) => resolve(res),
@@ -89,10 +109,13 @@ sap.ui.define([], function () {
                 });
             });
         },
-        createFirstModel: function ({ entity }) {
+        createFirstModel: function ({ entity, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: endpoint + entity,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "GET",
                     contentType: "application/json",
                     success: (res) => resolve(res),
@@ -101,10 +124,13 @@ sap.ui.define([], function () {
             });
         },
 
-        updateStato: function ({ entity, data }) {
+        updateStato: function ({ entity, data, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: endpoint + entity,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "PUT",
                     contentType: "application/json",
                     data: JSON.stringify(data),
@@ -114,10 +140,13 @@ sap.ui.define([], function () {
             });
         },
 
-        updateModelAndRev: function ({ entity, data }) {
+        updateModelAndRev: function ({ entity, data, token }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: endpoint + entity,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     type: "PUT",
                     contentType: "application/json",
                     data: JSON.stringify(data),

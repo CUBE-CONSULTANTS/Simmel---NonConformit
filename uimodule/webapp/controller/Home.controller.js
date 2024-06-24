@@ -28,15 +28,12 @@ sap.ui.define([
                 this.createModel()
 
             },
-            onFormat: function (oEvent) {
-
-            },
             createModel: async function () {
                 //debugger
                 let arrayPromise = []
                 //
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
-                arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll())))
+                arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll({ token: this._getToken() }))))
                 Promise.all(arrayPromise).then(results => {
                     //debugger
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ utenti: results[0] }), "modello")
@@ -102,9 +99,9 @@ sap.ui.define([
                     NOTE: {}
 
                 }
-                let id = await ModelNonConf.createFirstModel({ data })
+                let id = await ModelNonConf.createFirstModel({ data, token: this._getToken() })
 
-                await Revisioni.sendEmail({ id: id[0].id })
+                await Revisioni.sendEmail({ id: id[0].id, token: this._getToken() })
                 oEvent.getSource().getParent().getModel("modelloNewModel").setData()
                 oEvent.getSource().getParent().close()
                 this.createModel()
@@ -190,12 +187,12 @@ sap.ui.define([
                 let data = dialog.getModel("modelloNewModel").getData()
 
                 var aSelectedItems = data.firmatari && data.firmatari.filter(x => x != '')
-
+                let self = this
                 var aSettoriLavorativi = [];
                 if (aSelectedItems) {
                     let promise = aSelectedItems.map(function (oItem) {
                         return new Promise((resolve) => {
-                            resolve(Utenti.getOne({ nome: oItem }))
+                            resolve(Utenti.getOne({ nome: oItem, token: self._getToken() }))
                         })
                         // 
                     });
@@ -241,7 +238,7 @@ sap.ui.define([
                 let model = dialog.getModel("modelloNewModel").getData()
                 debugger
                 await this.getSetLavUser(dialog)
-                await ModelNonConf.updateModelAndRev({ id, data: model, objrev: elemento_selezionato })
+                await ModelNonConf.updateModelAndRev({ id, data: model, objrev: elemento_selezionato, token: this._getToken() })
                 dialog.close();
                 this.createModel()
 
@@ -264,7 +261,7 @@ sap.ui.define([
                 }
                 self._DialogRuoli.then(async function (oDialog) {
                     //debugger
-                    let utenti = await Utenti.getAll()
+                    let utenti = await Utenti.getAll({ token: this._getToken() })
 
                     oDialog.setModel(new sap.ui.model.json.JSONModel(), "modelloListaUtenti")
                     oDialog.setModel(new sap.ui.model.json.JSONModel(), "modelloGestioneRuoli")
@@ -427,7 +424,7 @@ sap.ui.define([
                 let dataob = this._DialogRuoli.getModel("modelloListaUtenti").getData()
 
                 //debugger
-                let userNotChang = await Utenti.updateUser({ data: [dataob] })
+                let userNotChang = await Utenti.updateUser({ data: [dataob], token: this._getToken() })
                 if (JSON.parse(userNotChang).length != 0) {
                     sap.m.MessageBox.information("Impossibile effettuare modifiche su alcuni utenti", {
                         title: "Attenzione",

@@ -109,7 +109,7 @@ sap.ui.define([
             this.initialModel()
         },
         initialModel: async function () {
-            let utenti = await Utenti.getAll()
+            let utenti = await Utenti.getAll({token: this._getToken()})
 
             this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloListaUtenti")
             this.getView().setModel(new sap.ui.model.json.JSONModel(), "modelloGestioneRuoli")

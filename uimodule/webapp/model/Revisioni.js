@@ -2,54 +2,54 @@ sap.ui.define(["./API"], function (API) {
     "use strict";
 
     return {
-        getAll: async function ({ ruolo, nome }) {
-            return await API.getEntitySet({ entity: `/Revisioni/getAllModel/${ruolo}/${nome}` });
+        getAll: async function ({ ruolo, nome, token }) {
+            return await API.getEntitySet({ entity: `/Revisioni/getAllModel/${ruolo}/${nome}`, token });
         },
-        getOne: async function ({ id, ruolo }) {
-            return await API.getEntity({ entity: `/Revisioni/getOne/${id}/${ruolo}` });
+        getOne: async function ({ id, ruolo, token }) {
+            return await API.getEntity({ entity: `/Revisioni/getOne/${id}/${ruolo}`, token });
         },
-        createOne: async function ({ data }) {
-            return await API.createEntity({ entity: "/Revisioni/createRevisione", data });
+        createOne: async function ({ data, token }) {
+            return await API.createEntity({ entity: "/Revisioni/createRevisione", data, token });
         },
-        createMany: async function ({ data }) {
-            return await API.createEntity({ entity: "/Revisioni/create", data });
+        createMany: async function ({ data, token }) {
+            return await API.createEntity({ entity: "/Revisioni/create", data, token });
         },
-        updateOne: async function ({ id, data }) {
-            return await API.updateEntity({ entity: `/Revisioni/update/${id}`, data });
+        updateOne: async function ({ id, data, token }) {
+            return await API.updateEntity({ entity: `/Revisioni/update/${id}`, data, token });
         },
-        updateMany: async function ({ data }) {
-            return await API.updateEntity({ entity: "/Revisioni/update", data });
+        updateMany: async function ({ data, token }) {
+            return await API.updateEntity({ entity: "/Revisioni/update", data, token });
         },
-        deleteOne: async function ({ data }) {
-            return await API.deleteEntity({ entity: "/Revisioni/delete", data });
+        deleteOne: async function ({ data, token }) {
+            return await API.deleteEntity({ entity: "/Revisioni/delete", data, token });
         },
-        deleteMany: async function ({ data }) {
-            return await API.deleteEntity({ entity: "/Revisioni/delete", data });
+        deleteMany: async function ({ data, token }) {
+            return await API.deleteEntity({ entity: "/Revisioni/delete", data, token });
         },
-        filterid: async function ({ data }) {
-            return await API.getFilterID({ entity: `/Revisioni/filter/${data}` });
+        filterid: async function ({ data, token }) {
+            return await API.getFilterID({ entity: `/Revisioni/filter/${data}`, token });
         },
-        getLast: async function () {
-            return await API.getLastElement({ entity: `/Revisioni/last` });
+        getLast: async function ({ token }) {
+            return await API.getLastElement({ entity: `/Revisioni/last`, token });
         },
-        createOrUpdate: async function ({ data }) {
-            return await API.createEntity({ entity: "/Revisioni/createOrUpdate", data });
-        },
-
-        updateStato: async function ({ id, stato }) {
-            return await API.updateEntity({ entity: `/Revisioni/updateStato/${id}/${stato}` });
+        createOrUpdate: async function ({ data, token }) {
+            return await API.createEntity({ entity: "/Revisioni/createOrUpdate", data, token });
         },
 
-
-        updateSignature: async function ({ id, firma, utente, settore, data }) {
-            return await API.updateEntity({ entity: `/Revisioni/updateSignature/${id}/${firma}/${utente}/${settore}`, data });
+        updateStato: async function ({ id, stato, token }) {
+            return await API.updateEntity({ entity: `/Revisioni/updateStato/${id}/${stato}`, token });
         },
 
-        sendEmail: async function ({ id }) {
-            return await API.getEntitySet({ entity: `/Revisioni/sendEmail/${id}` });
+
+        updateSignature: async function ({ id, firma, utente, settore, data, token }) {
+            return await API.updateEntity({ entity: `/Revisioni/updateSignature/${id}/${firma}/${utente}/${settore}`, data, token });
         },
-        setVisibilityByStateAndSignature: async function ({ id, user }) {
-            return await API.getEntitySet({ entity: `/Revisioni/setVisibilityByStateAndSignature/${id}/${user}` });
+
+        sendEmail: async function ({ id, token }) {
+            return await API.getEntitySet({ entity: `/Revisioni/sendEmail/${id}`, token });
+        },
+        setVisibilityByStateAndSignature: async function ({ id, user, token }) {
+            return await API.getEntitySet({ entity: `/Revisioni/setVisibilityByStateAndSignature/${id}/${user}`, token });
         },
     };
 });

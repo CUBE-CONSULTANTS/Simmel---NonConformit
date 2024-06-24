@@ -36,11 +36,6 @@ sap.ui.define([
                     oPopover.openBy(oButton);
                 });
             },
-            // setVisibleFooter: async function (value, footerRole) {
-            //     debugger
-            //     let user = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
-            //     return await Revisioni.setVisibilityByStateAndSignature({ id: value.id, user: JSON.stringify({ nome: user, footerRole: footerRole }) })
-            // }
 
         });
     });

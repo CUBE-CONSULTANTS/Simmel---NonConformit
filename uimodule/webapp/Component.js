@@ -81,11 +81,12 @@ sap.ui.define([
                 this.setModel(models.createDeviceModel(), "device");
                 this.setModel(new sap.ui.model.json.JSONModel(), "modelloAppoggio");
 
-                let nome = 'Federico De Carolis'
-                // let nome = 'Anthea Cellacchi'
+                let nome = JSON.parse(localStorage.getItem("simmel_current_user")).user.givenName
+
+                // let nome = 'cube'
 
                 let arrayPromise = [new Promise((resolve) => {
-                    resolve(Utenti.getInfoUserLog({ nome }))
+                    resolve(Utenti.getInfoUserLog({ nome, token: this._getToken() }))
                 })]
                 Promise.all(arrayPromise).then(results => {
                     let obj = {

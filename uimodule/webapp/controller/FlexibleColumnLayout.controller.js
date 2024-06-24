@@ -83,7 +83,7 @@ sap.ui.define([
 			let value = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
 			let user = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
 			debugger
-			return await Revisioni.setVisibilityByStateAndSignature({ id: value.id, user: JSON.stringify({ nome: user, footerRole: footerRole }) })
+			return await Revisioni.setVisibilityByStateAndSignature({ id: value.id, user: JSON.stringify({ nome: user, footerRole: footerRole }), token: this._getToken() })
 		},
 
 

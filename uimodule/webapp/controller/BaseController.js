@@ -41,7 +41,7 @@ sap.ui.define([
             renderModelDatiNode: async function () {
                 let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
                 let nome = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
-                let data = await Revisioni.getAll({ ruolo, nome })
+                let data = await Revisioni.getAll({ ruolo, nome, token: this._getToken() })
                 debugger
                 data.map((x, index, data) => data[index].data_ora = this.format.formatData(x.data_ora))
                 this.getOwnerComponent().getModel("modelloDatiNode").setProperty("/", data)
@@ -78,8 +78,8 @@ sap.ui.define([
                 let self = this, obj,
                     arrayPromise = []
 
-                arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll())))
-                arrayPromise.push(new Promise((resolve) => resolve(Enti.getAll())))
+                arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll({ token: this._getToken() }))))
+                arrayPromise.push(new Promise((resolve) => resolve(Enti.getAll({ token: this._getToken() }))))
 
                 Promise.all(arrayPromise).then(results => {
                     self.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ utenti: results[0] }), "modello")
@@ -156,7 +156,7 @@ sap.ui.define([
                     editable: state === 'Review' ? true : false,
                     tipologia: elemento_selezionato.tipologia || null
                 }
-                arrayPromise.push(new Promise((resolve) => resolve(Enti.getAll())))
+                arrayPromise.push(new Promise((resolve) => resolve(Enti.getAll({ token: this._getToken() }))))
                 Promise.all(arrayPromise).then(results => {
                     obj['enti'] = results[0].map(x => x.nome),
                         obj['listaUtenti'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
@@ -208,7 +208,7 @@ sap.ui.define([
                     // enti: oggettoSelezionato.enti
 
                 }
-                await Revisioni.createOne({ data: copyObj })
+                await Revisioni.createOne({ data: copyObj, token: this._getToken() })
                 oEvent.getSource().getParent().destroy()
                 this.handleNavigateToTable()
 
@@ -291,7 +291,7 @@ sap.ui.define([
                                 }]
                                 let settoreutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
 
-                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote }, token: this._getToken() })
 
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
@@ -331,7 +331,7 @@ sap.ui.define([
                         if (sAction == 'YES') {
                             let elemento_selezionato = self.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                             if (this.content[0] === 'Chiusura') {
-                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso' })
+                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso', token: this._getToken() })
                                 // this.close()
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 self.handleNavigateToTable()
@@ -348,7 +348,7 @@ sap.ui.define([
                                     data: new Date()
                                 }]
 
-                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: true, utente: nomeutente, settore: settoreutente, data: { note: objNote } })
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: true, utente: nomeutente, settore: settoreutente, data: { note: objNote }, token: this._getToken() })
                                 // this.close()
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 self.handleNavigateToTable()
