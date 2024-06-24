@@ -29,13 +29,13 @@ sap.ui.define([
 
             },
             createModel: async function () {
-                //debugger
+                debugger
                 let arrayPromise = []
                 //
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "modelloDatiNode");
                 arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll({ token: this._getToken() }))))
                 Promise.all(arrayPromise).then(results => {
-                    //debugger
+                    debugger
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ utenti: results[0] }), "modello")
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({
                         creatore: null,
@@ -49,13 +49,13 @@ sap.ui.define([
 
             },
             handleNavigateToMidColumnPress: function (oEvent) {
-                //debugger
+                debugger
 
                 let obj = oEvent.getSource().getBindingContext("modelloDatiNode").getObject()
                 this.getOwnerComponent().getModel("modelloAppoggio").setProperty("/elemento_selezionato", obj)
                 if (obj.stato == 'Nuovo') { this.onNewRev(oEvent, "Review") }
                 else {
-                    debugger
+                    // debugger
                     this.bus.publish("flexible", "setDetailPage")
                 }
             },
@@ -70,45 +70,38 @@ sap.ui.define([
                 var dialog = oEvent.getSource().getParent()
 
                 await this.getSetLavUser(dialog)
-                //debugger
+                // debugger
                 let filename = this.getFileName(),
                     oFileUploader = this.byId("myFileUpload"),
                     stato
                 oEvent.getSource().getText() == 'Crea' ? stato = "In fase di firma" : stato = "Nuovo"
+                let upload = await this.uploadFile(filename, oFileUploader)
+                if (upload != 'Error') {
+                    sap.m.MessageToast.show("Creazione avvenuta con successo") //aggiustare
+                    let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
+                    let data = {
+                        TITOLO: obj.titolo,
+                        CREATORE: this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
+                        DATA_ORA: new Date(obj.data),
+                        ENTI: { entiSelezionati: obj.enti_firmatari },
+                        PDFNAME: filename,
+                        STATO: stato,
+                        TIPOLOGIA: obj.tipologia,
+                        NOTE: {}
 
-                oFileUploader.checkFileReadable().then(function () {
-                    oFileUploader.upload();
-                }, function (error) {
-                    console.log(error)
-                    new sap.m.MessageToast.show("Errore nel caricamento del file");
-                }).then(function () {
-                    new sap.m.MessageToast.show("File caricato con successo");
-                    oFileUploader.clear();
-
-                });
-                sap.m.MessageToast.show("Creazione avvenuta con successo") //aggiustare
-                let obj = oEvent.getSource().getParent().getModel("modelloNewModel").getData()
-                let data = {
-                    TITOLO: obj.titolo,
-                    CREATORE: this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome"),
-                    DATA_ORA: new Date(obj.data),
-                    ENTI: { entiSelezionati: obj.enti_firmatari },
-                    PDFNAME: filename,
-                    STATO: stato,
-                    TIPOLOGIA: obj.tipologia,
-                    NOTE: {}
-
+                    }
+                    let id = await ModelNonConf.createFirstModel({ data, token: this._getToken() })
+                    if (data.STATO != 'Nuovo') {
+                        await Revisioni.sendEmail({ id: id[0].id, token: this._getToken() })
+                    }
+                    oEvent.getSource().getParent().getModel("modelloNewModel").setData()
+                    oEvent.getSource().getParent().close()
+                    this.createModel()
                 }
-                let id = await ModelNonConf.createFirstModel({ data, token: this._getToken() })
-
-                await Revisioni.sendEmail({ id: id[0].id, token: this._getToken() })
-                oEvent.getSource().getParent().getModel("modelloNewModel").setData()
-                oEvent.getSource().getParent().close()
-                this.createModel()
 
             },
             filterData: function (oEvent) {
-                debugger
+                // debugger
                 let modello = oEvent.getSource().oPropagatedProperties.oModels.modelloNewModel,
                     entiSelezionati = modello.getProperty("/entiSelezionati"),
                     listaUtenti = modello.getProperty("/listaUtenti").filter(x => entiSelezionati.includes(x.ruolo))
@@ -132,7 +125,7 @@ sap.ui.define([
             },
             onSearch: function (evt) {
                 let arr = []
-                //debugger
+                debugger
                 let model = this.getView().getModel("modelloFilter")
                 let datainizio = model.getProperty("/datainizio")
                 let datafine = model.getProperty("/datafine")
@@ -179,11 +172,11 @@ sap.ui.define([
                 modello.setProperty("/utentiSelect", listaUtenti)
                 entiSelezionati.length === 0 ? modello.setProperty("/entiSelezionati", null) : null
 
-                debugger
+                // debugger
                 modello.updateBindings()
             },
             getSetLavUser: function (dialog) {
-                debugger
+                // debugger
                 let data = dialog.getModel("modelloNewModel").getData()
 
                 var aSelectedItems = data.firmatari && data.firmatari.filter(x => x != '')
@@ -208,13 +201,13 @@ sap.ui.define([
                             acc[key].push(item[key]);
                             return acc;
                         }, {});
-                        //debugger
+                        debugger
                         dialog.getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
                     })
                 } else {
 
                     data.entiSelezionati && data.entiSelezionati.forEach(x => {
-                        //debugger
+                        debugger
                         if (x.length != 0) aSettoriLavorativi.push({ nome: '', firmato: false, settore_lavorativo: x });
                     })
                     const groupedData = aSettoriLavorativi.reduce((acc, item) => {
@@ -225,28 +218,37 @@ sap.ui.define([
                         acc[key].push(item[key]);
                         return acc;
                     }, {});
-                    //debugger
+                    debugger
                     return dialog.getModel("modelloNewModel").setProperty("/enti_firmatari", aSettoriLavorativi)
 
                 }
 
             },
             Updatedraft: async function (oEvent) {
-                let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
-                let id = elemento_selezionato.id
-                let dialog = oEvent.getSource().getParent()
-                let model = dialog.getModel("modelloNewModel").getData()
-                debugger
-                await this.getSetLavUser(dialog)
-                await ModelNonConf.updateModelAndRev({ id, data: model, objrev: elemento_selezionato, token: this._getToken() })
-                dialog.close();
-                this.createModel()
+                // debugger
+                let filename = this.getFileName(),
+                    oFileUploader = this.byId("myFileUpload")
+                let upload = await this.uploadFile(filename, oFileUploader)
+                if (upload != 'Error') {
+                    let elemento_selezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                    let id = elemento_selezionato.id
+                    let dialog = oEvent.getSource().getParent()
+                    let model = dialog.getModel("modelloNewModel").getData()
+                    // debugger
+                    await this.getSetLavUser(dialog)
+                    await ModelNonConf.updateModelAndRev({ id, data: model, objrev: elemento_selezionato, token: this._getToken() })
+                    await Revisioni.sendEmail({ id: id, token: this._getToken() })
+
+                    dialog.close();
+                    this.createModel()
+                }
+
 
             },
 
             //funzioni per la gestione dei ruoli
             navToGestioneRuoli: function () {
-                //debugger
+                debugger
                 let self = this
                 if (!this._DialogRuoli) {
                     this._DialogRuoli = new sap.ui.core.Fragment.load({
@@ -254,13 +256,13 @@ sap.ui.define([
                         name: "flexcollay.view.GestioneRuoli",
                         controller: this
                     }).then(function (oDialog) {
-                        //debugger
+                        debugger
                         this._DialogRuoli = oDialog
                         return oDialog;
                     }.bind(this));
                 }
                 self._DialogRuoli.then(async function (oDialog) {
-                    //debugger
+                    debugger
                     let utenti = await Utenti.getAll({ token: this._getToken() })
 
                     oDialog.setModel(new sap.ui.model.json.JSONModel(), "modelloListaUtenti")
@@ -277,7 +279,7 @@ sap.ui.define([
 
             },
             addUser: function () {
-                //debugger
+                debugger
                 if (!this.oDialogNewUser) {
                     this.oDialogNewUser = new sap.m.Dialog({
                         contentWidth: "550px",
@@ -359,7 +361,7 @@ sap.ui.define([
                     // // Add dialog to the root view
                     // this.getView().addDependent(this.oDialog);
                 }
-                //debugger
+                debugger
                 this.oDialogNewUser.setModel(new sap.ui.model.json.JSONModel(), "modelloDialog")
                 this.oDialogNewUser.setModel(new sap.ui.model.json.JSONModel(), "modelloGestioneRuoli")
                 this.oDialogNewUser.getModel("modelloDialog").setProperty("/", {
@@ -423,7 +425,7 @@ sap.ui.define([
             onSaveChangeUser: async function (oEvent) {
                 let dataob = this._DialogRuoli.getModel("modelloListaUtenti").getData()
 
-                //debugger
+                debugger
                 let userNotChang = await Utenti.updateUser({ data: [dataob], token: this._getToken() })
                 if (JSON.parse(userNotChang).length != 0) {
                     sap.m.MessageBox.information("Impossibile effettuare modifiche su alcuni utenti", {

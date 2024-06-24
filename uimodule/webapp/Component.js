@@ -83,8 +83,6 @@ sap.ui.define([
 
                 let nome = JSON.parse(localStorage.getItem("simmel_current_user")).user.givenName
 
-                // let nome = 'cube'
-
                 let arrayPromise = [new Promise((resolve) => {
                     resolve(Utenti.getInfoUserLog({ nome, token: this._getToken() }))
                 })]
@@ -95,7 +93,7 @@ sap.ui.define([
                         settore: results[0][0].ruolo
                     }
                     this.setModel(new sap.ui.model.json.JSONModel(obj), "modelloRuolo");
-                    debugger
+                    // debugger
                 })
 
             }

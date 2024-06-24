@@ -37,17 +37,32 @@ sap.ui.define([
                 return true;
             },
 
+            //funzione per fare l'upload dei file pdf
+            uploadFile: function (filename, oFileUploader) {
+                return new Promise((resolve, reject) => {
+                    oFileUploader.checkFileReadable().then(() => {
+                        oFileUploader.upload();
+                    }).then(() => {
+                        oFileUploader.clear();
+                        resolve("Success");
+                    }).catch((error) => {
+                        console.log(error);
+                        reject("Error");
+                    });
+                });
+            },
             //funzione per ripopolare il modello della tabella principale aggiornato
             renderModelDatiNode: async function () {
                 let ruolo = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
                 let nome = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
                 let data = await Revisioni.getAll({ ruolo, nome, token: this._getToken() })
-                debugger
+                // debugger
                 data.map((x, index, data) => data[index].data_ora = this.format.formatData(x.data_ora))
                 this.getOwnerComponent().getModel("modelloDatiNode").setProperty("/", data)
             },
             openDialogShowPDF: function (oEvent) {
                 let self = this
+                self._dialgPDF = undefined
                 //differenziare con il custom data
                 if (!this._dialgPDF) {
                     this._dialgPDF = new sap.ui.core.Fragment.load({
@@ -65,14 +80,16 @@ sap.ui.define([
                     oEvent.getSource().getCustomData()[0].getKey() === 'TabellaHome'
                         ? file = oEvent.getSource().getBindingContext("modelloDatiNode").getObject("pdfname")
                         : file = this.getView().getModel("modelloAppoggio").getProperty("/elemento_selezionato/pdfname")
-                    this.byId("PDF").setSource(`http://localhost:51531/NonConformit/1/${file}.pdf`)
+                    this.byId("PDF").setSource(`http://192.168.50.64/dev/Simmel---Document-Management/NonConformit/1/${file}.pdf`)
                     oDialog.setModel(new sap.ui.model.json.JSONModel({ filename: file }), "modelloDialogFile")
                     oDialog.open();
 
                 }.bind(this));
             },
             closeDialog: function (oEvent) {
-                oEvent.getSource().getParent().getParent().close()
+                // debugger
+                if (this._dialogRevisioni) this._dialogRevisioni = undefined
+                oEvent.getSource().getParent().getParent().destroy()
             },
             openDialogCreaModello: async function (oEvent, elemento_selezionato) {
                 let self = this, obj,
@@ -117,9 +134,9 @@ sap.ui.define([
                 })
 
             },
-            closeDialog: function (oEvent) {
-                oEvent.getSource().getParent().getParent().close()
-            },
+            // closeDialog: function (oEvent) {
+            //     oEvent.getSource().getParent().getParent().close()
+            // },
             format: {
                 formatData: function (model) {
                     if (model) {
@@ -151,7 +168,7 @@ sap.ui.define([
                     titolo: elemento_selezionato.titolo,
                     data: new Date(),
                     firmatari: (elemento_selezionato.enti.entiSelezionati) != null ? (elemento_selezionato.enti.entiSelezionati).map(x => x.nome) : null,
-                    filename: null,
+                    filename: elemento_selezionato.pdfname === null ? null : elemento_selezionato.pdfname,
                     entiSelezionati: (elemento_selezionato.enti.entiSelezionati) != null ? (elemento_selezionato.enti.entiSelezionati).map(x => x.settore_lavorativo) : null,
                     editable: state === 'Review' ? true : false,
                     tipologia: elemento_selezionato.tipologia || null
@@ -173,7 +190,7 @@ sap.ui.define([
                     }
                     self._dialogRevisioni.then(async function (oDialog) {
                         oDialog.setModel(new sap.ui.model.json.JSONModel(obj), "modelloNewModel")
-                        debugger
+                        // debugger
                         ////filter data
                         let modello = oDialog.getModel("modelloNewModel"),
                             entiSelezionati = modello.getProperty("/entiSelezionati"),
@@ -182,9 +199,10 @@ sap.ui.define([
                         entiSelezionati.length === 0 ? modello.setProperty("/entiSelezionati", null) : null
 
                         modello.updateBindings()
-                        debugger
+                        // debugger
                         oDialog.getModel("modelloNewModel").setProperty("/firmatari", oDialog.getModel("modelloNewModel").getProperty("/firmatari").filter(x => x != ''))
 
+                        this.byId("myFileUpload") && this.byId("myFileUpload").setValue(modello.getProperty("/filename"))
 
                         oDialog.open();
 
@@ -194,26 +212,35 @@ sap.ui.define([
             creaRevisione: async function (oEvent) {
                 let filename = this.getFileName()
                 let oggettoSelezionato = this.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
+                // debugger
+                let oFileUploader = this.byId("myFileUpload"),
+                    stato
+                oEvent.getSource().getText() == 'Crea' ? stato = "In fase di firma" : stato = "Nuovo"
 
-                oggettoSelezionato.enti.entiSelezionati.forEach(ente => {
-                    ente.firmato = false;
-                });
-                let copyObj = {
-                    id_nonconf: oggettoSelezionato.id_nonconf,
-                    data_ora: new Date(),
-                    pdfname: filename,
-                    stato: 'In fase di firma',
-                    enti: oggettoSelezionato.enti
+                let upload = await this.uploadFile(filename, oFileUploader)
+                if (upload != 'Error') {
+                    oggettoSelezionato.enti.entiSelezionati.forEach(ente => {
+                        ente.firmato = false;
+                    });
+                    let copyObj = {
+                        id_nonconf: oggettoSelezionato.id_nonconf,
+                        data_ora: new Date(),
+                        pdfname: filename,
+                        stato: 'In fase di firma',
+                        enti: oggettoSelezionato.enti
 
-                    // enti: oggettoSelezionato.enti
+                        // enti: oggettoSelezionato.enti
 
+                    }
+                    let id = await Revisioni.createOne({ data: copyObj, token: this._getToken() })
+                    debugger
+                    await Revisioni.sendEmail({ id: id[0].id, token: this._getToken() })
+                    oEvent.getSource().getParent().destroy()
+                    this.handleNavigateToTable()
+
+                    //ricarico i dati aggiornati nella tabella principale
+                    this.renderModelDatiNode()
                 }
-                await Revisioni.createOne({ data: copyObj, token: this._getToken() })
-                oEvent.getSource().getParent().destroy()
-                this.handleNavigateToTable()
-
-                //ricarico i dati aggiornati nella tabella principale
-                this.renderModelDatiNode()
             },
 
 
@@ -243,7 +270,7 @@ sap.ui.define([
 
             //prova
             AlertDialog: function (oEvent) {
-                //debugger
+                debugger
                 let key = oEvent.getSource().getCustomData()[0].getKey(),
                     descrizione = null
                 key == "Reject" ? this.dialogReject(this, descrizione) : this.dialogConferma(this, descrizione, key)
@@ -291,7 +318,7 @@ sap.ui.define([
                                 }]
                                 let settoreutente = this.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
 
-                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote }, token: this._getToken() })
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: false, utente: nomeutente, settore: settoreutente, data: { note: objNote }, token: self._getToken() })
 
                                 this.oDefaultMessageDialog.close();
                                 MessageToast.show("Salvataggio avvenuto con successo")
@@ -326,19 +353,19 @@ sap.ui.define([
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     emphasizedAction: sap.m.MessageBox.Action.YES,
                     onClose: async function (sAction) {
-                        //debugger
+                        debugger
                         let self = this.content[1]
                         if (sAction == 'YES') {
                             let elemento_selezionato = self.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                             if (this.content[0] === 'Chiusura') {
-                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso', token: this._getToken() })
+                                await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso', token: self._getToken() })
                                 // this.close()
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 self.handleNavigateToTable()
                                 //ricarico i dati aggiornati nella tabella principale
                                 self.renderModelDatiNode()
                             } else {
-                                //debugger
+                                debugger
                                 let nomeutente = self.getOwnerComponent().getModel("modelloRuolo").getProperty("/nome")
                                 let settoreutente = self.getOwnerComponent().getModel("modelloRuolo").getProperty("/settore")
 
@@ -348,7 +375,7 @@ sap.ui.define([
                                     data: new Date()
                                 }]
 
-                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: true, utente: nomeutente, settore: settoreutente, data: { note: objNote }, token: this._getToken() })
+                                await Revisioni.updateSignature({ id: elemento_selezionato.id, firma: true, utente: nomeutente, settore: settoreutente, data: { note: objNote }, token: self._getToken() })
                                 // this.close()
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 self.handleNavigateToTable()

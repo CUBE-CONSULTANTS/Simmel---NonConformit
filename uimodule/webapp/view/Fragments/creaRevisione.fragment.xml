@@ -96,7 +96,7 @@
                 <unified:FileUploader name="myFileUpload"
                     id="myFileUpload"
                     width="100%"
-                    uploadUrl='http://localhost:3404/upload/NonCoformit/1'
+                    uploadUrl='http://192.168.50.64/dev/Simmel---Document-Management/upload/NonConformit/1'
                     tooltip="Upload your file to the local server"
                     uploadComplete="handleUploadComplete"
                     change="handleChangeFile"
