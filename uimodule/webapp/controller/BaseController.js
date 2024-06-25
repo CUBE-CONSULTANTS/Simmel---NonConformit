@@ -87,8 +87,11 @@ sap.ui.define([
                 }.bind(this));
             },
             closeDialog: function (oEvent) {
-                // debugger
-                if (this._dialogRevisioni) this._dialogRevisioni = undefined
+                debugger
+                if (this._dialogRevisioni) this._dialogRevisioni = undefined //destroy dialog revisioni
+                if (this._dialog) this._dialog = undefined //destroy dialog create NonConformità
+                if (this._dialgPDF) this._dialgPDF = undefined //destroy dialog show pdf
+                if (this._DialogRuoli) this._DialogRuoli = undefined //destroy dialog user
                 oEvent.getSource().getParent().getParent().destroy()
             },
             openDialogCreaModello: async function (oEvent, elemento_selezionato) {
@@ -96,7 +99,7 @@ sap.ui.define([
                     arrayPromise = []
 
                 arrayPromise.push(new Promise((resolve) => resolve(Utenti.getAll({ token: this._getToken() }))))
-                arrayPromise.push(new Promise((resolve) => resolve(Enti.getAll({ token: this._getToken() }))))
+                arrayPromise.push(new Promise((resolve) => resolve(Enti.getFilterNome({ token: this._getToken() }))))
 
                 Promise.all(arrayPromise).then(results => {
                     self.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ utenti: results[0] }), "modello")
@@ -115,6 +118,7 @@ sap.ui.define([
                         listaUtenti: self.getView().getModel("modello").getProperty("/utenti"),
                         utentiSelect: self.getView().getModel("modello").getProperty("/utenti")
                     }
+                    //// cancellazione 
                     if (!this._dialog) {
                         this._dialog = new sap.ui.core.Fragment.load({
                             id: this.getView().getId(),
@@ -173,7 +177,12 @@ sap.ui.define([
                     editable: state === 'Review' ? true : false,
                     tipologia: elemento_selezionato.tipologia || null
                 }
-                arrayPromise.push(new Promise((resolve) => resolve(Enti.getAll({ token: this._getToken() }))))
+                arrayPromise.push(new Promise((resolve) =>
+                    // resolve(Enti.getAll({ token: this._getToken() }))
+                    //return all enti without qualità
+                    resolve(Enti.getFilterNome({ token: this._getToken() }))
+                ))
+
                 Promise.all(arrayPromise).then(results => {
                     obj['enti'] = results[0].map(x => x.nome),
                         obj['listaUtenti'] = self.getOwnerComponent().getModel("modello").getProperty("/utenti")
@@ -359,7 +368,9 @@ sap.ui.define([
                             let elemento_selezionato = self.getOwnerComponent().getModel("modelloAppoggio").getProperty("/elemento_selezionato")
                             if (this.content[0] === 'Chiusura') {
                                 await Revisioni.updateStato({ id: elemento_selezionato.id, stato: 'Chiuso', token: self._getToken() })
-                                // this.close()
+                                //invio email al creatore delle non conformità al momento della chiusura
+                                await Revisioni.sendEmail({ id: elemento_selezionato.id, token: self._getToken() })
+
                                 MessageToast.show("Salvataggio avvenuto con successo")
                                 self.handleNavigateToTable()
                                 //ricarico i dati aggiornati nella tabella principale

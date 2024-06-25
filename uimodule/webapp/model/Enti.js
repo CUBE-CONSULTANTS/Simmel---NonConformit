@@ -26,8 +26,8 @@ sap.ui.define(["./API"], function (API) {
         deleteMany: async function ({ data, token }) {
             return await API.deleteEntity({ entity: "/Enti/delete", data, token });
         },
-        filterid: async function ({ data, token }) {
-            return await API.getFilterID({ entity: `/Enti/filter/${data}`, token });
+        getFilterNome: async function ({ token }) {
+            return await API.getFilter({ entity: `/Enti/filter`, token });
         },
         getLast: async function ({ token }) {
             return await API.getLastElement({ entity: `/Enti/last`, token });

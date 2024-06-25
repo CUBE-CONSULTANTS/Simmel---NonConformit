@@ -82,7 +82,7 @@ sap.ui.define([
                 this.setModel(new sap.ui.model.json.JSONModel(), "modelloAppoggio");
 
                 let nome = JSON.parse(localStorage.getItem("simmel_current_user")).user.givenName
-
+                // nome='Anthea Cellacchi'
                 let arrayPromise = [new Promise((resolve) => {
                     resolve(Utenti.getInfoUserLog({ nome, token: this._getToken() }))
                 })]

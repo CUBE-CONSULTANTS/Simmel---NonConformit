@@ -113,7 +113,7 @@
                         <layout:VerticalLayout width="100%">
                             <FlexBox justifyContent="End">
                                 <Button press="navToGestioneRuoli"
-                                   
+                                    visible="{=${modelloRuolo>/settore}==='Qualità' ? true : false}"
                                     text="Gestione Ruoli"
                                     type="Emphasized"
                                     icon="sap-icon://role" />

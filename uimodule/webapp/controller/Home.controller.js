@@ -234,6 +234,9 @@ sap.ui.define([
                     let id = elemento_selezionato.id
                     let dialog = oEvent.getSource().getParent()
                     let model = dialog.getModel("modelloNewModel").getData()
+                    //setto il nuovo filename
+                    model.filename=filename
+
                     // debugger
                     await this.getSetLavUser(dialog)
                     await ModelNonConf.updateModelAndRev({ id, data: model, objrev: elemento_selezionato, token: this._getToken() })
@@ -435,8 +438,8 @@ sap.ui.define([
                         actions: [sap.m.MessageBox.Action.OK],
                         emphasizedAction: sap.m.MessageBox.Action.OK,
                         onClose: function (oAction) {
-                            this._DialogRuoli.destroy()
                             this._DialogRuoli = undefined;
+                            this._DialogRuoli.destroy()
                         }.bind(this)
                     });
                 }
@@ -447,8 +450,8 @@ sap.ui.define([
                         emphasizedAction: sap.m.MessageBox.Action.OK,
                         onClose: function (oAction) {
                             // this.navPagPrec()
-                            this._DialogRuoli.destroy()
                             this._DialogRuoli = undefined;
+                            this._DialogRuoli.destroy()
                         }.bind(this)
                     });
                 }
